@@ -36,8 +36,8 @@
 	</licenses>
 
 	<modules>
-		<module>1-reactive</module>
-		<module>1-classic</module>
+		<module>3-reactive</module>
+		<module>3-classic</module>
 	</modules>
 
 </project>
