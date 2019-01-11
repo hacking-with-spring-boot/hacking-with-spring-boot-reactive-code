@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Hacking Spring Boot - Getting Started</title>
+</head>
+<body>
+    <h1>Welcome to Hacking Spring Boot!</h1>
+
+    <table>
+        <tr th:each="cartItem : ${cartItems}">
+            <td th:text="${cartItem.item.name}"/>
+            <td th:text="${cartItem.item.price}"/>
+            <td th:text="${cartItem.quantity}"/>
+            <td>
+                <form th:action="@{'/remove/' + ${cartId} + '/' + ${cartItem.item.id}}" method="post">
+                    <input type="submit" value="-1" />
+                </form>
+            </td>
+            <td>
+                <form th:action="@{'/add/' + ${cartId} + '/' + ${cartItem.item.id}}" method="post">
+                    <input type="submit" value="+1" />
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <form th:action="@{'/order/' + ${cartId}}" method="post">
+        <input type="submit" value="Place Order" />
+    </form>
+
+</body>
+</html>
