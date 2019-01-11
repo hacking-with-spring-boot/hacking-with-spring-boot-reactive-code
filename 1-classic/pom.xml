@@ -11,7 +11,7 @@
 	<groupId>com.greglturnquist</groupId>
 	<artifactId>hacking-spring-boot-ch1-classic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>hacking-spring-boot</name>
+	<name>hacking-spring-boot-ch1-classic</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

@@ -19,19 +19,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 /**
  * @author Greg Turnquist
  */
+@Entity
 class Cart {
 
-	private String id;
+	@Id @GeneratedValue
+	private Long id;
+
+	@OneToMany
 	private List<CartItem> cartItems = new ArrayList<>();
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

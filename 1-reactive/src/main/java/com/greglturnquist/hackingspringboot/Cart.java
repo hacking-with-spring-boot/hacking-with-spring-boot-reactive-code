@@ -19,12 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * @author Greg Turnquist
  */
 class Cart {
 
-	private String id;
+	@Id private String id;
+
 	private List<CartItem> cartItems = new ArrayList<>();
 
 	public Cart(List<CartItem> cartItems) {

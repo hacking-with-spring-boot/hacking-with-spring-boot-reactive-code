@@ -20,6 +20,6 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * @author Greg Turnquist
  */
-public interface ItemRepository extends CrudRepository<Item, String> {
+public interface ItemRepository extends CrudRepository<Item, Long> {
 
 }

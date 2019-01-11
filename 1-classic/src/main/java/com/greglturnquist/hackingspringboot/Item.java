@@ -17,25 +17,35 @@ package com.greglturnquist.hackingspringboot;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  * @author Greg Turnquist
  */
+@Entity
 public class Item {
 
-	private String id;
+	@Id @GeneratedValue
+	private Long id;
+
 	private String name;
+
 	private double price;
+
+	private Item() {}
 
 	public Item(String name, double price) {
 		this.name = name;
 		this.price = price;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

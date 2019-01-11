@@ -36,15 +36,17 @@ class HomeController {
 
 	private final CartRepository cartRepository;
 	private final ItemRepository itemRepository;
+	private final CartItemRepository cartItemRepository;
 
 	HomeController(CartRepository cartRepository,
-						  ItemRepository itemRepository) {
+				   ItemRepository itemRepository, CartItemRepository cartItemRepository) {
 		this.cartRepository = cartRepository;
 		this.itemRepository = itemRepository;
+		this.cartItemRepository = cartItemRepository;
 	}
 
 	@GetMapping
-	String home(Model model, @RequestParam(required = false) String cartId) {
+	String home(Model model, @RequestParam(required = false) Long cartId) {
 		Cart cart;
 
 		if (cartId != null) {
@@ -53,7 +55,8 @@ class HomeController {
 		} else {
 			cart = new Cart();
 			for (Item item : this.itemRepository.findAll()) {
-				cart.getCartItems().add(new CartItem(item));
+				CartItem cartItem = this.cartItemRepository.save(new CartItem(item));
+				cart.getCartItems().add(cartItem);
 			}
 			cart = this.cartRepository.save(cart);
 		}
@@ -65,7 +68,7 @@ class HomeController {
 	}
 
 	@PostMapping("/remove/{cartId}/{itemId}")
-	String removeFromCart(@PathVariable String cartId, @PathVariable String itemId) {
+	String removeFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
 
 		Cart cart = this.cartRepository.findById(cartId)
 			.orElseThrow(() -> new CartNotFoundException(cartId));
@@ -85,7 +88,7 @@ class HomeController {
 	}
 
 	@PostMapping("/add/{cartId}/{itemId}")
-	String addToCart(@PathVariable String cartId, @PathVariable String itemId) {
+	String addToCart(@PathVariable Long cartId, @PathVariable Long itemId) {
 
 		Cart cart = this.cartRepository.findById(cartId)
 			.orElseThrow(() -> new CartNotFoundException(cartId));
@@ -103,7 +106,7 @@ class HomeController {
 	}
 
 	@PostMapping("/order/{cartId}")
-	String placeOrder(@PathVariable String cartId) {
+	String placeOrder(@PathVariable Long cartId) {
 		Cart cart = this.cartRepository.findById(cartId)
 			.orElseThrow(() -> new CartNotFoundException(cartId));
 
@@ -117,7 +120,7 @@ class HomeController {
 	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such cart")
 	class CartNotFoundException extends RuntimeException {
 
-		public CartNotFoundException(String cartId) {
+		public CartNotFoundException(Long cartId) {
 			super("Could not find cart " + cartId);
 		}
 	}

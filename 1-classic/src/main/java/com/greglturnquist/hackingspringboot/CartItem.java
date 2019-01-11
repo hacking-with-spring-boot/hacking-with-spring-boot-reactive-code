@@ -17,12 +17,23 @@ package com.greglturnquist.hackingspringboot;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
 /**
  * @author Greg Turnquist
  */
+@Entity
 class CartItem {
 
+	@Id @GeneratedValue
+	private long id;
+
+	@OneToOne
 	private Item item;
+	
 	private int quantity;
 
 	private CartItem() {}
