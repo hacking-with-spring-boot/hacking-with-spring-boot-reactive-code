@@ -20,24 +20,22 @@ import java.util.Objects;
 /**
  * @author Greg Turnquist
  */
-class Employee {
+public class Item {
 
-	private long id;
+	private Long id;
 	private String name;
-	private String role;
+	private double price;
 
-	Employee(String name, String role) {
+	Item(String name, double price) {
 		this.name = name;
-		this.role = role;
+		this.price = price;
 	}
 
-	private Employee() { }
-
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -49,35 +47,35 @@ class Employee {
 		this.name = name;
 	}
 
-	public String getRole() {
-		return role;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Employee employee = (Employee) o;
-		return id == employee.id &&
-			Objects.equals(name, employee.name) &&
-			Objects.equals(role, employee.role);
+		Item item = (Item) o;
+		return Double.compare(item.price, price) == 0 &&
+			Objects.equals(id, item.id) &&
+			Objects.equals(name, item.name);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, role);
+		return Objects.hash(id, name, price);
 	}
 
 	@Override
 	public String toString() {
-		return "Employee{" +
+		return "Item{" +
 			"id=" + id +
 			", name='" + name + '\'' +
-			", role='" + role + '\'' +
+			", price=" + price +
 			'}';
 	}
 }

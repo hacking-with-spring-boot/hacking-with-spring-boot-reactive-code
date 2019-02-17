@@ -13,20 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
 package com.greglturnquist.hackingspringboot;
 
-import reactor.core.publisher.Mono;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-public class HomeController {
+/**
+ * @author Greg Turnquist
+ */
+// tag::code[]
+@RestController()
+class InventoryController {
 
-	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+	private InventoryService service;
+
+	InventoryController(InventoryService service) {
+		this.service = service;
+	}
+
+	@GetMapping(value = "/items", produces = "application/stream+json")
+	List<Item> findInventoryData(@RequestParam("q") String q) {
+		return this.service.getItems().stream()
+			.filter(item -> item.getName().contains(q))
+			.collect(Collectors.toList());
 	}
 }
 // end::code[]

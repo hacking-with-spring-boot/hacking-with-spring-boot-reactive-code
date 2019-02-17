@@ -2,22 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<!-- tag::parent[] -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.0.BUILD-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<!-- end::parent[] -->
+	<!-- tag::artifact[] -->
 	<groupId>com.greglturnquist</groupId>
 	<artifactId>hacking-spring-boot-ch1-reactive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Hacking Spring Boot - Chapter 1 - Reactive</name>
 	<description>Demo project for Hacking Spring Boot</description>
+	<!-- end::artifact[] -->
 
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 
+	<!-- tag::dep[] -->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -39,7 +44,9 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<!-- end::dep[] -->
 
+	<!-- tag::plugins[] -->
 	<build>
 		<plugins>
 			<plugin>
@@ -48,6 +55,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!-- end::plugins[] -->
 
 	<repositories>
 		<repository>

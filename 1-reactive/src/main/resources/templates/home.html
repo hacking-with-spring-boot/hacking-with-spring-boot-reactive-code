@@ -7,21 +7,13 @@
 <body>
     <h1>Welcome to Hacking Spring Boot!</h1>
 
-    <table>
-        <th>Id</th><th>Name</th><th>Role</th>
-        <tr th:each="employee : ${employees}">
-            <td th:text="${employee.id}"></td>
-            <td th:text="${employee.name}"></td>
-            <td th:text="${employee.role}"></td>
-            <td><a th:href="@{'/delete/' + ${employee.id}}" th:method="delete">Delete</a></td>
-        </tr>
-    </table>
-
-    <form method="post" action="/">
-        <input name="name" type="text" />
-        <input name="role" type="text" />
-        <input type="submit" />
-    </form>
+    <p>
+        Over the span of this book, we'll build
+        an e-commerce system which will include
+        fleshing out this web template with
+        dynamic content, using the power of
+        Spring Boot.
+    </p> 
 
 </body>
 </html>

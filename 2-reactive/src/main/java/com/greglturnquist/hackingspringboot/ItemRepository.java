@@ -27,34 +27,34 @@ import org.springframework.stereotype.Service;
  * @author Greg Turnquist
  */
 @Service
-class EmployeeRepository {
+class ItemRepository {
 
-	private static AtomicLong EMPLOYEE_SEQ = new AtomicLong(0);
-	private static List<Employee> EMPLOYEES = new ArrayList<>();
+	private static AtomicLong ITEM_SEQ = new AtomicLong(0);
+	private static List<Item> ITEMS = new ArrayList<>();
 
-	void blockingSave(Employee employee) {
-		employee.setId(EMPLOYEE_SEQ.getAndIncrement());
-		EMPLOYEES.add(employee);
+	void blockingSave(Item item) {
+		item.setId(ITEM_SEQ.getAndIncrement());
+		ITEMS.add(item);
 	}
 
-	Mono<Void> save(Employee employee) {
-		return Mono.just(EMPLOYEE_SEQ.getAndIncrement())
+	Mono<Void> save(Item item) {
+		return Mono.just(ITEM_SEQ.getAndIncrement())
 			.map(id -> {
-				employee.setId(id);
-				return employee;
+				item.setId(id);
+				return item;
 			})
-			.map(EMPLOYEES::add)
+			.map(ITEMS::add)
 			.then();
 	}
 
-	Flux<Employee> findAll() {
-		return Flux.fromIterable(EMPLOYEES);
+	Flux<Item> findAll() {
+		return Flux.fromIterable(ITEMS);
 	}
 
 	Mono<Void> deleteById(long id) {
 		return findAll()
-			.filter(employee -> employee.getId() == id)
-			.map(employee -> EMPLOYEES.remove(employee))
+			.filter(item -> item.getId() == id)
+			.map(item -> ITEMS.remove(item))
 			.then();
 	}
 }

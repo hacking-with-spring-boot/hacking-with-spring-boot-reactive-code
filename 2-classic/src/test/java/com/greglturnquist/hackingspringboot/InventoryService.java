@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
 package com.greglturnquist.hackingspringboot;
 
-import reactor.core.publisher.Mono;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import java.util.Collections;
+import java.util.List;
 
-@Controller
-public class HomeController {
+import org.springframework.stereotype.Service;
 
-	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+/**
+ * @author Greg Turnquist
+ */
+// tag::code[]
+@Service
+class InventoryService {
+
+	List<Item> getItems() {
+		// imagine calling a remote service!
+		return Collections.emptyList();
 	}
+
 }
 // end::code[]

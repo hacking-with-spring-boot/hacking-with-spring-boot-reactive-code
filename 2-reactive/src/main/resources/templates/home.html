@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Hacking Spring Boot - Getting Started</title>
+</head>
+<body>
+    <h1>Welcome to Hacking Spring Boot!</h1>
+    
+    <h2>Inventory Management</h2>
+    <table>
+        <th>Id</th><th>Name</th><th>Role</th>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.price}"></td>
+            <td><a th:href="@{'/delete/' + ${item.id}}" th:method="delete">Delete</a></td>
+        </tr>
+    </table>
+
+    <h3>Add New Inventory</h3>
+    <form method="post" action="/">
+        <input name="name" type="text" />
+        <input name="price" type="text" />
+        <input type="submit" />
+    </form>
+
+</body>
+</html>

@@ -13,20 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
 package com.greglturnquist.hackingspringboot;
 
 import reactor.core.publisher.Mono;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * @author Greg Turnquist
+ */
+// tag::code[]
 @Controller
 public class HomeController {
 
 	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+	Mono<String> index() {
+		return Mono.just("index");
 	}
 }
 // end::code[]

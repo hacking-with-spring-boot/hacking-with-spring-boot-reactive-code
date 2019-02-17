@@ -13,20 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
 package com.greglturnquist.hackingspringboot;
 
-import reactor.core.publisher.Mono;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
-@Controller
-public class HomeController {
+import org.springframework.stereotype.Service;
 
-	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+/**
+ * @author Greg Turnquist
+ */
+@Service
+class ItemRepository {
+
+	private static AtomicLong ITEM_SEQ = new AtomicLong(0);
+	private static List<Item> ITEMS = new ArrayList<>();
+
+	Item save(Item item) {
+		item.setId(ITEM_SEQ.getAndIncrement());
+		ITEMS.add(item);
+		return item;
+	}
+
+	List<Item> findAll() {
+		return ITEMS;
+	}
+
+	void deleteById(long id) {
+		findAll().stream()
+			.filter(item -> item.getId() == id)
+			.findFirst()
+			.ifPresent(item -> ITEMS.remove(item));
 	}
 }
-// end::code[]

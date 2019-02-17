@@ -15,21 +15,20 @@
  */
 package com.greglturnquist.hackingspringboot;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Greg Turnquist
  */
-@Component
-public class InitDatabase {
+// tag::code[]
+@Service
+class InventoryService {
 
-	@Bean
-	CommandLineRunner initialize(EmployeeRepository repository) {
-		return args -> {
-			repository.blockingSave(new Employee("Frodo Baggins", "ring bearer"));
-			repository.blockingSave(new Employee("Bilbo Baggins", "burglar"));
-		};
+	Flux<Item> getItems() {
+		// imagine calling a remote service!
+		return Flux.empty();
 	}
+
 }
+// end::code[]

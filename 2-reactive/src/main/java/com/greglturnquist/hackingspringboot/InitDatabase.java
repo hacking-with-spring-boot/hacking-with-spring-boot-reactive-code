@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
 package com.greglturnquist.hackingspringboot;
 
-import reactor.core.publisher.Mono;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
-@Controller
-public class HomeController {
+/**
+ * @author Greg Turnquist
+ */
+@Component
+public class InitDatabase {
 
-	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+	@Bean
+	CommandLineRunner initialize(ItemRepository repository) {
+		return args -> {
+			repository.blockingSave(new Item("Alf alarm block", 19.99));
+			repository.blockingSave(new Item("Smurf TV tray", 24.99));
+		};
 	}
 }
-// end::code[]

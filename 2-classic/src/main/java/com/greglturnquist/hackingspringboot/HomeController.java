@@ -13,20 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
 package com.greglturnquist.hackingspringboot;
 
-import reactor.core.publisher.Mono;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * @author Greg Turnquist
+ */
 @Controller
 public class HomeController {
 
+	private ItemRepository repository;
+
+	public HomeController(ItemRepository repository) {
+		this.repository = repository;
+	}
+
 	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+	String home(Model model) {
+		model.addAttribute("items", this.repository.findAll());
+		return "home.html";
+	}
+
+	@PostMapping
+	String createEmployee(@ModelAttribute Item newItem) {
+		this.repository.save(newItem);
+		return "redirect:/";
+	}
+
+	@GetMapping("/delete/{id}")
+	String deleteEmployee(@PathVariable long id) {
+		this.repository.deleteById(id);
+		return "redirect:/";
 	}
 }
-// end::code[]

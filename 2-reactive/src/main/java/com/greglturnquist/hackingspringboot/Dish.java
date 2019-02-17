@@ -13,20 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
+// tag::dish[]
 package com.greglturnquist.hackingspringboot;
 
-import reactor.core.publisher.Mono;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+class Dish {
 
-@Controller
-public class HomeController {
+	private String description;
+	private boolean delivered = false;
 
-	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+	Dish(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public boolean isDelivered() {
+		return delivered;
+	}
+
+	public void setDelivered(boolean delivered) {
+		this.delivered = delivered;
+	}
+
+	@Override
+	public String toString() {
+		return "Dish{" +
+			"description='" + description + '\'' +
+			", delivered=" + delivered +
+			'}';
 	}
 }
-// end::code[]
+// end::dish[]
