@@ -39,9 +39,12 @@
 		<module>1-reactive</module>
 		<module>1-classic</module>
 		<module>2-reactive</module>
+		<module>2b-reactive</module>
 		<module>2-classic</module>
 		<module>3-reactive</module>
 		<module>3-classic</module>
+		<module>4-reactive</module>
+		<module>4-classic</module>
 	</modules>
 
 </project>

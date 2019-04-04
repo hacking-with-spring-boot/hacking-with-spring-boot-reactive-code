@@ -14,7 +14,7 @@
     <groupId>com.greglturnquist</groupId>
     <artifactId>hacking-spring-boot-ch2-classic</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Hacking Spring Boot - Chapter 2 - Classic</name>
+    <name>Hacking Spring Boot - Chapter 2 - Classic Data</name>
     <description>Demo project for Hacking Spring Boot</description>
 
     <properties>

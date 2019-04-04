@@ -14,7 +14,7 @@
     <groupId>com.greglturnquist</groupId>
     <artifactId>hacking-spring-boot-ch2-reactive</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Hacking Spring Boot - Chapter 2 - Reactive</name>
+    <name>Hacking Spring Boot - Chapter 2 - Reactive Data</name>
     <description>Demo project for Hacking Spring Boot</description>
 
     <properties>
@@ -31,6 +31,16 @@
     </build>
 
     <dependencies>
+        <!-- tag::mongodb[] -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+        </dependency>
+        <!-- end::mongodb[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
