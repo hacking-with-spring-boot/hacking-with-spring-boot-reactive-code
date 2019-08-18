@@ -1,15 +1,16 @@
 package com.greglturnquist.hackingspringboot.reactive.ch3;
 
+import reactor.blockhound.BlockHound;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import reactor.BlockHound;
 
 @SpringBootApplication
 public class HackingSpringBootApplicationPlainBlockHound {
 
 	// tag::blockhound[]
 	public static void main(String[] args) {
-		BlockHound.install(); // <1>
+		BlockHound.install();
 
 		SpringApplication.run(HackingSpringBootApplicationPlainBlockHound.class, args);
 	}

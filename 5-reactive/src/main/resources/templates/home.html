@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Hacking Spring Boot - Getting Started</title>
+</head>
+<body>
+    <h1>Welcome to Hacking Spring Boot!</h1>
+
+    <!-- tag::1[] -->
+    <h2>Inventory Management</h2>
+    <table>
+        <th>Id</th><th>Name</th><th>Price</th>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.price}"></td>
+            <td><a th:href="@{'/add/' + ${item.id}}">Add to Cart</a></td>
+            <td><a th:href="@{'/delete/' + ${item.id}}">Delete</a></td>
+        </tr>
+    </table>
+    <!-- end::1[] -->
+
+    <!-- tag::2[] -->
+    <h2>My Cart</h2>
+    <table>
+        <th>Id</th><th>Name</th><th>Quantity</th>
+        <tr th:each="cartItem : ${cart.cartItems}">
+            <td th:text="${cartItem.item.id}"></td>
+            <td th:text="${cartItem.item.name}"></td>
+            <td th:text="${cartItem.quantity}"></td>
+            <td><a th:href="@{'/remove/' + ${cartItem.item.id}}">-1</a></td>
+        </tr>
+    </table>
+    <!-- end::2[] -->
+
+</body>
+</html>

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,9 +24,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Collections;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -34,23 +34,18 @@ import static org.mockito.Mockito.when;
 /**
  * @author Greg Turnquist
  */
-// tag::extend[]
-@ExtendWith(SpringExtension.class) // <1>
-class InventoryServiceUnitTest { // <2>
-// end::extend[]
+@ExtendWith(SpringExtension.class)
+public class BlockHoundIntegrationTest {
 
-    // tag::class-under-test[]
-    InventoryService inventoryService; // <1>
+    AltInventoryService inventoryService;
 
     @MockBean
-    private ItemRepository itemRepository; // <2>
+    private ItemRepository itemRepository;
 
     @MockBean
-    private CartRepository cartRepository; // <2>
-    // end::class-under-test[]
+    private CartRepository cartRepository;
 
-    // tag::before[]
-    @BeforeEach // <1>
+    @BeforeEach
     void setUp() {
         // Define test data <2>
         Item sampleItem = new Item("item1", "TV tray", "Alf TV tray", 19.99);
@@ -62,49 +57,15 @@ class InventoryServiceUnitTest { // <2>
         when(itemRepository.findById(anyString())).thenReturn(Mono.just(sampleItem));
         when(cartRepository.save(any(Cart.class))).thenReturn(Mono.just(sampleCart));
 
-        inventoryService = new InventoryService(itemRepository, cartRepository); // <4>
+        inventoryService = new AltInventoryService(itemRepository, cartRepository); // <4>
     }
-    // end::before[]
 
-    // tag::test[]
     @Test
     void addItemToEmptyCartShouldProduceOneCartItem() { // <1>
-        inventoryService.addItemToCart("My Cart", "item1") // <2>
+        Mono.delay(Duration.ofSeconds(1))
+            .flatMap(tick -> inventoryService.addItemToCart("My Cart", "item1")) // <2>
             .as(StepVerifier::create) // <3>
-            .expectNextMatches(cart -> { // <4>
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getQuantity)
-                    .containsExactlyInAnyOrder(1); // <5>
-
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getItem)
-                    .containsExactly( // <6>
-                        new Item("item1", "TV tray", "Alf TV tray", 19.99));
-
-                return true; // <7>
-            })
+            .expectNextCount(1)
             .verifyComplete(); // <8>
     }
-    // end::test[]
-
-    // tag::test2[]
-    @Test
-    void alternativeWayToTest() { // <1>
-        StepVerifier.create(inventoryService.addItemToCart("My Cart", "item1"))
-            .expectNextMatches(cart -> { // <4>
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getQuantity)
-                    .containsExactlyInAnyOrder(1); // <5>
-
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getItem)
-                    .containsExactly( // <6>
-                        new Item("item1", "TV tray", "Alf TV tray", 19.99));
-
-                return true; // <7>
-            })
-            .verifyComplete(); // <8>
-    }
-    // end::test2[]
-
 }

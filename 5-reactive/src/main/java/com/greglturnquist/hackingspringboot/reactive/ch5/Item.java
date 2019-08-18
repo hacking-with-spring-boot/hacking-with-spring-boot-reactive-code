@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.greglturnquist.hackingspringboot.reactive.ch4;
+package com.greglturnquist.hackingspringboot.reactive.ch5;
 
 import org.springframework.data.annotation.Id;
 

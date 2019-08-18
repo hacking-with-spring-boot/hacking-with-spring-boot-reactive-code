@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.greglturnquist.hackingspringboot.reactive.ch4;
+package com.greglturnquist.hackingspringboot.reactive.ch7;
 
 import org.springframework.data.annotation.Id;
 
@@ -104,4 +104,5 @@ public class Item {
             ", price=" + price +
             '}';
     }
+
 }

@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.0.BUILD-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.greglturnquist</groupId>
-    <artifactId>hacking-spring-boot-ch3-reactive</artifactId>
+    <artifactId>hacking-spring-boot-ch5-reactive</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Hacking Spring Boot - Chapter 3 - Reactive Dev Tools</name>
+    <name>Hacking Spring Boot - Chapter 5 - Operations</name>
     <description>Demo project for Hacking Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
+        <auto-service.version>1.0-rc5</auto-service.version>
     </properties>
 
     <dependencies>
@@ -31,23 +35,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+        <!-- tag::spring-boot-actuator[] -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- end::spring-boot-actuator[] -->
 
-        <!-- tag::devtools[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- end::devtools[] -->
 
-        <!-- tag::blockhound[] -->
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
-            <artifactId>blockhound</artifactId>
+            <artifactId>blockhound-junit-platform</artifactId>
             <version>1.0.0.M3</version>
+            <scope>test</scope>
         </dependency>
-        <!-- end::blockhound[] -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -69,9 +75,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.greglturnquist.hackingspringboot.reactive.ch3.HackingSpringBootApplicationPlainBlockHound</mainClass>
-                </configuration>
             </plugin>
         </plugins>
     </build>

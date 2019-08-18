@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.greglturnquist.hackingspringboot.reactive.ch3;
+package com.greglturnquist.hackingspringboot.reactive.ch5;
 
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -27,14 +27,14 @@ import java.util.stream.Collectors;
  */
 // tag::code[]
 @Service
-class InventoryService {
+class AltInventoryService {
 
     private ItemRepository itemRepository;
 
     private CartRepository cartRepository;
 
-    InventoryService(ItemRepository repository,
-                     CartRepository cartRepository) {
+    AltInventoryService(ItemRepository repository,
+                        CartRepository cartRepository) {
         this.itemRepository = repository;
         this.cartRepository = cartRepository;
     }
@@ -55,35 +55,29 @@ class InventoryService {
         return this.itemRepository.deleteById(id);
     }
 
-    // tag::logging[]
     Mono<Cart> addItemToCart(String cartId, String itemId) {
-        return this.cartRepository.findById(cartId)
-            .log("foundCart")
-            .defaultIfEmpty(new Cart(cartId)) //
-            .log("emptyCart")
+        Cart myCart = this.cartRepository.findById(cartId)
+            .defaultIfEmpty(new Cart(cartId))
+            .block();
+
+        return Mono.just(myCart) //
             .flatMap(cart -> cart.getCartItems().stream()
                 .filter(cartItem -> cartItem.getItem().getId().equals(itemId))
                 .findAny() //
                 .map(cartItem -> {
                     cartItem.increment();
-                    return Mono.just(cart).log("newCartItem");
+                    return Mono.just(cart);
                 }) //
                 .orElseGet(() -> {
                     return this.itemRepository.findById(itemId) //
-                        .log("fetchedItem")
                         .map(item -> new CartItem(item)) //
-                        .log("cartItem")
                         .map(cartItem -> {
                             cart.getCartItems().add(cartItem);
                             return cart;
-                        })
-                        .log("addedCartItem");
+                        });
                 }))
-            .log("cartWithAnotherItem")
-            .flatMap(cart -> this.cartRepository.save(cart))
-            .log("savedCart");
+            .flatMap(cart -> this.cartRepository.save(cart));
     }
-    // end::logging[]
 
     Mono<Cart> removeOneFromCart(String cartId, String itemId) {
         return this.cartRepository.findById(cartId)

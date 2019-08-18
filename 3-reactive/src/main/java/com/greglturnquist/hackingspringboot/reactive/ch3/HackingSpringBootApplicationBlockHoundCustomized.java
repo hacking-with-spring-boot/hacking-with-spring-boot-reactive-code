@@ -1,6 +1,6 @@
 package com.greglturnquist.hackingspringboot.reactive.ch3;
 
-import reactor.BlockHound;
+import reactor.blockhound.BlockHound;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -16,19 +16,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <auto-service.version>1.0-rc5</auto-service.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.junit</groupId>
-                <artifactId>junit-bom</artifactId>
-                <version>${junit-jupiter.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -44,40 +33,20 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
-        <!-- tag::devtools[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
+            <scope>runtime</scope>
         </dependency>
-        <!-- end::devtools[] -->
 
         <!-- tag::blockhound[] -->
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
-            <artifactId>blockhound</artifactId>
-            <version>1.0.0.M2</version>
+            <artifactId>blockhound-junit-platform</artifactId>
+            <version>1.0.0.M3</version>
+            <scope>test</scope>
         </dependency>
         <!-- end::blockhound[] -->
-
-        <!-- tag::blockhound-junit[] -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor.tools</groupId>
-            <artifactId>blockhound-junit-platform</artifactId>
-            <version>1.0.0.M2</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- end::blockhound-junit[] -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
