@@ -13,11 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.greglturnquist.hackingspringboot.reactive.ch6;
 
-package com.greglturnquist.hackingspringboot.reactive.ch7;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Component;
 
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+/**
+ * @author Greg Turnquist
+ */
+// tag::code[]
+@Component
+public class TemplateDatabaseLoader {
 
-public interface ItemRepository extends ReactiveCrudRepository<Item, String> {
-
+	@Bean
+	CommandLineRunner initialize(MongoOperations mongo) {
+		return args -> {
+			mongo.save(new Item("Alf alarm clock", "kids clock", 19.99));
+			mongo.save(new Item("Smurf TV tray", "kids TV tray", 24.99));
+		};
+	}
 }
+// end::code[]

@@ -1,16 +1,21 @@
 package com.greglturnquist.hackingspringboot.reactive.ch7;
 
-import static org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType.*;
-
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.hateoas.config.EnableHypermediaSupport;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@EnableHypermediaSupport(type = { HAL, HAL_FORMS })
 public class HackingSpringBootApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HackingSpringBootApplication.class, args);
 	}
+
+	// tag::jackson[]
+	@Bean
+	Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
+		return new Jackson2JsonMessageConverter();
+	}
+	// end::jackson[]
 }

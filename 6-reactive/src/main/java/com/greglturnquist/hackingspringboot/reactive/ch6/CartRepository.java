@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.greglturnquist.hackingspringboot.reactive.ch7;
+package com.greglturnquist.hackingspringboot.reactive.ch6;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-public interface ItemRepository extends ReactiveCrudRepository<Item, String> {
+/**
+ * @author Greg Turnquist
+ */
+// tag::code[]
+public interface CartRepository extends ReactiveCrudRepository<Cart, String> {
 
 }
+// end::code[]

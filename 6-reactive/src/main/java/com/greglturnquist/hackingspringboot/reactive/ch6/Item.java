@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.greglturnquist.hackingspringboot.reactive.ch7;
-
-import java.util.Objects;
+package com.greglturnquist.hackingspringboot.reactive.ch6;
 
 import org.springframework.data.annotation.Id;
+
+import java.util.Objects;
 
 // tag::code[]
 public class Item {

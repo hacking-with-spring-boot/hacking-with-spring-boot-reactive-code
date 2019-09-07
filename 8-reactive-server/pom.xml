@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>com.greglturnquist</groupId>
-    <artifactId>hacking-spring-boot-ch7-reactive</artifactId>
+    <artifactId>hacking-spring-boot-ch8-reactive-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Hacking Spring Boot - Chapter 7 - Messaging</name>
+    <name>Hacking Spring Boot - Chapter 8 - RSocket Server</name>
     <description>Demo project for Hacking Spring Boot</description>
 
     <properties>
@@ -41,12 +41,10 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- tag::spring-amqp[] -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
+            <artifactId>spring-boot-starter-rsocket</artifactId>
         </dependency>
-        <!-- end::spring-amqp[] -->
 
         <!-- tag::testcontainers[] -->
         <dependency>

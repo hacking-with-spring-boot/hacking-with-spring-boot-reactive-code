@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.greglturnquist.hackingspringboot.reactive.ch7;
+package com.greglturnquist.hackingspringboot.reactive.ch8.server;
 
 import java.util.Objects;
 
