@@ -17,8 +17,9 @@ package com.greglturnquist.hackingspringboot.reactive.ch8.client;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,40 +37,58 @@ public class RSocketTest {
 
 	@Autowired ItemRepository repository;
 
-	// tag::spring-amqp-test[]
 	@Test
-	void verifyRemoteOperationsThroughRSocket() throws InterruptedException {
-		this.webTestClient.post().uri("/items") // <1>
+	void verifyRemoteOperationsThroughRSocketFireAndForget() throws InterruptedException {
+		this.repository.deleteAll().as(StepVerifier::create).verifyComplete();
+
+		this.webTestClient.post().uri("/items/fire-and-forget") // <1>
 				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
 				.exchange() //
 				.expectStatus().isCreated() //
-				.expectBody();
+				.expectBody().isEmpty();
 
-//		Thread.sleep(500L); // <2>
-//
-//		this.webTestClient.post().uri("/items") // <3>
-//				.bodyValue(new Item("Smurf TV tray", "nothing important", 29.99)) //
-//				.exchange() //
-//				.expectStatus().isCreated() //
-//				.expectBody();
+		Thread.sleep(500); // <4>
 
-		Thread.sleep(2000L); // <4>
-
-		this.repository.findAll() // <5>
+		this.repository.findAll() //
 				.as(StepVerifier::create) //
 				.expectNextMatches(item -> {
+					assertThat(item.getId()).isNotNull();
 					assertThat(item.getName()).isEqualTo("Alf alarm clock");
 					assertThat(item.getDescription()).isEqualTo("nothing important");
 					assertThat(item.getPrice()).isEqualTo(19.99);
 					return true;
 				}) //
-//				.expectNextMatches(item -> {
-//					assertThat(item.getName()).isEqualTo("Smurf TV tray");
-//					assertThat(item.getDescription()).isEqualTo("nothing important");
-//					assertThat(item.getPrice()).isEqualTo(29.99);
-//					return true;
-//				}) //
 				.verifyComplete();
 	}
-	// end::spring-amqp-test[]
+
+	@Test
+	void verifyRemoteOperationsThroughRSocketRequestResponse() throws InterruptedException {
+		this.repository.deleteAll().as(StepVerifier::create).verifyComplete();
+
+		this.webTestClient.post().uri("/items/request-response") // <1>
+				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
+				.exchange() //
+				.expectStatus().isCreated() //
+				.expectBody(Item.class) //
+				.value(item -> {
+					assertThat(item.getId()).isNotNull();
+					assertThat(item.getName()).isEqualTo("Alf alarm clock");
+					assertThat(item.getDescription()).isEqualTo("nothing important");
+					assertThat(item.getPrice()).isEqualTo(19.99);
+				});
+
+		Thread.sleep(500); // <4>
+
+		this.repository.findAll() //
+				.as(StepVerifier::create) //
+				.expectNextMatches(item -> {
+					assertThat(item.getId()).isNotNull();
+					assertThat(item.getName()).isEqualTo("Alf alarm clock");
+					assertThat(item.getDescription()).isEqualTo("nothing important");
+					assertThat(item.getPrice()).isEqualTo(19.99);
+					return true;
+				}) //
+				.verifyComplete();
+	}
+
 }
