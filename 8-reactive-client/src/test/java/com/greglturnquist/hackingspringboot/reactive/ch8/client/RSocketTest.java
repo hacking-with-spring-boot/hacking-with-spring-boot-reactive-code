@@ -17,9 +17,8 @@ package com.greglturnquist.hackingspringboot.reactive.ch8.client;
 
 import static org.assertj.core.api.Assertions.*;
 
-import reactor.test.StepVerifier;
-
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;

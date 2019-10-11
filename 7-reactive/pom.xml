@@ -19,7 +19,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <spring-hateoas.version>1.0.0.BUILD-SNAPSHOT</spring-hateoas.version>
         <auto-service.version>1.0-rc5</auto-service.version>
     </properties>
 
@@ -52,14 +51,14 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>rabbitmq</artifactId>
-            <version>1.12.0</version>
+            <version>1.12.2</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>1.12.0</version>
+            <version>1.12.2</version>
             <scope>test</scope>
         </dependency>
         <!-- end::testcontainers[] -->
@@ -73,7 +72,7 @@
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
             <artifactId>blockhound-junit-platform</artifactId>
-            <version>1.0.0.M3</version>
+            <version>1.0.0.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>

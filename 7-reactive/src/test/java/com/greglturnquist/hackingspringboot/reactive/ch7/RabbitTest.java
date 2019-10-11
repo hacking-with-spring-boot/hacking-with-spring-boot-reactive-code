@@ -19,12 +19,18 @@ import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.*;
 
 import org.junit.jupiter.api.Test;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.test.StepVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 /**
@@ -34,12 +40,26 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest // <1>
 @AutoConfigureWebTestClient // <2>
 @Testcontainers // <3>
-@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD) // <4>
+@ContextConfiguration(initializers = RabbitTest.RabbitMQInitializer.class) // <4>
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD) // <5>
 public class RabbitTest {
 
-	@Autowired WebTestClient webTestClient; // <5>
+	@Container static RabbitMQContainer container = new RabbitMQContainer(); // <6>
 
-	@Autowired ItemRepository repository; // <6>
+	@Autowired WebTestClient webTestClient; // <7>
+
+	@Autowired ItemRepository repository; // <8>
+
+	static class RabbitMQInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+		@Override
+		public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+			TestPropertyValues values = TestPropertyValues.of( //
+					"spring.rabbitmq.host=" + container.getContainerIpAddress(),
+					"spring.rabbitmq.port=" + container.getMappedPort(5672));
+			values.applyTo(configurableApplicationContext);
+		}
+	}
 	// end::setup[]
 
 	// tag::spring-amqp-test[]
@@ -51,7 +71,7 @@ public class RabbitTest {
 				.expectStatus().isCreated() //
 				.expectBody();
 
-		Thread.sleep(500L); // <2>
+		Thread.sleep(1500L); // <2>
 
 		this.webTestClient.post().uri("/items") // <3>
 				.bodyValue(new Item("Smurf TV tray", "nothing important", 29.99)) //
@@ -78,4 +98,5 @@ public class RabbitTest {
 				.verifyComplete();
 	}
 	// end::spring-amqp-test[]
+
 }
