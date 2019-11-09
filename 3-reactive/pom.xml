@@ -70,7 +70,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.greglturnquist.hackingspringboot.reactive.ch3.HackingSpringBootApplicationPlainBlockHound</mainClass>
+                    <mainClass>com.greglturnquist.hackingspringboot.reactive.HackingSpringBootApplicationPlainBlockHound</mainClass>
                 </configuration>
             </plugin>
         </plugins>
