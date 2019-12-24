@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.greglturnquist.hackingspringboot.reactive;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import reactor.core.publisher.Flux;
@@ -26,36 +24,37 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 /**
  * @author Greg Turnquist
  */
-// tag::code[]
-@WebFluxTest(HomeController.class) // <1>
-public class HomeControllerSliceTest {
+@WebFluxTest(controllers = HomeController.class)
+public class HomeControllerTest {
 
-	@Autowired // <2>
-	private WebTestClient client;
+	@Autowired private WebTestClient webTestClient;
 
-	@MockBean // <3>
-	InventoryService inventoryService;
+	@MockBean InventoryService service;
 
 	@Test
-	void homePage() {
-		when(inventoryService.getInventory()).thenReturn(Flux.just( //
-				new Item("id1", "name1", "desc1", 1.99), //
-				new Item("id2", "name2", "desc2", 9.99) //
-		));
-		when(inventoryService.getCart("My Cart")).thenReturn(Mono.just(new Cart("My Cart")));
+	void verifyLoginPageBlocksAccess() {
+		this.webTestClient.get().uri("/") //
+				.exchange() //
+				.expectStatus().isUnauthorized();
+	}
 
-		client.get().uri("/").exchange() //
-				.expectStatus().isOk() //
-				.expectBody(String.class) //
-				.consumeWith(exchangeResult -> {
-					assertThat(exchangeResult.getResponseBody()).contains("<a href=\"/add/id1\">");
-					assertThat(exchangeResult.getResponseBody()).contains("<a href=\"/add/id2\">");
-				});
+	@Test
+	@WithMockUser(username = "ada")
+	void verifyLoginPageWorks() {
+		when(this.service.getInventory()).thenReturn(Flux.just( //
+				new Item("1", "Alf alarm clock", "kids clock", 19.99), //
+				new Item("2", "Smurf TV tray", "kids TV tray", 24.99)));
+		
+		when(this.service.getCart(any())).thenReturn(Mono.just(new Cart("Test Cart")));
+
+		this.webTestClient.get().uri("/") //
+				.exchange() //
+				.expectStatus().isOk();
 	}
 }
-// end::code[]
