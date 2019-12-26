@@ -27,7 +27,7 @@ public class DishMetaphor {
 	class KitchenService {
 
 		Flux<Dish> getDishes() {
-			// We could model a ChefService, but let's just
+			// You could model a ChefService, but let's just
 			// hard code some tasty dishes.
 			return Flux.just( //
 					new Dish("Sesame chicken"), //
