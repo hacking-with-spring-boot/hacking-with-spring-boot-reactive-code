@@ -2,6 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Project Parent -->
+
 	<!-- tag::parent[] -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -10,6 +13,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<!-- end::parent[] -->
+
+	<!-- Application Metadata -->
+
 	<!-- tag::artifact[] -->
 	<groupId>com.greglturnquist</groupId>
 	<artifactId>hacking-spring-boot-ch1-reactive</artifactId>
@@ -21,6 +27,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+
+	<!-- Spring Boot Starters -->
 
 	<!-- tag::dep[] -->
 	<dependencies>
@@ -49,8 +57,16 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 	<!-- end::dep[] -->
+
+	<!-- Spring Boot Maven Plugin -->
 
 	<!-- tag::plugins[] -->
 	<build>
