@@ -59,9 +59,9 @@ public class ApiItemController {
 	// tag::new-item[]
 	@PostMapping("/api/items") // <1>
 	Mono<ResponseEntity<?>> addNewItem(@RequestBody Mono<Item> item) { // <2>
-		return item //
+		return item
 				.flatMap(s -> this.repository.save(s)) // <3>
-				.map(savedItem -> ResponseEntity //
+				.map(savedItem -> ResponseEntity
 						.created(URI.create("/api/items/" + savedItem.getId())) // <4>
 						.body(savedItem)); // <5>
 	}
