@@ -27,8 +27,8 @@ public interface ItemRepository extends ReactiveCrudRepository<Item, String> {
     // end::code[]
 
     // tag::code-2[]
-    @Query("{ 'name' : ?0, 'age' :  }")
-    Flux<Item> findItemsForCustomerMonthlyReport();
+    @Query("{ 'name' : ?0, 'age' : ?1 }")
+    Flux<Item> findItemsForCustomerMonthlyReport(String name, int age);
 
     @Query(sort = "{ 'age' : -1")
     Flux<Item> findSortedStuffForWeeklyReport();

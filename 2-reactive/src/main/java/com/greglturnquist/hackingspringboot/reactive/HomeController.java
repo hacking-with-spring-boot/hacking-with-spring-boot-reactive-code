@@ -16,13 +16,14 @@
 
 package com.greglturnquist.hackingspringboot.reactive;
 
+import reactor.core.publisher.Mono;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.reactive.result.view.Rendering;
-import reactor.core.publisher.Mono;
 
 /**
  * @author Greg Turnquist
@@ -35,7 +36,7 @@ public class HomeController {
 	private CartRepository cartRepository;
 
 	public HomeController(ItemRepository itemRepository, // <2>
-						  CartRepository cartRepository) {
+			CartRepository cartRepository) {
 		this.itemRepository = itemRepository;
 		this.cartRepository = cartRepository;
 	}
@@ -53,8 +54,7 @@ public class HomeController {
 	// end::2[]
 
 	// tag::3[]
-	@GetMapping("/add/{id}")
-	// <1>
+	@GetMapping("/add/{id}") // <1>
 	Mono<String> addToCart(@PathVariable String id) { // <2>
 		return this.cartRepository.findById("My Cart") // <3>
 				.defaultIfEmpty(new Cart("My Cart")) //
@@ -64,7 +64,8 @@ public class HomeController {
 						.map(cartItem -> {
 							cartItem.increment();
 							return Mono.just(cart);
-						}).orElseGet(() -> { // <5>
+						}) //
+						.orElseGet(() -> { // <5>
 							return this.itemRepository.findById(id) //
 									.map(item -> new CartItem(item)) //
 									.map(cartItem -> {

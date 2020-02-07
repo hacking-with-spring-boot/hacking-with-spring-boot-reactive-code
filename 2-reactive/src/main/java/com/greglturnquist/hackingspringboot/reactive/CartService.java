@@ -16,8 +16,9 @@
 
 package com.greglturnquist.hackingspringboot.reactive;
 
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
+import org.springframework.stereotype.Service;
 
 /**
  * @author Greg Turnquist
@@ -30,7 +31,7 @@ class CartService {
 	private final CartRepository cartRepository;
 
 	CartService(ItemRepository itemRepository, // <2>
-				CartRepository cartRepository) {
+			CartRepository cartRepository) {
 		this.itemRepository = itemRepository;
 		this.cartRepository = cartRepository;
 	}
@@ -44,7 +45,8 @@ class CartService {
 						.map(cartItem -> {
 							cartItem.increment();
 							return Mono.just(cart);
-						}).orElseGet(() -> {
+						}) //
+						.orElseGet(() -> {
 							return this.itemRepository.findById(id) //
 									.map(CartItem::new) // <4>
 									.doOnNext(cartItem -> cart.getCartItems().add(cartItem)) //
