@@ -20,8 +20,8 @@
 	<groupId>com.greglturnquist</groupId>
 	<artifactId>hacking-spring-boot-ch1-reactive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Hacking Spring Boot - Chapter 1 - Reactive Web</name>
-	<description>Demo project for Hacking Spring Boot</description>
+	<name>Hacking with Spring Boot - Chapter 1 - Reactive Web</name>
+	<description>Demo project for Hacking with Spring Boot</description>
 	<!-- end::artifact[] -->
 
 	<properties>

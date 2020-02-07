@@ -1,4 +1,4 @@
-= Hacking Spring Boot API Portal
+= Hacking with Spring Boot API Portal
 
 When you stand up a web service, people will want to see how to use it. Thanks to Spring REST Docs, you can generate all the interactions needed via test cases that in turn generate readable documentation. A match made in heaven, or at least, in your IDE.
 

@@ -8,7 +8,7 @@
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Hacking Spring Boot</name>
+	<name>Hacking with Spring Boot</name>
 
 	<inceptionYear>2019</inceptionYear>
 
