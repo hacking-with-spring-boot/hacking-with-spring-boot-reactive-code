@@ -20,9 +20,10 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.*;
 
-import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -74,7 +75,7 @@ public class HypermediaItemControllerDocumentationTest {
 	// tag::test3[]
 	@Test
 	void findOneItem() {
-		when(repository.findById("item-1")) // <1>
+		when(repository.findById("item-1")) //
 				.thenReturn(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/hypermedia/items/item-1") //
@@ -84,14 +85,13 @@ public class HypermediaItemControllerDocumentationTest {
 				.consumeWith(document("findOne-hypermedia", //
 						preprocessResponse(prettyPrint()), //
 						links(linkWithRel("self").description("Canonical link to this `Item`"),
-								linkWithRel("item").description("Link back to the aggregate root")))); // <2>
+								linkWithRel("item").description("Link back to the aggregate root")))); //
 	}
 	// end::test3[]
 
 	@Test
 	void findProfile() {
 		this.webTestClient.get().uri("/hypermedia/items/profile") //
-				// .accept(MediaTypes.ALPS_JSON) //
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectBody() //

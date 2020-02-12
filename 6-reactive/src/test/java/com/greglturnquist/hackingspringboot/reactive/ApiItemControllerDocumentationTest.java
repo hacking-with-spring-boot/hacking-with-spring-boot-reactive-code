@@ -26,13 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import com.greglturnquist.hackingspringboot.reactive.ApiItemController;
-import com.greglturnquist.hackingspringboot.reactive.InventoryService;
-import com.greglturnquist.hackingspringboot.reactive.Item;
-import com.greglturnquist.hackingspringboot.reactive.ItemRepository;
 
 /**
  * @author Greg Turnquist
@@ -69,12 +63,10 @@ public class ApiItemControllerDocumentationTest {
 		when(repository.save(any())) //
 				.thenReturn(Mono.just(new Item("1", "Alf alarm clock", "nothing important", 19.99)));
 
-		// TODO: Remove `content-type` pending https://github.com/spring-projects/spring-hateoas/issues/1047
 		this.webTestClient.post().uri("/api/items") // <1>
-				.contentType(MediaTypes.HAL_JSON) // <2>
-				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) // <3>
+				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) // <2>
 				.exchange() //
-				.expectStatus().isCreated() // <4>
+				.expectStatus().isCreated() // <3>
 				.expectBody() //
 				.consumeWith(document("post-new-item", preprocessResponse(prettyPrint()))); //
 	}

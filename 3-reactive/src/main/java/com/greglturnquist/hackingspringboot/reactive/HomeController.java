@@ -31,45 +31,45 @@ import org.springframework.web.reactive.result.view.Rendering;
 @Controller
 public class HomeController {
 
-    private InventoryService inventoryService;
+	private InventoryService inventoryService;
 
-    public HomeController(InventoryService inventoryService) {
-        this.inventoryService = inventoryService;
-    }
-    // end::1[]
+	public HomeController(InventoryService inventoryService) {
+		this.inventoryService = inventoryService;
+	}
+	// end::1[]
 
-    // tag::2[]
-    @GetMapping
-    Mono<Rendering> home() { // <1>
-        return Mono.just(Rendering.view("home.html") // <2>
-            .modelAttribute("items", this.inventoryService.getInventory()) // <3>
-            .modelAttribute("cart", this.inventoryService.getCart("My Cart") // <4>
-                .defaultIfEmpty(new Cart("My Cart")))
-            .build());
-    }
-    // end::2[]
+	@GetMapping
+	Mono<Rendering> home() {
+		// tag::2[]
+		return Mono.just(Rendering.view("home.html") //
+			.modelAttribute("items", this.inventoryService.getInventory()) //
+			.modelAttribute("cart", this.inventoryService.getCart("My Cart") //
+				.defaultIfEmpty(new Cart("My Cart")))
+			.build());
+		// end::2[]
+	}
 
-    @GetMapping("/add/{id}")
-    Mono<String> addToCart(@PathVariable String id) {
-        return this.inventoryService.addItemToCart("My Cart", id)
-            .then(Mono.just("redirect:/"));
-    }
+	@GetMapping("/add/{id}")
+	Mono<String> addToCart(@PathVariable String id) {
+		return this.inventoryService.addItemToCart("My Cart", id)
+			.then(Mono.just("redirect:/"));
+	}
 
-    @GetMapping("/remove/{id}")
-    Mono<String> removeFromCart(@PathVariable String id) {
-        return this.inventoryService.removeOneFromCart("My Cart", id)
-            .then(Mono.just("redirect:/"));
-    }
+	@GetMapping("/remove/{id}")
+	Mono<String> removeFromCart(@PathVariable String id) {
+		return this.inventoryService.removeOneFromCart("My Cart", id)
+			.then(Mono.just("redirect:/"));
+	}
 
-    @PostMapping
-    Mono<String> createItem(@ModelAttribute Item newItem) {
-        return this.inventoryService.saveItem(newItem) //
-            .then(Mono.just("redirect:/"));
-    }
+	@PostMapping
+	Mono<String> createItem(@ModelAttribute Item newItem) {
+		return this.inventoryService.saveItem(newItem) //
+			.then(Mono.just("redirect:/"));
+	}
 
-    @GetMapping("/delete/{id}")
-    Mono<String> deleteItem(@PathVariable String id) {
-        return this.inventoryService.deleteItem(id) //
-            .then(Mono.just("redirect:/"));
-    }
+	@GetMapping("/delete/{id}")
+	Mono<String> deleteItem(@PathVariable String id) {
+		return this.inventoryService.deleteItem(id) //
+			.then(Mono.just("redirect:/"));
+	}
 }

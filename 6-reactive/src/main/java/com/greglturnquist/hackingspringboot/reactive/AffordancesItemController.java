@@ -29,6 +29,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.alps.Alps;
 import org.springframework.hateoas.mediatype.alps.Type;
@@ -136,7 +137,7 @@ public class AffordancesItemController {
 	// end::update-item[]
 
 	// tag::profile[]
-	@GetMapping(value = "/affordances/items/profile"/*, produces = MediaTypes.ALPS_JSON_VALUE*/)
+	@GetMapping(value = "/affordances/items/profile"/, produces = MediaTypes.ALPS_JSON_VALUE)
 	public Alps profile() {
 		return alps() //
 				.descriptor(Collections.singletonList(descriptor() //

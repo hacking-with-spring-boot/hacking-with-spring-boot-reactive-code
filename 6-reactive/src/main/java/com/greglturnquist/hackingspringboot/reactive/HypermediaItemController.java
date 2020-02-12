@@ -29,6 +29,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.alps.Alps;
 import org.springframework.hateoas.mediatype.alps.Type;
@@ -65,7 +66,8 @@ public class HypermediaItemController {
 		Mono<Link> itemsAggregateLink = linkTo(controller.findAll()).withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
-		return selfLink.zipWith(itemsAggregateLink).map(links -> Links.of(links.getT1(), links.getT2()))
+		return selfLink.zipWith(itemsAggregateLink) //
+				.map(links -> Links.of(links.getT1(), links.getT2())) //
 				.map(links -> new RepresentationModel<>(links.toList()));
 	}
 	// end::root[]
@@ -103,7 +105,8 @@ public class HypermediaItemController {
 	// end::find-one[]
 
 	// tag::find-affordance[]
-	@GetMapping("/hypermedia/items/{id}/affordances") // <1>
+	@GetMapping("/hypermedia/items/{id}/affordances")
+	// <1>
 	Mono<EntityModel<Item>> findOneWithAffordances(@PathVariable String id) {
 		HypermediaItemController controller = methodOn(HypermediaItemController.class);
 
@@ -151,7 +154,7 @@ public class HypermediaItemController {
 	// end::update-item[]
 
 	// tag::profile[]
-	@GetMapping(value = "/hypermedia/items/profile"/*, produces = MediaTypes.ALPS_JSON_VALUE*/)
+	@GetMapping(value = "/hypermedia/items/profile", produces = MediaTypes.ALPS_JSON_VALUE)
 	public Alps profile() {
 		return alps() //
 				.descriptor(Collections.singletonList(descriptor() //
