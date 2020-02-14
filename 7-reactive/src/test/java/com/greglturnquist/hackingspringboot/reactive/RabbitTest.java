@@ -64,7 +64,7 @@ public class RabbitTest {
 
 	// tag::spring-amqp-test[]
 	@Test
-	void verifyMessagingThroughSpringAmqp() throws InterruptedException {
+	void verifyMessagingThroughAmqp() throws InterruptedException {
 		this.webTestClient.post().uri("/items") // <1>
 				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
 				.exchange() //

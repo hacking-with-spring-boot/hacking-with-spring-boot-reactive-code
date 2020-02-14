@@ -52,7 +52,7 @@ public class SpringAmqpItemController {
 					return Mono.fromCallable(() -> { // <3>
 						this.template.convertAndSend( // <4>
 								"hacking-spring-boot", "new-items-spring-amqp", content);
-						return ResponseEntity.created(URI.create("/spring-amqp/items")).build(); // <5>
+						return ResponseEntity.created(URI.create("/items")).build(); // <5>
 					}).subscribeOn(Schedulers.elastic()); // <6>
 				});
 	}

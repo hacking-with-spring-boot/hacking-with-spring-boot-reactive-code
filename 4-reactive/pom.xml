@@ -42,7 +42,7 @@
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
             <artifactId>blockhound-junit-platform</artifactId>
-            <version>1.0.1.RELEASE</version>
+            <version>1.0.2.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <!-- end::blockhound[] -->
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
             <artifactId>blockhound-junit-platform</artifactId>
-            <version>1.0.1.RELEASE</version>
+            <version>1.0.2.RELEASE</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
