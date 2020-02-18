@@ -36,7 +36,7 @@ public class HomeController {
 	}
 
 	@GetMapping
-	Mono<Rendering> index() {
+	Mono<Rendering> home() {
 		return Mono.just(Rendering.view("home.html") // <2>
 			.modelAttribute("items", this.inventoryService.getInventory()) // <3>
 			.modelAttribute("cart", this.inventoryService.getCart("My Cart") // <4>

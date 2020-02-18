@@ -17,9 +17,8 @@ package com.greglturnquist.hackingspringboot.reactive;
 
 import static org.assertj.core.api.Assertions.*;
 
-import reactor.test.StepVerifier;
-
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -71,14 +70,14 @@ public class HomeControllerTest {
 				.post().uri("/") //
 				.contentType(MediaType.APPLICATION_JSON) // <2>
 				.bodyValue("{" + // <3>
-						"\"name\": \"iPhone X\", " + //
+						"\"name\": \"iPhone 11\", " + //
 						"\"description\": \"upgrade\", " + //
 						"\"price\": 999.99" + //
 						"}") //
 				.exchange() //
 				.expectStatus().isOk(); // <4>
 
-		this.repository.findByName("iPhone X") // <5>
+		this.repository.findByName("iPhone 11") // <5>
 				.as(StepVerifier::create) // <6>
 				.expectNextMatches(item -> { // <7>
 					assertThat(item.getDescription()).isEqualTo("upgrade");

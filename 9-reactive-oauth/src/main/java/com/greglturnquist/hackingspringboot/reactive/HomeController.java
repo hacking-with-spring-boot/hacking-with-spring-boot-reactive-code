@@ -44,7 +44,7 @@ public class HomeController {
 
 	// tag::user-cart[]
 	@GetMapping
-	Mono<Rendering> index( //
+	Mono<Rendering> home( //
 			@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
 			@AuthenticationPrincipal OAuth2User oauth2User) { // <1>
 		return Mono.just(Rendering.view("home.html") //

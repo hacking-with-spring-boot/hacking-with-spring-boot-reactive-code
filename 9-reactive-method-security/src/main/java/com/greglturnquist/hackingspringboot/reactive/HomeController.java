@@ -36,7 +36,7 @@ public class HomeController {
 
 	// tag::user-cart[]
 	@GetMapping
-	Mono<Rendering> index(Authentication auth) { // <1>
+	Mono<Rendering> home(Authentication auth) { // <1>
 		return Mono.just(Rendering.view("home.html") //
 				.modelAttribute("items", this.inventoryService.getInventory()) //
 				.modelAttribute("cart", this.inventoryService.getCart(cartName(auth)) // <2>

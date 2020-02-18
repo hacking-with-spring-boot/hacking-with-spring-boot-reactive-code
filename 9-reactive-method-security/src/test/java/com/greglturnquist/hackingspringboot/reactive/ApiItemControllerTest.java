@@ -178,6 +178,7 @@ public class ApiItemControllerTest {
 	@Test
 	@WithMockUser(username = "alice", roles = { "INVENTORY" })
 	void navigateToItemWithInventoryAuthority() {
+		
 		// Navigate to the root URI of the API.
 		RepresentationModel<?> root = this.webTestClient.get().uri("/api") //
 				.exchange() //

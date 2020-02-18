@@ -61,16 +61,16 @@ public class RSocketService {
 	// end::request-response[]
 
 	// tag::fire-and-forget[]
-	@MessageMapping("newItems.fire-and-forget") // <1>
-	public Mono<Void> processNewItemsViaRSocketFireAndForget(Item item) { // <2>
-		return this.repository.save(item) // <3>
+	@MessageMapping("newItems.fire-and-forget")
+	public Mono<Void> processNewItemsViaRSocketFireAndForget(Item item) {
+		return this.repository.save(item) //
 				.map(savedItem -> {
 					if (this.itemSink != null) {
 						this.itemSink.next(savedItem);
 					}
 					return savedItem;
 				}) //
-				.then(); // <4>
+				.then();
 	}
 	// end::fire-and-forget[]
 

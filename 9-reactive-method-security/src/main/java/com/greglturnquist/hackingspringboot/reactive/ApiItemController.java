@@ -84,15 +84,15 @@ public class ApiItemController {
 
 	// tag::find-all[]
 	@GetMapping("/api/items")
-	Mono<CollectionModel<EntityModel<Item>>> findAll(Authentication authentication) {
+	Mono<CollectionModel<EntityModel<Item>>> findAll(Authentication auth) {
 		ApiItemController controller = methodOn(ApiItemController.class);
 
-		Mono<Link> selfLink = linkTo(controller.findAll(authentication)).withSelfRel().toMono();
+		Mono<Link> selfLink = linkTo(controller.findAll(auth)).withSelfRel().toMono();
 
 		Mono<Links> allLinks;
 
-		if (authentication.getAuthorities().contains(ROLE_INVENTORY)) {
-			Mono<Link> addNewLink = linkTo(controller.addNewItem(null, authentication)).withRel("add").toMono();
+		if (auth.getAuthorities().contains(ROLE_INVENTORY)) {
+			Mono<Link> addNewLink = linkTo(controller.addNewItem(null, auth)).withRel("add").toMono();
 
 			allLinks = Mono.zip(selfLink, addNewLink) //
 					.map(links -> Links.of(links.getT1(), links.getT2()));
@@ -103,7 +103,7 @@ public class ApiItemController {
 
 		return allLinks //
 				.flatMap(links -> this.repository.findAll() //
-						.flatMap(item -> findOne(item.getId(), authentication)) //
+						.flatMap(item -> findOne(item.getId(), auth)) //
 						.collectList() //
 						.map(entityModels -> new CollectionModel<>(entityModels, links)));
 	}
@@ -111,21 +111,20 @@ public class ApiItemController {
 
 	// tag::find-one[]
 	@GetMapping("/api/items/{id}")
-	Mono<EntityModel<Item>> findOne(@PathVariable String id, Authentication authentication) {
+	Mono<EntityModel<Item>> findOne(@PathVariable String id, Authentication auth) {
 		ApiItemController controller = methodOn(ApiItemController.class);
 
-		Mono<Link> selfLink = linkTo(controller.findOne(id, authentication)).withSelfRel() //
+		Mono<Link> selfLink = linkTo(controller.findOne(id, auth)).withSelfRel() //
 				.toMono();
 
-		Mono<Link> aggregateLink = linkTo(controller.findAll(authentication)).withRel(IanaLinkRelations.ITEM) //
+		Mono<Link> aggregateLink = linkTo(controller.findAll(auth)).withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
 		Mono<Links> allLinks; // <1>
 
-		if (authentication.getAuthorities().contains(ROLE_INVENTORY)) { // <2>
-			Mono<Link> deleteLink = linkTo(controller.deleteItem(id)).withRel("delete").toMono();
-
-			allLinks = Mono.zip(selfLink, aggregateLink, deleteLink) //
+		if (auth.getAuthorities().contains(ROLE_INVENTORY)) { // <2>
+			allLinks = Mono.zip(selfLink, aggregateLink, //
+					linkTo(controller.deleteItem(id)).withRel("delete").toMono()) //
 					.map(links -> Links.of(links.getT1(), links.getT2(), links.getT3()));
 		} else { // <3>
 			allLinks = Mono.zip(selfLink, aggregateLink) //
@@ -136,15 +135,16 @@ public class ApiItemController {
 				.flatMap(links -> this.repository.findById(id) //
 						.map(item -> new EntityModel<>(item, links)));
 	}
+
 	// end::find-one[]
 
 	// tag::add-new-item[]
 	@PreAuthorize("hasRole('" + INVENTORY + "')") // <1>
 	@PostMapping("/api/items/add") // <2>
-	Mono<ResponseEntity<?>> addNewItem(@RequestBody Item item, Authentication authentication) { // <3>
+	Mono<ResponseEntity<?>> addNewItem(@RequestBody Item item, Authentication auth) { // <3>
 		return this.repository.save(item) //
 				.map(Item::getId) //
-				.flatMap(id -> findOne(id, authentication)) //
+				.flatMap(id -> findOne(id, auth)) //
 				.map(newModel -> ResponseEntity.created(newModel //
 						.getRequiredLink(IanaLinkRelations.SELF) //
 						.toUri()).build());
@@ -153,7 +153,7 @@ public class ApiItemController {
 
 	// tag::delete-item[]
 	@PreAuthorize("hasRole('" + INVENTORY + "')")
-	@DeleteMapping("api/items/delete/{id}")
+	@DeleteMapping("/api/items/delete/{id}")
 	Mono<ResponseEntity<?>> deleteItem(@PathVariable String id) {
 		return this.repository.deleteById(id) //
 				.then(Mono.just(ResponseEntity.noContent().build()));
@@ -163,13 +163,13 @@ public class ApiItemController {
 	// tag::update-item[]
 	@PutMapping("/api/items/{id}") // <1>
 	public Mono<ResponseEntity<?>> updateItem(@RequestBody Mono<EntityModel<Item>> item, // <2>
-			@PathVariable String id, Authentication authentication) {
+			@PathVariable String id, Authentication auth) {
 		return item //
 				.map(EntityModel::getContent) //
 				.map(content -> new Item(id, content.getName(), // <3>
 						content.getDescription(), content.getPrice())) //
 				.flatMap(this.repository::save) // <4>
-				.then(findOne(id, authentication)) // <5>
+				.then(findOne(id, auth)) // <5>
 				.map(model -> ResponseEntity.noContent() // <6>
 						.location(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).build());
 	}
