@@ -29,9 +29,9 @@ public class DishMetaphor {
 		Flux<Dish> getDishes() {
 			// You could model a ChefService, but let's just
 			// hard code some tasty dishes.
-			return Flux.just( //
-					new Dish("Sesame chicken"), //
-					new Dish("Lo mein noodles, plain"), //
+			return Flux.just( 
+					new Dish("Sesame chicken"), 
+					new Dish("Lo mein noodles, plain"), 
 					new Dish("Sweet & sour beef"));
 		}
 	}
@@ -47,7 +47,7 @@ public class DishMetaphor {
 		}
 
 		Flux<Dish> doingMyJob() {
-			return this.kitchen.getDishes() //
+			return this.kitchen.getDishes() 
 					.map(dish -> this.deliver(dish));
 		}
 
@@ -69,10 +69,10 @@ public class DishMetaphor {
 		}
 
 		Flux<Dish> doingMyJob() {
-			return this.kitchen.getDishes() //
-					.doOnNext(dish -> System.out.println("Thank you for " + dish + "!")) //
-					.doOnError(error -> System.out.println("So sorry about " + error.getMessage())) //
-					.doOnComplete(() -> System.out.println("Thanks for all your hard work!")) //
+			return this.kitchen.getDishes() 
+					.doOnNext(dish -> System.out.println("Thank you for " + dish + "!")) 
+					.doOnError(error -> System.out.println("So sorry about " + error.getMessage())) 
+					.doOnComplete(() -> System.out.println("Thanks for all your hard work!")) 
 					.map(this::deliver);
 		}
 
@@ -93,12 +93,12 @@ public class DishMetaphor {
 
 		Flux<Dish> doingMyJob() {
 			// tag::multiple-side-effects[]
-			return this.kitchen.getDishes() //
-					.doOnNext(dish -> { //
-						System.out.println("Thank you for " + dish + "!"); //
-						System.out.println("Marking the ticket as done."); //
-						System.out.println("Grabbing some silverware."); //
-					}) //
+			return this.kitchen.getDishes() 
+					.doOnNext(dish -> { 
+						System.out.println("Thank you for " + dish + "!"); 
+						System.out.println("Marking the ticket as done."); 
+						System.out.println("Grabbing some silverware."); 
+					}) 
 					.map(this::deliver);
 			// end::multiple-side-effects[]
 		}
@@ -119,10 +119,10 @@ public class DishMetaphor {
 
 		Flux<Dish> doingMyJob() {
 			// tag::multiple-side-effects2[]
-			return this.kitchen.getDishes() //
-					.doOnNext(dish -> System.out.println("Thank you for " + dish + "!")) //
-					.doOnNext(dish -> System.out.println("Marking the ticket as done.")) //
-					.doOnNext(dish -> System.out.println("Grabbing some silverware.")) //
+			return this.kitchen.getDishes() 
+					.doOnNext(dish -> System.out.println("Thank you for " + dish + "!")) 
+					.doOnNext(dish -> System.out.println("Marking the ticket as done.")) 
+					.doOnNext(dish -> System.out.println("Grabbing some silverware.")) 
 					.map(this::deliver);
 			// end::multiple-side-effects2[]
 		}
@@ -153,9 +153,9 @@ public class DishMetaphor {
 
 		@Override
 		public String toString() {
-			return "Dish{" + //
-					"description='" + description + '\'' + //
-					", delivered=" + delivered + //
+			return "Dish{" + 
+					"description='" + description + '\'' + 
+					", delivered=" + delivered + 
 					'}';
 		}
 	}
@@ -170,7 +170,7 @@ public class DishMetaphor {
 
 			server.doingMyJob() //
 					.subscribe( //
-							dish -> System.out.println("Consuming " + dish), //
+							dish -> System.out.println("Consuming " + dish), 
 							throwable -> System.err.println(throwable));
 		}
 	}
