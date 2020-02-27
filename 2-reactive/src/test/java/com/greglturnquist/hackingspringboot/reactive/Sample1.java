@@ -46,7 +46,7 @@ public class Sample1 {
 		Cart cart = new Cart("My Cart");
 
 		// tag::2[]
-		if (cart.getCartItems().stream() //
+		if (cart.getCartItems().stream() 
 				.anyMatch(cartItem -> cartItem.getItem().getId().equals("5"))) {
 			// increment
 		} else {
