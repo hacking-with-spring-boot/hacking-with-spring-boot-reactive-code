@@ -69,9 +69,9 @@ class InventoryService {
                     return Mono.just(cart).log("newCartItem");
                 }) //
                 .orElseGet(() -> {
-                    return this.itemRepository.findById(itemId) //
+                    return this.itemRepository.findById(itemId) 
                         .log("fetchedItem")
-                        .map(item -> new CartItem(item)) //
+                        .map(item -> new CartItem(item)) 
                         .log("cartItem")
                         .map(cartItem -> {
                             cart.getCartItems().add(cartItem);
