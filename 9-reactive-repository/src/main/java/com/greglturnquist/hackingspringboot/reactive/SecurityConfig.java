@@ -37,9 +37,9 @@ public class SecurityConfig {
 	public ReactiveUserDetailsService userDetailsService(UserRepository repository) { // <1>
 		return username -> repository.findByName(username) // <2>
 				.map(user -> User.withDefaultPasswordEncoder() // <3>
-						.username(user.getName()) //
-						.password(user.getPassword()) //
-						.authorities(user.getRoles().toArray(new String[0])) //
+						.username(user.getName()) 
+						.password(user.getPassword()) 
+						.authorities(user.getRoles().toArray(new String[0])) 
 						.build()); // <4>
 	}
 	// end::reactive-user-details[]
@@ -48,7 +48,7 @@ public class SecurityConfig {
 	@Bean
 	CommandLineRunner userLoader(MongoOperations operations) {
 		return args -> {
-			operations.save(new com.greglturnquist.hackingspringboot.reactive.User( //
+			operations.save(new com.greglturnquist.hackingspringboot.reactive.User( 
 					"greg", "password", Arrays.asList("ROLE_USER")));
 		};
 	}

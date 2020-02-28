@@ -51,8 +51,8 @@ public class ApiItemControllerTest {
 	// tag::register[]
 	@BeforeEach // <1>
 	void setUp() {
-		this.webTestClient = this.webTestClient //
-				.mutate() //
+		this.webTestClient = this.webTestClient 
+				.mutate() 
 				.exchangeStrategies(this.webClientConfigurer.hypermediaExchangeStrategies()) // <2>
 				.build();
 	}
@@ -60,18 +60,18 @@ public class ApiItemControllerTest {
 
 	@Test
 	void noCredentialsFailsAtRoot() {
-		this.webTestClient.get().uri("/api") //
-				.exchange() //
+		this.webTestClient.get().uri("/api") 
+				.exchange() 
 				.expectStatus().isUnauthorized();
 	}
 
 	@Test
 	@WithMockUser(username = "ada")
 	void credentialsWorksOnRoot() {
-		this.webTestClient.get().uri("/api") //
-				.exchange() //
-				.expectStatus().isOk() //
-				.expectBody(String.class) //
+		this.webTestClient.get().uri("/api") 
+				.exchange() 
+				.expectStatus().isOk() 
+				.expectBody(String.class) 
 				.isEqualTo("{\"_links\":{\"self\":{\"href\":\"/api\"},\"item\":{\"href\":\"/api/items\"}}}");
 	}
 
@@ -79,15 +79,15 @@ public class ApiItemControllerTest {
 	@Test
 	@WithMockUser(username = "alice", roles = { "SOME_OTHER_ROLE" }) // <1>
 	void addingInventoryWithoutProperRoleFails() {
-		this.webTestClient //
+		this.webTestClient 
 				.post().uri("/api/items/add") // <2>
-				.contentType(MediaType.APPLICATION_JSON) //
-				.bodyValue("{" + //
-						"\"name\": \"iPhone X\", " + //
-						"\"description\": \"upgrade\", " + //
-						"\"price\": 999.99" + //
-						"}") //
-				.exchange() //
+				.contentType(MediaType.APPLICATION_JSON) 
+				.bodyValue("{" + 
+						"\"name\": \"iPhone X\", " + 
+						"\"description\": \"upgrade\", " + 
+						"\"price\": 999.99" + 
+						"}") 
+				.exchange() 
 				.expectStatus().isForbidden(); // <3>
 	}
 	// end::add-inventory-without-role[]
@@ -98,64 +98,64 @@ public class ApiItemControllerTest {
 	void addingInventoryWithProperRoleSucceeds() {
 		this.webTestClient //
 				.post().uri("/api/items/add") // <2>
-				.contentType(MediaType.APPLICATION_JSON) //
-				.bodyValue("{" + //
-						"\"name\": \"iPhone X\", " + //
-						"\"description\": \"upgrade\", " + //
-						"\"price\": 999.99" + //
-						"}") //
-				.exchange() //
+				.contentType(MediaType.APPLICATION_JSON) 
+				.bodyValue("{" + 
+						"\"name\": \"iPhone X\", " + 
+						"\"description\": \"upgrade\", " + 
+						"\"price\": 999.99" + 
+						"}") 
+				.exchange() 
 				.expectStatus().isCreated(); // <3>
 
 		this.repository.findByName("iPhone X") // <4>
-				.as(StepVerifier::create) //
-				.expectNextMatches(item -> { //
+				.as(StepVerifier::create) 
+				.expectNextMatches(item -> { 
 					assertThat(item.getDescription()).isEqualTo("upgrade");
 					assertThat(item.getPrice()).isEqualTo(999.99);
-					return true; //
+					return true; 
 				}) //
-				.verifyComplete(); //
+				.verifyComplete(); 
 	}
 	// end::add-inventory-with-role[]
 
 	@Test
 	@WithMockUser(username = "carol", roles = { "SOME_OTHER_ROLE" })
 	void deletingInventoryWithoutProperRoleFails() {
-		this.webTestClient.delete().uri("/api/items/delete/some-item") //
-				.exchange() //
+		this.webTestClient.delete().uri("/api/items/delete/some-item") 
+				.exchange() 
 				.expectStatus().isForbidden();
 	}
 
 	@Test
 	@WithMockUser(username = "dan", roles = { "INVENTORY" })
 	void deletingInventoryWithProperRoleSucceeds() {
-		String id = this.repository.findByName("Alf alarm clock") //
-				.map(Item::getId) //
+		String id = this.repository.findByName("Alf alarm clock") 
+				.map(Item::getId) 
 				.block();
 
-		this.webTestClient //
-				.delete().uri("/api/items/delete/" + id) //
-				.exchange() //
+		this.webTestClient 
+				.delete().uri("/api/items/delete/" + id) 
+				.exchange() 
 				.expectStatus().isNoContent();
 
-		this.repository.findByName("Alf alarm clock") //
-				.as(StepVerifier::create) //
-				.expectNextCount(0) //
+		this.repository.findByName("Alf alarm clock") 
+				.as(StepVerifier::create) 
+				.expectNextCount(0) 
 				.verifyComplete();
 	}
 
 	@Test
 	@WithMockUser(username = "alice")
 	void navigateToItemWithoutInventoryAuthority() {
-		RepresentationModel<?> root = this.webTestClient.get().uri("/api") //
-				.exchange() //
-				.expectBody(RepresentationModel.class) //
+		RepresentationModel<?> root = this.webTestClient.get().uri("/api") 
+				.exchange() 
+				.expectBody(RepresentationModel.class) 
 				.returnResult().getResponseBody();
 
-		CollectionModel<EntityModel<Item>> items = this.webTestClient.get() //
-				.uri(root.getRequiredLink(IanaLinkRelations.ITEM).toUri()) //
-				.exchange() //
-				.expectBody(new CollectionModelType<EntityModel<Item>>() {}) //
+		CollectionModel<EntityModel<Item>> items = this.webTestClient.get() 
+				.uri(root.getRequiredLink(IanaLinkRelations.ITEM).toUri()) 
+				.exchange() 
+				.expectBody(new CollectionModelType<EntityModel<Item>>() {}) 
 				.returnResult().getResponseBody();
 
 		assertThat(items.getLinks()).hasSize(1);
@@ -163,10 +163,10 @@ public class ApiItemControllerTest {
 
 		EntityModel<Item> first = items.getContent().iterator().next();
 
-		EntityModel<Item> item = this.webTestClient.get() //
-				.uri(first.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
-				.exchange() //
-				.expectBody(new EntityModelType<Item>() {}) //
+		EntityModel<Item> item = this.webTestClient.get() 
+				.uri(first.getRequiredLink(IanaLinkRelations.SELF).toUri()) 
+				.exchange() 
+				.expectBody(new EntityModelType<Item>() {}) 
 				.returnResult().getResponseBody();
 
 		assertThat(item.getLinks()).hasSize(2);
@@ -180,16 +180,16 @@ public class ApiItemControllerTest {
 	void navigateToItemWithInventoryAuthority() {
 		
 		// Navigate to the root URI of the API.
-		RepresentationModel<?> root = this.webTestClient.get().uri("/api") //
-				.exchange() //
-				.expectBody(RepresentationModel.class) //
+		RepresentationModel<?> root = this.webTestClient.get().uri("/api") 
+				.exchange() 
+				.expectBody(RepresentationModel.class) 
 				.returnResult().getResponseBody();
 
 		// Drill down to the Item aggregate root.
-		CollectionModel<EntityModel<Item>> items = this.webTestClient.get() //
-				.uri(root.getRequiredLink(IanaLinkRelations.ITEM).toUri()) //
-				.exchange() //
-				.expectBody(new CollectionModelType<EntityModel<Item>>() {}) //
+		CollectionModel<EntityModel<Item>> items = this.webTestClient.get() 
+				.uri(root.getRequiredLink(IanaLinkRelations.ITEM).toUri()) 
+				.exchange() 
+				.expectBody(new CollectionModelType<EntityModel<Item>>() {}) 
 				.returnResult().getResponseBody();
 
 		assertThat(items.getLinks()).hasSize(2);
@@ -200,10 +200,10 @@ public class ApiItemControllerTest {
 		EntityModel<Item> first = items.getContent().iterator().next();
 
 		// ...and extract it's single-item entry.
-		EntityModel<Item> item = this.webTestClient.get() //
-				.uri(first.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
-				.exchange() //
-				.expectBody(new EntityModelType<Item>() {}) //
+		EntityModel<Item> item = this.webTestClient.get() 
+				.uri(first.getRequiredLink(IanaLinkRelations.SELF).toUri()) 
+				.exchange() 
+				.expectBody(new EntityModelType<Item>() {}) 
 				.returnResult().getResponseBody();
 
 		assertThat(item.getLinks()).hasSize(3);

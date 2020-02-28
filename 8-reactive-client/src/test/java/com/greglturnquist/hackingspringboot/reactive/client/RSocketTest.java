@@ -41,15 +41,15 @@ public class RSocketTest {
 		this.repository.deleteAll().as(StepVerifier::create).verifyComplete();
 
 		this.webTestClient.post().uri("/items/fire-and-forget") // <1>
-				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
-				.exchange() //
-				.expectStatus().isCreated() //
+				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) 
+				.exchange() 
+				.expectStatus().isCreated() 
 				.expectBody().isEmpty();
 
 		Thread.sleep(500); // <4>
 
-		this.repository.findAll() //
-				.as(StepVerifier::create) //
+		this.repository.findAll() 
+				.as(StepVerifier::create) 
 				.expectNextMatches(item -> {
 					assertThat(item.getId()).isNotNull();
 					assertThat(item.getName()).isEqualTo("Alf alarm clock");
@@ -65,10 +65,10 @@ public class RSocketTest {
 		this.repository.deleteAll().as(StepVerifier::create).verifyComplete();
 
 		this.webTestClient.post().uri("/items/request-response") // <1>
-				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
-				.exchange() //
-				.expectStatus().isCreated() //
-				.expectBody(Item.class) //
+				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) 
+				.exchange() 
+				.expectStatus().isCreated() 
+				.expectBody(Item.class) 
 				.value(item -> {
 					assertThat(item.getId()).isNotNull();
 					assertThat(item.getName()).isEqualTo("Alf alarm clock");
@@ -78,15 +78,15 @@ public class RSocketTest {
 
 		Thread.sleep(500); // <4>
 
-		this.repository.findAll() //
-				.as(StepVerifier::create) //
+		this.repository.findAll() 
+				.as(StepVerifier::create) 
 				.expectNextMatches(item -> {
 					assertThat(item.getId()).isNotNull();
 					assertThat(item.getName()).isEqualTo("Alf alarm clock");
 					assertThat(item.getDescription()).isEqualTo("nothing important");
 					assertThat(item.getPrice()).isEqualTo(19.99);
 					return true;
-				}) //
+				}) 
 				.verifyComplete();
 	}
 

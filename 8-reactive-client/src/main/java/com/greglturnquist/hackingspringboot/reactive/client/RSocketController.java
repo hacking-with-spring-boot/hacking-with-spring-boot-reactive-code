@@ -41,7 +41,7 @@ public class RSocketController {
 	private final Mono<RSocketRequester> requester; // <2>
 
 	public RSocketController(RSocketRequester.Builder builder) { // <3>
-		this.requester = builder //
+		this.requester = builder 
 				.dataMimeType(APPLICATION_JSON) // <4>
 				.metadataMimeType(parseMediaType(MESSAGE_RSOCKET_ROUTING.toString())) // <5>
 				.connectTcp("localhost", 7000) // <6>
@@ -53,8 +53,8 @@ public class RSocketController {
 	// tag::request-response[]
 	@PostMapping("/items/request-response") // <1>
 	Mono<ResponseEntity<?>> addNewItemUsingRSocketRequestResponse(@RequestBody Item item) {
-		return this.requester //
-				.flatMap(rSocketRequester -> rSocketRequester //
+		return this.requester 
+				.flatMap(rSocketRequester -> rSocketRequester 
 						.route("newItems.request-response") // <2>
 						.data(item) // <3>
 						.retrieveMono(Item.class)) // <4>
@@ -66,14 +66,14 @@ public class RSocketController {
 	// tag::fire-and-forget[]
 	@PostMapping("/items/fire-and-forget")
 	Mono<ResponseEntity<?>> addNewItemUsingRSocketFireAndForget(@RequestBody Item item) {
-		return this.requester //
-				.flatMap(rSocketRequester -> rSocketRequester //
+		return this.requester 
+				.flatMap(rSocketRequester -> rSocketRequester 
 						.route("newItems.fire-and-forget") // <1>
-						.data(item) //
+						.data(item) 
 						.send()) // <2>
 				.then( // <3>
-						Mono.just( //
-								ResponseEntity.created( //
+						Mono.just( 
+								ResponseEntity.created( 
 										URI.create("/items/fire-and-forget")).build()));
 	}
 	// end::fire-and-forget[]
@@ -81,8 +81,8 @@ public class RSocketController {
 	// tag::request-stream[]
 	@GetMapping(value = "/items", produces = TEXT_EVENT_STREAM_VALUE) // <1>
 	Flux<Item> liveUpdates() {
-		return this.requester //
-				.flatMapMany(rSocketRequester -> rSocketRequester //
+		return this.requester 
+				.flatMapMany(rSocketRequester -> rSocketRequester 
 						.route("newItems.monitor") // <2>
 						.retrieveFlux(Item.class)); // <3>
 	}

@@ -57,17 +57,17 @@ public class HomeController {
 	@GetMapping("/add/{id}") // <1>
 	Mono<String> addToCart(@PathVariable String id) { // <2>
 		return this.cartRepository.findById("My Cart") // <3>
-				.defaultIfEmpty(new Cart("My Cart")) //
+				.defaultIfEmpty(new Cart("My Cart")) 
 				.flatMap(cart -> cart.getCartItems().stream() // <4>
-						.filter(cartItem -> cartItem.getItem().getId().equals(id)) //
-						.findAny() //
+						.filter(cartItem -> cartItem.getItem().getId().equals(id)) 
+						.findAny() 
 						.map(cartItem -> {
 							cartItem.increment();
 							return Mono.just(cart);
 						}) //
 						.orElseGet(() -> { // <5>
-							return this.itemRepository.findById(id) //
-									.map(item -> new CartItem(item)) //
+							return this.itemRepository.findById(id) 
+									.map(item -> new CartItem(item)) 
 									.map(cartItem -> {
 										cart.getCartItems().add(cartItem);
 										return cart;
@@ -80,13 +80,13 @@ public class HomeController {
 
 	@PostMapping
 	Mono<String> createItem(@ModelAttribute Item newItem) {
-		return this.itemRepository.save(newItem) //
+		return this.itemRepository.save(newItem) 
 				.then(Mono.just("redirect:/"));
 	}
 
 	@GetMapping("/delete/{id}")
 	Mono<String> deleteItem(@PathVariable String id) {
-		return this.itemRepository.deleteById(id) //
+		return this.itemRepository.deleteById(id) 
 				.then(Mono.just("redirect:/"));
 	}
 }

@@ -44,20 +44,20 @@ public class HomeController {
 
 	// tag::user-cart[]
 	@GetMapping
-	Mono<Rendering> home( //
+	Mono<Rendering> home( 
 			@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
 			@AuthenticationPrincipal OAuth2User oauth2User) { // <1>
-		return Mono.just(Rendering.view("home.html") //
-				.modelAttribute("items", this.inventoryService.getInventory()) //
+		return Mono.just(Rendering.view("home.html") 
+				.modelAttribute("items", this.inventoryService.getInventory()) 
 				.modelAttribute("cart", this.inventoryService.getCart(cartName(oauth2User)) // <2>
-						.defaultIfEmpty(new Cart(cartName(oauth2User)))) //
+						.defaultIfEmpty(new Cart(cartName(oauth2User)))) 
 
 				// Fetching authentication details is a little more complex
-				.modelAttribute("userName", oauth2User.getName()) //
-				.modelAttribute("authorities", oauth2User.getAuthorities()) //
-				.modelAttribute("clientName", //
-						authorizedClient.getClientRegistration().getClientName()) //
-				.modelAttribute("userAttributes", oauth2User.getAttributes()) //
+				.modelAttribute("userName", oauth2User.getName()) 
+				.modelAttribute("authorities", oauth2User.getAuthorities()) 
+				.modelAttribute("clientName", 
+						authorizedClient.getClientRegistration().getClientName()) 
+				.modelAttribute("userAttributes", oauth2User.getAttributes()) 
 				.build());
 	}
 	// end::user-cart[]
@@ -65,13 +65,13 @@ public class HomeController {
 	// tag::adjust-cart[]
 	@GetMapping("/add/{id}")
 	Mono<String> addToCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
-		return this.inventoryService.addItemToCart(cartName(oauth2User), id) //
+		return this.inventoryService.addItemToCart(cartName(oauth2User), id) 
 				.then(Mono.just("redirect:/"));
 	}
 
 	@GetMapping("/remove/{id}")
 	Mono<String> removeFromCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
-		return this.inventoryService.removeOneFromCart(cartName(oauth2User), id) //
+		return this.inventoryService.removeOneFromCart(cartName(oauth2User), id) 
 				.then(Mono.just("redirect:/"));
 	}
 	// end::adjust-cart[]

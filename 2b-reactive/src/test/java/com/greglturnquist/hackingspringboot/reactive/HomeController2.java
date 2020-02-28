@@ -38,7 +38,7 @@ public class HomeController2 {
     // tag::4[]
     @GetMapping("/add/{id}")
     Mono<String> addToCart(@PathVariable String id) {
-        return this.cartService.addToCart("My Cart", id) //
+        return this.cartService.addToCart("My Cart", id) 
             .then(Mono.just("redirect:/"));
     }
     // end::4[]

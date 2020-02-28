@@ -63,13 +63,13 @@ public class RSocketService {
 	// tag::fire-and-forget[]
 	@MessageMapping("newItems.fire-and-forget")
 	public Mono<Void> processNewItemsViaRSocketFireAndForget(Item item) {
-		return this.repository.save(item) //
+		return this.repository.save(item) 
 				.map(savedItem -> {
 					if (this.itemSink != null) {
 						this.itemSink.next(savedItem);
 					}
 					return savedItem;
-				}) //
+				}) 
 				.then();
 	}
 	// end::fire-and-forget[]

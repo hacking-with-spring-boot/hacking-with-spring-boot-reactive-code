@@ -48,26 +48,26 @@ public class HypermediaItemControllerDocumentationTest {
 	// tag::test1[]
 	@Test
 	void findingAllItems() {
-		when(repository.findAll()) //
+		when(repository.findAll()) 
 				.thenReturn(Flux.just(new Item("Alf alarm clock", "nothing I really need", 19.99)));
-		when(repository.findById((String) null)) //
+		when(repository.findById((String) null)) 
 				.thenReturn(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
 
-		this.webTestClient.get().uri("/hypermedia/items") //
-				.exchange() //
-				.expectStatus().isOk() //
-				.expectBody() //
-				.consumeWith(document("findAll-hypermedia", preprocessResponse(prettyPrint()))); //
+		this.webTestClient.get().uri("/hypermedia/items") 
+				.exchange() 
+				.expectStatus().isOk() 
+				.expectBody() 
+				.consumeWith(document("findAll-hypermedia", preprocessResponse(prettyPrint()))); 
 	}
 	// end::test1[]
 
 	// tag::test2[]
 	// @Test
 	void postNewItem() {
-		this.webTestClient.post().uri("/hypermedia/items") //
-				.body(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)), Item.class) //
-				.exchange() //
-				.expectStatus().isCreated() //
+		this.webTestClient.post().uri("/hypermedia/items") 
+				.body(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)), Item.class) 
+				.exchange() 
+				.expectStatus().isCreated() 
 				.expectBody().isEmpty();
 	}
 	// end::test2[]
@@ -75,27 +75,27 @@ public class HypermediaItemControllerDocumentationTest {
 	// tag::test3[]
 	@Test
 	void findOneItem() {
-		when(repository.findById("item-1")) //
+		when(repository.findById("item-1")) 
 				.thenReturn(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
 
-		this.webTestClient.get().uri("/hypermedia/items/item-1") //
-				.exchange() //
-				.expectStatus().isOk() //
-				.expectBody() //
-				.consumeWith(document("findOne-hypermedia", //
-						preprocessResponse(prettyPrint()), //
+		this.webTestClient.get().uri("/hypermedia/items/item-1") 
+				.exchange() 
+				.expectStatus().isOk() 
+				.expectBody() 
+				.consumeWith(document("findOne-hypermedia", 
+						preprocessResponse(prettyPrint()), 
 						links(linkWithRel("self").description("Canonical link to this `Item`"),
-								linkWithRel("item").description("Link back to the aggregate root")))); //
+								linkWithRel("item").description("Link back to the aggregate root")))); 
 	}
 	// end::test3[]
 
 	@Test
 	void findProfile() {
-		this.webTestClient.get().uri("/hypermedia/items/profile") //
-				.exchange() //
-				.expectStatus().isOk() //
-				.expectBody() //
-				.consumeWith(document("profile", //
+		this.webTestClient.get().uri("/hypermedia/items/profile") 
+				.exchange() 
+				.expectStatus().isOk() 
+				.expectBody() 
+				.consumeWith(document("profile", 
 						preprocessResponse(prettyPrint())));
 	}
 }

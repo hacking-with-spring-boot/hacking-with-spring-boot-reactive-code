@@ -63,13 +63,13 @@ public class HomeController {
 
     @PostMapping
     Mono<String> createItem(@ModelAttribute Item newItem) {
-        return this.inventoryService.saveItem(newItem) //
+        return this.inventoryService.saveItem(newItem) 
             .then(Mono.just("redirect:/"));
     }
 
     @GetMapping("/delete/{id}")
     Mono<String> deleteItem(@PathVariable String id) {
-        return this.inventoryService.deleteItem(id) //
+        return this.inventoryService.deleteItem(id) 
             .then(Mono.just("redirect:/"));
     }
 }

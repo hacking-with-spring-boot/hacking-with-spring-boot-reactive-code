@@ -66,23 +66,23 @@ public class RabbitTest {
 	@Test
 	void verifyMessagingThroughAmqp() throws InterruptedException {
 		this.webTestClient.post().uri("/items") // <1>
-				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
-				.exchange() //
-				.expectStatus().isCreated() //
+				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) 
+				.exchange() 
+				.expectStatus().isCreated() 
 				.expectBody();
 
 		Thread.sleep(1500L); // <2>
 
 		this.webTestClient.post().uri("/items") // <3>
-				.bodyValue(new Item("Smurf TV tray", "nothing important", 29.99)) //
-				.exchange() //
-				.expectStatus().isCreated() //
+				.bodyValue(new Item("Smurf TV tray", "nothing important", 29.99)) 
+				.exchange() 
+				.expectStatus().isCreated() 
 				.expectBody();
 
 		Thread.sleep(2000L); // <4>
 
 		this.repository.findAll() // <5>
-				.as(StepVerifier::create) //
+				.as(StepVerifier::create) 
 				.expectNextMatches(item -> {
 					assertThat(item.getName()).isEqualTo("Alf alarm clock");
 					assertThat(item.getDescription()).isEqualTo("nothing important");
