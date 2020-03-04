@@ -165,7 +165,7 @@ public class HypermediaItemController {
 										.type(Type.SEMANTIC) 
 										.build()) 
 								.collect(Collectors.toList())) 
-						.build())) //
+						.build())) 
 				.build();
 	}
 	// end::profile[]
