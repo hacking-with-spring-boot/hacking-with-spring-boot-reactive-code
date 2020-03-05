@@ -43,7 +43,7 @@ public class SpringAmqpItemService {
 
 	// tag::listener[]
 	@RabbitListener( // <1>
-			ackMode = "MANUAL", //
+			ackMode = "MANUAL", 
 			bindings = @QueueBinding( // <2>
 					value = @Queue, // <3>
 					exchange = @Exchange("hacking-spring-boot"), // <4>
