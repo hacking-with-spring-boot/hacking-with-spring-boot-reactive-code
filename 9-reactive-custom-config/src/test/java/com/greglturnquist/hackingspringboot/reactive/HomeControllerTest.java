@@ -83,7 +83,7 @@ public class HomeControllerTest {
 					assertThat(item.getDescription()).isEqualTo("upgrade");
 					assertThat(item.getPrice()).isEqualTo(999.99);
 					return true; // <8>
-				}) //
+				}) 
 				.verifyComplete(); // <9>
 	}
 	// end::add-inventory-with-role[]

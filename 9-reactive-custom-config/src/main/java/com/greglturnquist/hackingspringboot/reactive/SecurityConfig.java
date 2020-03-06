@@ -54,7 +54,7 @@ public class SecurityConfig {
 		return http 
 				.authorizeExchange(exchanges -> exchanges 
 						.pathMatchers(HttpMethod.POST, "/").hasRole(INVENTORY) // <2>
-						.pathMatchers(HttpMethod.DELETE, "/**").hasRole(INVENTORY) //
+						.pathMatchers(HttpMethod.DELETE, "/**").hasRole(INVENTORY) 
 						.anyExchange().authenticated() // <3>
 						.and() 
 						.httpBasic() // <4>

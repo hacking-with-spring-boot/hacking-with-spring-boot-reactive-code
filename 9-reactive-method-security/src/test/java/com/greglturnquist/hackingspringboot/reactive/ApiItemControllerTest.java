@@ -113,7 +113,7 @@ public class ApiItemControllerTest {
 					assertThat(item.getDescription()).isEqualTo("upgrade");
 					assertThat(item.getPrice()).isEqualTo(999.99);
 					return true; 
-				}) //
+				}) 
 				.verifyComplete(); 
 	}
 	// end::add-inventory-with-role[]
