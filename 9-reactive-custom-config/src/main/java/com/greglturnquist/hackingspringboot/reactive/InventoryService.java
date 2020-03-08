@@ -57,17 +57,17 @@ class InventoryService {
 
 	Mono<Cart> addItemToCart(String cartId, String itemId) {
 		return this.cartRepository.findById(cartId)
-			.defaultIfEmpty(new Cart(cartId)) 
+			.defaultIfEmpty(new Cart(cartId)) //
 			.flatMap(cart -> cart.getCartItems().stream()
 				.filter(cartItem -> cartItem.getItem().getId().equals(itemId))
-				.findAny() 
+				.findAny() //
 				.map(cartItem -> {
 					cartItem.increment();
 					return Mono.just(cart);
-				}) 
+				}) //
 				.orElseGet(() -> {
-					return this.itemRepository.findById(itemId) 
-						.map(item -> new CartItem(item)) 
+					return this.itemRepository.findById(itemId) //
+						.map(item -> new CartItem(item)) //
 						.map(cartItem -> {
 							cart.getCartItems().add(cartItem);
 							return cart;
@@ -85,7 +85,7 @@ class InventoryService {
 				.map(cartItem -> {
 					cartItem.decrement();
 					return Mono.just(cart);
-				}) 
+				}) //
 				.orElse(Mono.empty()))
 			.map(cart -> new Cart(cart.getId(), cart.getCartItems().stream()
 				.filter(cartItem -> cartItem.getQuantity() > 0)

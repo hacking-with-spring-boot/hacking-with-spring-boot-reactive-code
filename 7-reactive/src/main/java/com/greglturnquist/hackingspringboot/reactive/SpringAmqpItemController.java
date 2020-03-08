@@ -47,8 +47,8 @@ public class SpringAmqpItemController {
 	// tag::post[]
 	@PostMapping("/items") // <1>
 	Mono<ResponseEntity<?>> addNewItemUsingSpringAmqp(@RequestBody Mono<Item> item) { // <2>
-		return item 
-				.flatMap(content -> { 
+		return item //
+				.flatMap(content -> { //
 					return Mono.fromCallable(() -> { // <3>
 						this.template.convertAndSend( // <4>
 								"hacking-spring-boot", "new-items-spring-amqp", content);

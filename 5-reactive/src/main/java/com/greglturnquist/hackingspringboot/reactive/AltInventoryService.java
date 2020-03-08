@@ -60,10 +60,10 @@ class AltInventoryService {
             .defaultIfEmpty(new Cart(cartId))
             .block();
 
-        return Mono.just(myCart) 
+        return Mono.just(myCart) //
             .flatMap(cart -> cart.getCartItems().stream()
                 .filter(cartItem -> cartItem.getItem().getId().equals(itemId))
-                .findAny() 
+                .findAny() //
                 .map(cartItem -> {
                     cartItem.increment();
                     return Mono.just(cart);
@@ -88,7 +88,7 @@ class AltInventoryService {
                 .map(cartItem -> {
                     cartItem.decrement();
                     return Mono.just(cart);
-                }) 
+                }) //
                 .orElse(Mono.empty()))
             .map(cart -> new Cart(cart.getId(), cart.getCartItems().stream()
                 .filter(cartItem -> cartItem.getQuantity() > 0)

@@ -41,8 +41,8 @@ public class HomeController {
 	// tag::user-cart[]
 	@GetMapping
 	Mono<Rendering> home(Authentication auth) { // <1>
-		return Mono.just(Rendering.view("home.html") 
-				.modelAttribute("items", this.inventoryService.getInventory()) 
+		return Mono.just(Rendering.view("home.html") //
+				.modelAttribute("items", this.inventoryService.getInventory()) //
 				.modelAttribute("cart", this.inventoryService.getCart(cartName(auth)) // <2>
 						.defaultIfEmpty(new Cart(cartName(auth)))) // <3>
 				.modelAttribute("auth", auth) // <4>
@@ -53,13 +53,13 @@ public class HomeController {
 	// tag::adjust-cart[]
 	@GetMapping("/add/{id}")
 	Mono<String> addToCart(Authentication auth, @PathVariable String id) {
-		return this.inventoryService.addItemToCart(cartName(auth), id) 
+		return this.inventoryService.addItemToCart(cartName(auth), id) //
 				.then(Mono.just("redirect:/"));
 	}
 
 	@GetMapping("/remove/{id}")
 	Mono<String> removeFromCart(Authentication auth, @PathVariable String id) {
-		return this.inventoryService.removeOneFromCart(cartName(auth), id) 
+		return this.inventoryService.removeOneFromCart(cartName(auth), id) //
 				.then(Mono.just("redirect:/"));
 	}
 	// end::adjust-cart[]

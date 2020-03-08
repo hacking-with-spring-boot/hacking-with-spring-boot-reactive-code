@@ -69,16 +69,16 @@ public class ApiItemController {
 
 	// tag::replace-item[]
 	@PutMapping("/api/items/{id}")
-	public Mono<ResponseEntity<?>> updateItem(@RequestBody Mono<Item> item, 
+	public Mono<ResponseEntity<?>> updateItem(@RequestBody Mono<Item> item, //
 			@PathVariable String id) {
-		return item 
-				.map(content -> new Item(id, 
-						content.getName(), 
-						content.getDescription(), 
-						content.getPrice())) 
-				.flatMap(this.repository::save) 
-				.map(Item::getId) 
-				.map(savedItem -> ResponseEntity.created( 
+		return item //
+				.map(content -> new Item(id, //
+						content.getName(), //
+						content.getDescription(), //
+						content.getPrice())) //
+				.flatMap(this.repository::save) //
+				.map(Item::getId) //
+				.map(savedItem -> ResponseEntity.created( //
 						URI.create("/api/items/" + id)).build());
 	}
 	// end::replace-item[]

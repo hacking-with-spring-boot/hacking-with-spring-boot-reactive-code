@@ -53,7 +53,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiItemController {
 
 	// tag::inventory[]
-	private static final SimpleGrantedAuthority ROLE_INVENTORY = 
+	private static final SimpleGrantedAuthority ROLE_INVENTORY = //
 			new SimpleGrantedAuthority("ROLE_" + INVENTORY);
 	// end::inventory[]
 
@@ -69,15 +69,15 @@ public class ApiItemController {
 	Mono<RepresentationModel<?>> root() {
 		ApiItemController controller = methodOn(ApiItemController.class);
 
-		Mono<Link> selfLink = linkTo(controller.root()).withSelfRel() 
+		Mono<Link> selfLink = linkTo(controller.root()).withSelfRel() //
 				.toMono();
 
-		Mono<Link> itemsAggregateLink = linkTo(controller.findAll(null)) 
-				.withRel(IanaLinkRelations.ITEM) 
+		Mono<Link> itemsAggregateLink = linkTo(controller.findAll(null)) //
+				.withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
 		return Mono.zip(selfLink, itemsAggregateLink) //
-				.map(links -> Links.of(links.getT1(), links.getT2())) 
+				.map(links -> Links.of(links.getT1(), links.getT2())) //
 				.map(links -> new RepresentationModel<>(links.toList()));
 	}
 	// end::root[]
@@ -97,13 +97,13 @@ public class ApiItemController {
 			allLinks = Mono.zip(selfLink, addNewLink) //
 					.map(links -> Links.of(links.getT1(), links.getT2()));
 		} else {
-			allLinks = selfLink 
+			allLinks = selfLink //
 					.map(link -> Links.of(link));
 		}
 
-		return allLinks 
-				.flatMap(links -> this.repository.findAll() 
-						.flatMap(item -> findOne(item.getId(), auth)) 
+		return allLinks //
+				.flatMap(links -> this.repository.findAll() //
+						.flatMap(item -> findOne(item.getId(), auth)) //
 						.collectList() //
 						.map(entityModels -> new CollectionModel<>(entityModels, links)));
 	}
@@ -114,25 +114,25 @@ public class ApiItemController {
 	Mono<EntityModel<Item>> findOne(@PathVariable String id, Authentication auth) {
 		ApiItemController controller = methodOn(ApiItemController.class);
 
-		Mono<Link> selfLink = linkTo(controller.findOne(id, auth)).withSelfRel() 
+		Mono<Link> selfLink = linkTo(controller.findOne(id, auth)).withSelfRel() //
 				.toMono();
 
-		Mono<Link> aggregateLink = linkTo(controller.findAll(auth)).withRel(IanaLinkRelations.ITEM) 
+		Mono<Link> aggregateLink = linkTo(controller.findAll(auth)).withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
 		Mono<Links> allLinks; // <1>
 
 		if (auth.getAuthorities().contains(ROLE_INVENTORY)) { // <2>
-			allLinks = Mono.zip(selfLink, aggregateLink, 
-					linkTo(controller.deleteItem(id)).withRel("delete").toMono()) 
+			allLinks = Mono.zip(selfLink, aggregateLink, //
+					linkTo(controller.deleteItem(id)).withRel("delete").toMono()) //
 					.map(links -> Links.of(links.getT1(), links.getT2(), links.getT3()));
 		} else { // <3>
-			allLinks = Mono.zip(selfLink, aggregateLink) 
+			allLinks = Mono.zip(selfLink, aggregateLink) //
 					.map(links -> Links.of(links.getT1(), links.getT2()));
 		}
 
 		return allLinks // <4>
-				.flatMap(links -> this.repository.findById(id) 
+				.flatMap(links -> this.repository.findById(id) //
 						.map(item -> new EntityModel<>(item, links)));
 	}
 
@@ -142,11 +142,11 @@ public class ApiItemController {
 	@PreAuthorize("hasRole('" + INVENTORY + "')") // <1>
 	@PostMapping("/api/items/add") // <2>
 	Mono<ResponseEntity<?>> addNewItem(@RequestBody Item item, Authentication auth) { // <3>
-		return this.repository.save(item) 
-				.map(Item::getId) 
-				.flatMap(id -> findOne(id, auth)) 
-				.map(newModel -> ResponseEntity.created(newModel 
-						.getRequiredLink(IanaLinkRelations.SELF) 
+		return this.repository.save(item) //
+				.map(Item::getId) //
+				.flatMap(id -> findOne(id, auth)) //
+				.map(newModel -> ResponseEntity.created(newModel //
+						.getRequiredLink(IanaLinkRelations.SELF) //
 						.toUri()).build());
 	}
 	// end::add-new-item[]
@@ -155,7 +155,7 @@ public class ApiItemController {
 	@PreAuthorize("hasRole('" + INVENTORY + "')")
 	@DeleteMapping("/api/items/delete/{id}")
 	Mono<ResponseEntity<?>> deleteItem(@PathVariable String id) {
-		return this.repository.deleteById(id) 
+		return this.repository.deleteById(id) //
 				.then(Mono.just(ResponseEntity.noContent().build()));
 	}
 	// end::delete-item[]
@@ -164,10 +164,10 @@ public class ApiItemController {
 	@PutMapping("/api/items/{id}") // <1>
 	public Mono<ResponseEntity<?>> updateItem(@RequestBody Mono<EntityModel<Item>> item, // <2>
 			@PathVariable String id, Authentication auth) {
-		return item 
-				.map(EntityModel::getContent) 
+		return item //
+				.map(EntityModel::getContent) //
 				.map(content -> new Item(id, content.getName(), // <3>
-						content.getDescription(), content.getPrice())) 
+						content.getDescription(), content.getPrice())) //
 				.flatMap(this.repository::save) // <4>
 				.then(findOne(id, auth)) // <5>
 				.map(model -> ResponseEntity.noContent() // <6>
@@ -178,16 +178,16 @@ public class ApiItemController {
 	// tag::profile[]
 	@GetMapping(value = "/api/items/profile"/*, produces = MediaTypes.ALPS_JSON_VALUE*/)
 	public Alps profile() {
-		return alps() 
-				.descriptor(Collections.singletonList(descriptor() 
-						.id(Item.class.getSimpleName() + "-representation") 
-						.descriptor(Arrays.stream(Item.class.getDeclaredFields()) 
-								.map(field -> descriptor() 
-										.name(field.getName()) 
-										.type(Type.SEMANTIC) 
-										.build()) 
-								.collect(Collectors.toList())) 
-						.build())) 
+		return alps() //
+				.descriptor(Collections.singletonList(descriptor() //
+						.id(Item.class.getSimpleName() + "-representation") //
+						.descriptor(Arrays.stream(Item.class.getDeclaredFields()) //
+								.map(field -> descriptor() //
+										.name(field.getName()) //
+										.type(Type.SEMANTIC) //
+										.build()) //
+								.collect(Collectors.toList())) //
+						.build())) //
 				.build();
 	}
 	// end::profile[]

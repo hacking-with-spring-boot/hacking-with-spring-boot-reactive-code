@@ -41,9 +41,9 @@ public class HomeController {
 	@GetMapping
 	Mono<Rendering> home() {
 		// tag::2[]
-		return Mono.just(Rendering.view("home.html") 
-			.modelAttribute("items", this.inventoryService.getInventory()) 
-			.modelAttribute("cart", this.inventoryService.getCart("My Cart") 
+		return Mono.just(Rendering.view("home.html") //
+			.modelAttribute("items", this.inventoryService.getInventory()) //
+			.modelAttribute("cart", this.inventoryService.getCart("My Cart") //
 				.defaultIfEmpty(new Cart("My Cart")))
 			.build());
 		// end::2[]
@@ -63,13 +63,13 @@ public class HomeController {
 
 	@PostMapping
 	Mono<String> createItem(@ModelAttribute Item newItem) {
-		return this.inventoryService.saveItem(newItem) 
+		return this.inventoryService.saveItem(newItem) //
 			.then(Mono.just("redirect:/"));
 	}
 
 	@GetMapping("/delete/{id}")
 	Mono<String> deleteItem(@PathVariable String id) {
-		return this.inventoryService.deleteItem(id) 
+		return this.inventoryService.deleteItem(id) //
 			.then(Mono.just("redirect:/"));
 	}
 }

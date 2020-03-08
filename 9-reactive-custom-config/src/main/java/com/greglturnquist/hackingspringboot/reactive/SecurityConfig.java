@@ -39,9 +39,9 @@ public class SecurityConfig {
 	public ReactiveUserDetailsService userDetailsService(UserRepository repository) { // <1>
 		return username -> repository.findByName(username) // <2>
 				.map(user -> User.withDefaultPasswordEncoder() // <3>
-						.username(user.getName()) 
-						.password(user.getPassword()) 
-						.authorities(user.getRoles().toArray(new String[0])) 
+						.username(user.getName()) //
+						.password(user.getPassword()) //
+						.authorities(user.getRoles().toArray(new String[0])) //
 						.build()); // <4>
 	}
 
@@ -51,16 +51,16 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityWebFilterChain myCustomSecurityPolicy(ServerHttpSecurity http) { // <1>
-		return http 
-				.authorizeExchange(exchanges -> exchanges 
+		return http //
+				.authorizeExchange(exchanges -> exchanges //
 						.pathMatchers(HttpMethod.POST, "/").hasRole(INVENTORY) // <2>
 						.pathMatchers(HttpMethod.DELETE, "/**").hasRole(INVENTORY) //
 						.anyExchange().authenticated() // <3>
-						.and() 
+						.and() //
 						.httpBasic() // <4>
-						.and() 
+						.and() //
 						.formLogin()) // <5>
-				.csrf().disable() 
+				.csrf().disable() //
 				.build();
 	}
 	// end::custom-policy[]
@@ -73,10 +73,10 @@ public class SecurityConfig {
 	@Bean
 	CommandLineRunner userLoader(MongoOperations operations) {
 		return args -> {
-			operations.save(new com.greglturnquist.hackingspringboot.reactive.User( 
+			operations.save(new com.greglturnquist.hackingspringboot.reactive.User( //
 					"greg", "password", Arrays.asList(role(USER))));
 
-			operations.save(new com.greglturnquist.hackingspringboot.reactive.User( 
+			operations.save(new com.greglturnquist.hackingspringboot.reactive.User( //
 					"manager", "password", Arrays.asList(role(USER), role(INVENTORY))));
 		};
 	}

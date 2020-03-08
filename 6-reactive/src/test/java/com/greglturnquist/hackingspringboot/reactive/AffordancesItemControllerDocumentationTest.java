@@ -51,15 +51,15 @@ public class AffordancesItemControllerDocumentationTest {
 	// tag::affordances[]
 	@Test
 	void findSingleItemAffordances() {
-		when(repository.findById("item-1")) 
-				.thenReturn(Mono.just( 
+		when(repository.findById("item-1")) //
+				.thenReturn(Mono.just( //
 						new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/affordances/items/item-1") // <1>
 				.accept(MediaTypes.HAL_FORMS_JSON) // <2>
-				.exchange() 
-				.expectStatus().isOk() 
-				.expectBody() 
+				.exchange() //
+				.expectStatus().isOk() //
+				.expectBody() //
 				.consumeWith(document("single-item-affordances", // <3>
 						preprocessResponse(prettyPrint())));
 	}

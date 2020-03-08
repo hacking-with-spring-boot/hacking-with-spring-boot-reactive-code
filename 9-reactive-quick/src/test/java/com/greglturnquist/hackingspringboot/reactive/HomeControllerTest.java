@@ -39,22 +39,22 @@ public class HomeControllerTest {
 
 	@Test
 	void verifyLoginPageBlocksAccess() {
-		this.webTestClient.get().uri("/") 
-				.exchange() 
+		this.webTestClient.get().uri("/") //
+				.exchange() //
 				.expectStatus().isUnauthorized();
 	}
 
 	@Test
 	@WithMockUser(username = "ada")
 	void verifyLoginPageWorks() {
-		when(this.service.getInventory()).thenReturn(Flux.just( 
-				new Item("1", "Alf alarm clock", "kids clock", 19.99), 
+		when(this.service.getInventory()).thenReturn(Flux.just( //
+				new Item("1", "Alf alarm clock", "kids clock", 19.99), //
 				new Item("2", "Smurf TV tray", "kids TV tray", 24.99)));
 		
 		when(this.service.getCart(any())).thenReturn(Mono.just(new Cart("Test Cart")));
 
-		this.webTestClient.get().uri("/") 
-				.exchange() 
+		this.webTestClient.get().uri("/") //
+				.exchange() //
 				.expectStatus().isOk();
 	}
 }

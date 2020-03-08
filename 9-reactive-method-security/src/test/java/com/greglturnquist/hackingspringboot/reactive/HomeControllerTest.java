@@ -35,16 +35,16 @@ public class HomeControllerTest {
 
 	@Test
 	void verifyLoginPageBlocksAccess() {
-		this.webTestClient.get().uri("/") 
-				.exchange() 
+		this.webTestClient.get().uri("/") //
+				.exchange() //
 				.expectStatus().isUnauthorized();
 	}
 
 	@Test
 	@WithMockUser(username = "ada")
 	void verifyLoginPageWorks() {
-		this.webTestClient.get().uri("/") 
-				.exchange() 
+		this.webTestClient.get().uri("/") //
+				.exchange() //
 				.expectStatus().isOk();
 	}
 }

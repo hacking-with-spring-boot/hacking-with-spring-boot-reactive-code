@@ -60,17 +60,17 @@ class AltInventoryService {
             .defaultIfEmpty(new Cart(cartId))
             .block();
 
-        return Mono.just(myCart) 
+        return Mono.just(myCart) //
             .flatMap(cart -> cart.getCartItems().stream()
                 .filter(cartItem -> cartItem.getItem().getId().equals(itemId))
-                .findAny() 
+                .findAny() //
                 .map(cartItem -> {
                     cartItem.increment();
                     return Mono.just(cart);
-                }) 
+                }) //
                 .orElseGet(() -> {
-                    return this.itemRepository.findById(itemId) 
-                        .map(item -> new CartItem(item)) 
+                    return this.itemRepository.findById(itemId) //
+                        .map(item -> new CartItem(item)) //
                         .map(cartItem -> {
                             cart.getCartItems().add(cartItem);
                             return cart;
