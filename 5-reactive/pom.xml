@@ -76,15 +76,18 @@
 
     <build>
         <plugins>
+            <!-- tag::docker[] -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!-- tag::docker[] -->
                 <configuration>
                     <layout>LAYERED_JAR</layout>
                 </configuration>
-                <!-- end::docker[] -->
+                <configuration>
+                    <layout>LAYERED_JAR</layout>
+                </configuration>
             </plugin>
+            <!-- end::docker[] -->
         </plugins>
     </build>
 
