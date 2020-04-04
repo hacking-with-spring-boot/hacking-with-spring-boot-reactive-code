@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.MediaType.*;
 
 /**
  * @author Greg Turnquist
@@ -33,17 +34,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureWebTestClient // <2>
 public class LoadingWebSiteIntegrationTest {
 
-    @Autowired
-    WebTestClient client; // <3>
+	@Autowired WebTestClient client; // <3>
 
-    @Test // <4>
-    void test() {
-        client.get().uri("/").exchange()
-            .expectStatus().isOk()
-            .expectHeader().contentType(MediaType.TEXT_HTML)
-            .expectBody(String.class).consumeWith(exchangeResult -> {
-                assertThat(exchangeResult.getResponseBody()).contains("<a href=\"/add");
-        });
-    }
+	@Test // <4>
+	void test() {
+		client.get().uri("/").exchange() //
+				.expectStatus().isOk() //
+				.expectHeader().contentType(TEXT_HTML) //
+				.expectBody(String.class) //
+				.consumeWith(exchangeResult -> {
+					assertThat(exchangeResult.getResponseBody()).contains("<a href=\"/add");
+				});
+	}
 }
 // end::code[]
