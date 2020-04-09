@@ -137,7 +137,7 @@ public class AffordancesItemController {
 	// end::update-item[]
 
 	// tag::profile[]
-	@GetMapping(value = "/affordances/items/profile"/, produces = MediaTypes.ALPS_JSON_VALUE)
+	@GetMapping(value = "/affordances/items/profile", produces = MediaTypes.ALPS_JSON_VALUE)
 	public Alps profile() {
 		return alps() //
 				.descriptor(Collections.singletonList(descriptor() //

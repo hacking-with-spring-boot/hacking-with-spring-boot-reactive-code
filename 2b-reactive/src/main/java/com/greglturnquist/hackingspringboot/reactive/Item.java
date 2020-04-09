@@ -23,7 +23,7 @@ import java.util.Objects;
 // tag::code[]
 public class Item {
 
-    private @Id String id;
+    @Id private String id;
     private String name;
     private String description;
     private double price;

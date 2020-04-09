@@ -28,8 +28,7 @@ import javax.persistence.OneToOne;
 @Entity
 class CartItem {
 
-	@Id @GeneratedValue
-	private long id;
+	@Id @GeneratedValue private long id;
 
 	@OneToOne
 	private Item item;

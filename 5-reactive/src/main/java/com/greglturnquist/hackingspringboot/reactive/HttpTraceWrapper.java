@@ -25,8 +25,7 @@ import org.springframework.data.annotation.Id;
 // tag::code[]
 public class HttpTraceWrapper {
 
-    @Id
-    private String id; // <1>
+    @Id private String id; // <1>
     
     private HttpTrace httpTrace; // <2>
 

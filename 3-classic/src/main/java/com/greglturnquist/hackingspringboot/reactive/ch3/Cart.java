@@ -30,8 +30,7 @@ import javax.persistence.OneToMany;
 @Entity
 class Cart {
 
-	@Id @GeneratedValue
-	private Long id;
+	@Id @GeneratedValue private Long id;
 
 	@OneToMany
 	private List<CartItem> cartItems = new ArrayList<>();

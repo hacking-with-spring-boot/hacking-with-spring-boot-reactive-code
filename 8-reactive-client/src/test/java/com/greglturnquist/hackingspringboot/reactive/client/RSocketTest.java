@@ -28,27 +28,34 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  * @author Greg Turnquist
  */
 // tag::setup[]
-@SpringBootTest
-@AutoConfigureWebTestClient
+@SpringBootTest // <1>
+@AutoConfigureWebTestClient // <2>
 public class RSocketTest {
 
-	@Autowired WebTestClient webTestClient;
+	@Autowired WebTestClient webTestClient; // <3>
+	@Autowired ItemRepository repository; // <4>
+	// end::setup[]
 
-	@Autowired ItemRepository repository;
-
+	// tag::fire-and-forget[]
 	@Test
 	void verifyRemoteOperationsThroughRSocketFireAndForget() throws InterruptedException {
-		this.repository.deleteAll().as(StepVerifier::create).verifyComplete();
 
-		this.webTestClient.post().uri("/items/fire-and-forget") // <1>
+		// Clean out the database
+		this.repository.deleteAll() // <1>
+				.as(StepVerifier::create) //
+				.verifyComplete();
+
+		// Create a new "item"
+		this.webTestClient.post().uri("/items/fire-and-forget") // <2>
 				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
 				.exchange() //
-				.expectStatus().isCreated() //
-				.expectBody().isEmpty();
+				.expectStatus().isCreated() // <3>
+				.expectBody().isEmpty(); // <4>
 
-		Thread.sleep(500); // <4>
+		Thread.sleep(500); //
 
-		this.repository.findAll() //
+		// Verify the "item" has been added to MongoDB
+		this.repository.findAll() // <5>
 				.as(StepVerifier::create) //
 				.expectNextMatches(item -> {
 					assertThat(item.getId()).isNotNull();
@@ -59,15 +66,22 @@ public class RSocketTest {
 				}) //
 				.verifyComplete();
 	}
+	// end::fire-and-forget[]
 
+	// tag::request-response[]
 	@Test
 	void verifyRemoteOperationsThroughRSocketRequestResponse() throws InterruptedException {
-		this.repository.deleteAll().as(StepVerifier::create).verifyComplete();
 
-		this.webTestClient.post().uri("/items/request-response") // <1>
+		// Clean out the database
+		this.repository.deleteAll() // <1>
+				.as(StepVerifier::create) //
+				.verifyComplete();
+
+		// Create a new "item"
+		this.webTestClient.post().uri("/items/request-response") // <2>
 				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) //
 				.exchange() //
-				.expectStatus().isCreated() //
+				.expectStatus().isCreated() // <3>
 				.expectBody(Item.class) //
 				.value(item -> {
 					assertThat(item.getId()).isNotNull();
@@ -78,7 +92,8 @@ public class RSocketTest {
 
 		Thread.sleep(500); // <4>
 
-		this.repository.findAll() //
+		// Verify the "item" has been added to MongoDB
+		this.repository.findAll() // <4>
 				.as(StepVerifier::create) //
 				.expectNextMatches(item -> {
 					assertThat(item.getId()).isNotNull();
@@ -89,5 +104,6 @@ public class RSocketTest {
 				}) //
 				.verifyComplete();
 	}
+	// end::request-response[]
 
 }
