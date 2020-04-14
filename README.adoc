@@ -26,7 +26,7 @@ He co-founded the Nashville Java User Group in 2010 and hasn't met a Java app (y
 
 Follow him on Twitter @gregturn and subscribe for all his Spring Boot videos at https://www.youtube.com/user/gregturnquist?sub_confirmation=1&via=tb[YouTube.com/GregTurnquist].
 
-=== Code for the book
+== Code for the book
 
 This is a standing repo of the code for _Hacking with Spring Boot 2.3: Reactive Edition_.
 
