@@ -19,6 +19,13 @@ https://www.amazon.com/Hacking-Spring-Boot-2-3-Reactive-ebook/dp/B086722L4L/[Gra
 
 https://www.amazon.com/Hacking-Spring-Boot-2-3-Reactive-ebook/dp/B086722L4L/[image:HackingWithSpringBoot_Ebook_thumbnail.jpg[]]
 
+*Greg L. Turnquist* works on the Spring team as a principal developer at VMware.
+He is a committer to Spring HATEOAS, Spring Data, Spring Boot, R2DBC, and Spring Session for MongoDB.
+He also wrote Packt's best-selling title, _Learning Spring Boot 2.0 2nd Edition_.
+He co-founded the Nashville Java User Group in 2010 and hasn't met a Java app (yet) that he doesn't like.
+
+Follow him on Twitter @gregturn and subscribe for all his Spring Boot videos at https://www.youtube.com/user/gregturnquist?sub_confirmation=1&via=tb[YouTube.com/GregTurnquist].
+
 === Code for the book
 
 This is a standing repo of the code for _Hacking with Spring Boot 2.3: Reactive Edition_.
