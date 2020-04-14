@@ -17,7 +17,7 @@ Written cover-to-cover using Project Reactor, your apps will scale like never be
 
 https://www.amazon.com/Hacking-Spring-Boot-2-3-Reactive-ebook/dp/B086722L4L/[Grab your copy today] and learn to build top-notch, scalable solutions with modern tactics.
 
-image::HackingWithSpringBoot_Ebook_thumbnail.jpg[]
+https://www.amazon.com/Hacking-Spring-Boot-2-3-Reactive-ebook/dp/B086722L4L/[image:HackingWithSpringBoot_Ebook_thumbnail.jpg[]]
 
 === Code for the book
 
