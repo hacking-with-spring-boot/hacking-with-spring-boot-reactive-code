@@ -1,4 +1,4 @@
-== Hacking with Spring Boot
+== Hacking with Spring Boot 2.3: Reactive Edition
 
 *Spring Boot 2.3* is the hottest ticket in town...
 
@@ -21,9 +21,9 @@ https://www.amazon.com/Hacking-Spring-Boot-2-3-Reactive-ebook/dp/B086722L4L/[ima
 
 === Code for the book
 
-This is a standing repo of the code for Hacking with Spring Boot.
+This is a standing repo of the code for _Hacking with Spring Boot 2.3: Reactive Edition_.
 
-CAUTION: No have Java? I suggest you download and install sdk and use it to install your favorite version of Java 8!
+CAUTION: No have Java? I suggest you download and install https://sdkman.io/[sdkman] and use it to install your favorite version of Java 8!
 
 Stay tuned. In the meantime, http://www.urbandictionary.com/define.php?term=share%20and%20enjoy[share and enjoy]!
 
