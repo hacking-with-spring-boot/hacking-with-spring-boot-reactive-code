@@ -27,7 +27,7 @@ import java.util.Objects;
 // tag::code[]
 class Cart {
 
-	@Id private String id;
+	private @Id String id;
 	private List<CartItem> cartItems;
 
 	private Cart() {}

@@ -24,10 +24,11 @@ import java.util.stream.Stream;
  * @author Greg Turnquist
  */
 // tag::code[]
-public interface HttpTraceWrapperRepository extends Repository<HttpTraceWrapper, String> {
+public interface HttpTraceWrapperRepository //
+		extends Repository<HttpTraceWrapper, String> {
 
-    Stream<HttpTraceWrapper> findAll(); // <1>
+	Stream<HttpTraceWrapper> findAll(); // <1>
 
-    void save(HttpTraceWrapper trace); // <2>
+	void save(HttpTraceWrapper trace); // <2>
 }
 // end::code[]

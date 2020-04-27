@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
 	@GetMapping
-	Mono<String> home(Model model) {
-		return Mono.just("home.html");
+	Mono<String> home() {
+		return Mono.just("home");
 	}
 }
 // end::code[]

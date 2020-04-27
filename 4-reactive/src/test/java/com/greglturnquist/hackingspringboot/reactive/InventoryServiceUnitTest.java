@@ -44,74 +44,82 @@ import com.greglturnquist.hackingspringboot.reactive.ItemRepository;
 // tag::extend[]
 @ExtendWith(SpringExtension.class) // <1>
 class InventoryServiceUnitTest { // <2>
-// end::extend[]
+	// end::extend[]
 
-    // tag::class-under-test[]
-    InventoryService inventoryService; // <1>
+	// tag::class-under-test[]
+	InventoryService inventoryService; // <1>
 
-    @MockBean
-    private ItemRepository itemRepository; // <2>
+	@MockBean private ItemRepository itemRepository; // <2>
 
-    @MockBean
-    private CartRepository cartRepository; // <2>
-    // end::class-under-test[]
+	@MockBean private CartRepository cartRepository; // <2>
+	// end::class-under-test[]
 
-    // tag::before[]
-    @BeforeEach // <1>
-    void setUp() {
-        // Define test data <2>
-        Item sampleItem = new Item("item1", "TV tray", "Alf TV tray", 19.99);
-        CartItem sampleCartItem = new CartItem(sampleItem);
-        Cart sampleCart = new Cart("My Cart", Collections.singletonList(sampleCartItem));
+	// tag::before[]
+	@BeforeEach // <1>
+	void setUp() {
+		// Define test data <2>
+		Item sampleItem = new Item( //
+				"item1", "TV tray", "Alf TV tray", 19.99);
+		CartItem sampleCartItem = new CartItem(sampleItem);
+		Cart sampleCart = new Cart("My Cart", //
+				Collections.singletonList(sampleCartItem));
 
-        // Define mock interactions provided by your collaborators <3>
-        when(cartRepository.findById(anyString())).thenReturn(Mono.empty());
-        when(itemRepository.findById(anyString())).thenReturn(Mono.just(sampleItem));
-        when(cartRepository.save(any(Cart.class))).thenReturn(Mono.just(sampleCart));
+		// Define mock interactions provided
+		// by your collaborators <3>
+		when(cartRepository.findById(anyString())) //
+				.thenReturn(Mono.empty());
+		when(itemRepository.findById(anyString())) //
+				.thenReturn(Mono.just(sampleItem));
+		when(cartRepository.save(any(Cart.class))) //
+				.thenReturn(Mono.just(sampleCart));
 
-        inventoryService = new InventoryService(itemRepository, cartRepository); // <4>
-    }
-    // end::before[]
+		inventoryService = //
+				new InventoryService(itemRepository, cartRepository); // <4>
+	}
+	// end::before[]
 
-    // tag::test[]
-    @Test
-    void addItemToEmptyCartShouldProduceOneCartItem() { // <1>
-        inventoryService.addItemToCart("My Cart", "item1") // <2>
-            .as(StepVerifier::create) // <3>
-            .expectNextMatches(cart -> { // <4>
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getQuantity)
-                    .containsExactlyInAnyOrder(1); // <5>
+	// tag::test[]
+	@Test
+	void addItemToEmptyCartShouldProduceOneCartItem() { // <1>
+		inventoryService.addItemToCart("My Cart", "item1") // <2>
+				.as(StepVerifier::create) // <3>
+				.expectNextMatches(cart -> { // <4>
+					assertThat(cart.getCartItems()) //
+							.extracting(CartItem::getQuantity) //
+							.containsExactlyInAnyOrder(1); // <5>
 
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getItem)
-                    .containsExactly( // <6>
-                        new Item("item1", "TV tray", "Alf TV tray", 19.99));
+					assertThat(cart.getCartItems()) //
+							.extracting(CartItem::getItem) //
+							.containsExactly( // <6>
+									new Item("item1", "TV tray", //
+											"Alf TV tray", 19.99));
 
-                return true; // <7>
-            })
-            .verifyComplete(); // <8>
-    }
-    // end::test[]
+					return true; // <7>
+				}) //
+				.verifyComplete(); // <8>
+	}
+	// end::test[]
 
-    // tag::test2[]
-    @Test
-    void alternativeWayToTest() { // <1>
-        StepVerifier.create(inventoryService.addItemToCart("My Cart", "item1"))
-            .expectNextMatches(cart -> { // <4>
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getQuantity)
-                    .containsExactlyInAnyOrder(1); // <5>
+	// tag::test2[]
+	@Test
+	void alternativeWayToTest() { // <1>
+		StepVerifier.create( //
+				inventoryService.addItemToCart("My Cart", "item1")) //
+				.expectNextMatches(cart -> { // <4>
+					assertThat(cart.getCartItems()) //
+							.extracting(CartItem::getQuantity) //
+							.containsExactlyInAnyOrder(1); // <5>
 
-                assertThat(cart.getCartItems())
-                    .extracting(CartItem::getItem)
-                    .containsExactly( // <6>
-                        new Item("item1", "TV tray", "Alf TV tray", 19.99));
+					assertThat(cart.getCartItems()) //
+							.extracting(CartItem::getItem) //
+							.containsExactly( // <6>
+									new Item("item1", "TV tray", //
+											"Alf TV tray", 19.99));
 
-                return true; // <7>
-            })
-            .verifyComplete(); // <8>
-    }
-    // end::test2[]
+					return true; // <7>
+				}) //
+				.verifyComplete(); // <8>
+	}
+	// end::test2[]
 
 }

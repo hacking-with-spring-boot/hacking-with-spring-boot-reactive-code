@@ -38,11 +38,13 @@ public class DebuggingReactorFlows {
 	// tag::simple-example[]
 	static class SimpleExample {
 		public static void main(String[] args) {
-			ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+			ExecutorService executor = //
+					Executors.newSingleThreadScheduledExecutor();
 
 			List<Integer> source;
 			if (new Random().nextBoolean()) {
-				source = IntStream.range(1, 11).boxed().collect(Collectors.toList());
+				source = IntStream.range(1, 11).boxed() //
+						.collect(Collectors.toList());
 			} else {
 				source = Arrays.asList(1, 2, 3, 4);
 			}
@@ -68,7 +70,9 @@ public class DebuggingReactorFlows {
 				source = Flux.just(1, 2, 3, 4).elementAt(5);
 			}
 
-			source.subscribeOn(Schedulers.parallel()).block(); // line 73
+			source //
+					.subscribeOn(Schedulers.parallel()) //
+					.block(); // line 73
 		}
 	}
 	// end::reactor-example[]
@@ -77,7 +81,7 @@ public class DebuggingReactorFlows {
 	static class ReactorDebuggingExample {
 		public static void main(String[] args) {
 
-			Hooks.onOperatorDebug(); // <1>
+			Hooks.onOperatorDebug();
 
 			Mono<Integer> source;
 			if (new Random().nextBoolean()) {
@@ -85,7 +89,9 @@ public class DebuggingReactorFlows {
 			} else {
 				source = Flux.just(1, 2, 3, 4).elementAt(5); // line 86
 			}
-			source.subscribeOn(Schedulers.parallel()).block(); // line 88
+			source //
+					.subscribeOn(Schedulers.parallel()) //
+					.block(); // line 88
 		}
 	}
 	// end::reactor-example2[]

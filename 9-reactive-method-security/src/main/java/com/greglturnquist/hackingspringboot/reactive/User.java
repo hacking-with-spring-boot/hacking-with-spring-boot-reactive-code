@@ -26,7 +26,7 @@ import org.springframework.data.annotation.Id;
 // tag::code[]
 public class User {
 
-	@Id private String id;
+	private @Id String id;
 	private String name;
 	private String password;
 	private List<String> roles;

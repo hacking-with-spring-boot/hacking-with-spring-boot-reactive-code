@@ -87,6 +87,12 @@
                 </configuration>
             </plugin>
             <!-- end::docker[] -->
+            <!-- tag::git[] -->
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+            </plugin>
+            <!-- end::git[] -->
         </plugins>
     </build>
 

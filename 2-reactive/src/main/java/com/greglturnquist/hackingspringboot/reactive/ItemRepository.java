@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// tag::code[]
 package com.greglturnquist.hackingspringboot.reactive;
 
+// tag::code[]
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-public interface ItemRepository extends ReactiveCrudRepository<Item, String> {
+public interface ItemRepository extends //
+		ReactiveCrudRepository<Item, String> {
 
 }
 // end::code[]

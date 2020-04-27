@@ -23,7 +23,7 @@ import org.springframework.data.annotation.Id;
 // tag::code[]
 public class Item {
 
-    @Id private String id;
+    private @Id String id;
     private String name;
     private String description;
     private double price;

@@ -34,30 +34,35 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  * @author Greg Turnquist
  */
 // tag::intro[]
-@WebFluxTest(controllers = HypermediaItemController.class) // <1>
-@AutoConfigureRestDocs // <2>
+@WebFluxTest(controllers = HypermediaItemController.class)
+@AutoConfigureRestDocs
 public class HypermediaItemControllerDocumentationTest {
 
-	@Autowired private WebTestClient webTestClient; // <3>
+	@Autowired private WebTestClient webTestClient;
 
-	@MockBean InventoryService service; // <4>
+	@MockBean InventoryService service;
 
-	@MockBean ItemRepository repository; // <5>
+	@MockBean ItemRepository repository;
 	// end::intro[]
 
 	// tag::test1[]
 	@Test
 	void findingAllItems() {
 		when(repository.findAll()) //
-				.thenReturn(Flux.just(new Item("Alf alarm clock", "nothing I really need", 19.99)));
+				.thenReturn(Flux.just( //
+						new Item("Alf alarm clock", //
+								"nothing I really need", 19.99)));
 		when(repository.findById((String) null)) //
-				.thenReturn(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
+				.thenReturn(Mono.just( //
+						new Item("item-1", "Alf alarm clock", //
+								"nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/hypermedia/items") //
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectBody() //
-				.consumeWith(document("findAll-hypermedia", preprocessResponse(prettyPrint()))); //
+				.consumeWith(document("findAll-hypermedia", //
+						preprocessResponse(prettyPrint()))); //
 	}
 	// end::test1[]
 
@@ -65,7 +70,10 @@ public class HypermediaItemControllerDocumentationTest {
 	// @Test
 	void postNewItem() {
 		this.webTestClient.post().uri("/hypermedia/items") //
-				.body(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)), Item.class) //
+				.body(Mono.just( //
+						new Item("item-1", "Alf alarm clock", //
+								"nothing I really need", 19.99)),
+						Item.class) //
 				.exchange() //
 				.expectStatus().isCreated() //
 				.expectBody().isEmpty();
@@ -76,7 +84,9 @@ public class HypermediaItemControllerDocumentationTest {
 	@Test
 	void findOneItem() {
 		when(repository.findById("item-1")) //
-				.thenReturn(Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
+				.thenReturn(Mono.just( //
+						new Item("item-1", "Alf alarm clock", //
+								"nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/hypermedia/items/item-1") //
 				.exchange() //
@@ -84,8 +94,11 @@ public class HypermediaItemControllerDocumentationTest {
 				.expectBody() //
 				.consumeWith(document("findOne-hypermedia", //
 						preprocessResponse(prettyPrint()), //
-						links(linkWithRel("self").description("Canonical link to this `Item`"),
-								linkWithRel("item").description("Link back to the aggregate root")))); //
+						links( // <1>
+								linkWithRel("self").description( // <2>
+										"Canonical link to this `Item`"), //
+								linkWithRel("item").description( // <3>
+										"Link back to the aggregate root"))));
 	}
 	// end::test3[]
 

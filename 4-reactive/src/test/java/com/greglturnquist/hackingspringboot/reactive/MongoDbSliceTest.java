@@ -30,24 +30,25 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 @DataMongoTest // <1>
 public class MongoDbSliceTest {
 
-    @Autowired
-	ItemRepository repository; // <2>
+	@Autowired ItemRepository repository; // <2>
 
-    @Test // <3>
-    void itemRepositorySavesItems() {
-        Item sampleItem = new Item("name", "description", 1.99);
+	@Test // <3>
+	void itemRepositorySavesItems() {
+		Item sampleItem = new Item( //
+				"name", "description", 1.99);
 
-        repository.save(sampleItem)
-            .as(StepVerifier::create)
-            .expectNextMatches(item -> {
-                assertThat(item.getId()).isNotNull();
-                assertThat(item.getName()).isEqualTo("name");
-                assertThat(item.getDescription()).isEqualTo("description");
-                assertThat(item.getPrice()).isEqualTo(1.99);
+		repository.save(sampleItem) //
+				.as(StepVerifier::create) //
+				.expectNextMatches(item -> {
+					assertThat(item.getId()).isNotNull();
+					assertThat(item.getName()).isEqualTo("name");
+					assertThat(item.getDescription()) //
+							.isEqualTo("description");
+					assertThat(item.getPrice()).isEqualTo(1.99);
 
-                return true;
-            })
-            .verifyComplete();
-    }
+					return true;
+				}) //
+				.verifyComplete();
+	}
 }
 // end::code[]

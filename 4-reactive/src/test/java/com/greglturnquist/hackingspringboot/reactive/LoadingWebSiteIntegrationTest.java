@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -30,7 +31,7 @@ import static org.springframework.http.MediaType.*;
  * @author Greg Turnquist
  */
 // tag::code[]
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // <1>
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT) //<1>
 @AutoConfigureWebTestClient // <2>
 public class LoadingWebSiteIntegrationTest {
 
@@ -43,7 +44,8 @@ public class LoadingWebSiteIntegrationTest {
 				.expectHeader().contentType(TEXT_HTML) //
 				.expectBody(String.class) //
 				.consumeWith(exchangeResult -> {
-					assertThat(exchangeResult.getResponseBody()).contains("<a href=\"/add");
+					assertThat(exchangeResult //
+							.getResponseBody()).contains("<a href=\"/add");
 				});
 	}
 }

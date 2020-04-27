@@ -27,7 +27,7 @@ import org.springframework.data.annotation.Id;
 // tag::code[]
 class Cart {
 
-	@Id private String id;
+	private @Id String id;
 	private List<CartItem> cartItems;
 
 	private Cart() {}

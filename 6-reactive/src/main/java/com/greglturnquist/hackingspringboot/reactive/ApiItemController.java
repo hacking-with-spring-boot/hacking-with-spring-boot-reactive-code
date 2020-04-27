@@ -58,28 +58,31 @@ public class ApiItemController {
 
 	// tag::new-item[]
 	@PostMapping("/api/items") // <1>
-	Mono<ResponseEntity<?>> addNewItem(@RequestBody Mono<Item> item) { // <2>
-		return item
-				.flatMap(s -> this.repository.save(s)) // <3>
-				.map(savedItem -> ResponseEntity
-						.created(URI.create("/api/items/" + savedItem.getId())) // <4>
+	Mono<ResponseEntity<?>> addNewItem( //
+			@RequestBody Mono<Item> item) { // <2>
+
+		return item.flatMap(s -> this.repository.save(s)) // <3>
+				.map(savedItem -> ResponseEntity //
+						.created(URI.create("/api/items/" + //
+								savedItem.getId())) // <4>
 						.body(savedItem)); // <5>
 	}
 	// end::new-item[]
 
 	// tag::replace-item[]
-	@PutMapping("/api/items/{id}")
-	public Mono<ResponseEntity<?>> updateItem(@RequestBody Mono<Item> item, //
-			@PathVariable String id) {
+	@PutMapping("/api/items/{id}") // <1>
+	public Mono<ResponseEntity<?>> updateItem( //
+			@RequestBody Mono<Item> item, // <2>
+			@PathVariable String id) { // <3>
+
 		return item //
-				.map(content -> new Item(id, //
+				.map(content -> new Item(id, // <4>
 						content.getName(), //
 						content.getDescription(), //
 						content.getPrice())) //
-				.flatMap(this.repository::save) //
-				.map(Item::getId) //
-				.map(savedItem -> ResponseEntity.created( //
-						URI.create("/api/items/" + id)).build());
+				.flatMap(this.repository::save) // <5>
+				.then(Mono.just(ResponseEntity.created( // <6>
+						URI.create("/api/items/" + id)).build()));
 	}
 	// end::replace-item[]
 }

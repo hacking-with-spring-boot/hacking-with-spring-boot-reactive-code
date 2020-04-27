@@ -26,24 +26,26 @@ import java.util.stream.Collectors;
  * @author Greg Turnquist
  */
 // tag::code[]
-public class SpringDataHttpTraceRepository implements HttpTraceRepository {
+public class SpringDataHttpTraceRepository //
+		implements HttpTraceRepository {
 
-    private final HttpTraceWrapperRepository repository;
+	private final HttpTraceWrapperRepository repository;
 
-    public SpringDataHttpTraceRepository(HttpTraceWrapperRepository repository) {
-        this.repository = repository; // <1>
-    }
+	public SpringDataHttpTraceRepository( //
+			HttpTraceWrapperRepository repository) {
+		this.repository = repository; // <1>
+	}
 
-    @Override
-    public List<HttpTrace> findAll() {
-        return repository.findAll()
-            .map(HttpTraceWrapper::getHttpTrace) // <2>
-            .collect(Collectors.toList());
-    }
+	@Override
+	public List<HttpTrace> findAll() {
+		return repository.findAll() //
+				.map(HttpTraceWrapper::getHttpTrace) // <2>
+				.collect(Collectors.toList());
+	}
 
-    @Override
-    public void add(HttpTrace trace) {
-        repository.save(new HttpTraceWrapper(trace)); // <3>
-    }
+	@Override
+	public void add(HttpTrace trace) {
+		repository.save(new HttpTraceWrapper(trace)); // <3>
+	}
 }
 // end::code[]

@@ -50,7 +50,8 @@ public class HypermediaItemController {
 
 	private final ItemRepository repository;
 
-	public HypermediaItemController(ItemRepository repository) {
+	public HypermediaItemController( //
+			ItemRepository repository) {
 		this.repository = repository;
 	}
 	// end::intro[]
@@ -58,13 +59,18 @@ public class HypermediaItemController {
 	// tag::root[]
 	@GetMapping("/hypermedia")
 	Mono<RepresentationModel<?>> root() {
-		HypermediaItemController controller = methodOn(HypermediaItemController.class);
+		HypermediaItemController controller = //
+				methodOn(HypermediaItemController.class);
 
-		Mono<Link> selfLink = linkTo(controller.root()).withSelfRel() //
-				.toMono();
+		Mono<Link> selfLink = //
+				linkTo(controller.root()) //
+						.withSelfRel() //
+						.toMono();
 
-		Mono<Link> itemsAggregateLink = linkTo(controller.findAll()).withRel(IanaLinkRelations.ITEM) //
-				.toMono();
+		Mono<Link> itemsAggregateLink = //
+				linkTo(controller.findAll()) //
+						.withRel(IanaLinkRelations.ITEM) //
+						.toMono();
 
 		return selfLink.zipWith(itemsAggregateLink) //
 				.map(links -> Links.of(links.getT1(), links.getT2())) //
@@ -82,25 +88,28 @@ public class HypermediaItemController {
 				.flatMap(entityModels -> linkTo(methodOn(HypermediaItemController.class) //
 						.findAll()).withSelfRel() //
 								.toMono() //
-								.map(selfLink -> new CollectionModel<>(entityModels, selfLink)));
+								.map(selfLink -> CollectionModel.of(entityModels, selfLink)));
 	}
 	// end::find-all[]
 
 	// tag::find-one[]
 	@GetMapping("/hypermedia/items/{id}")
 	Mono<EntityModel<Item>> findOne(@PathVariable String id) {
-		HypermediaItemController controller = methodOn(HypermediaItemController.class); // <1>
+		HypermediaItemController controller = //
+				methodOn(HypermediaItemController.class); // <1>
 
-		Mono<Link> selfLink = linkTo(controller.findOne(id)).withSelfRel() // <2>
+		Mono<Link> selfLink = linkTo(controller.findOne(id)) //
+				.withSelfRel() // <2>
 				.toMono();
 
-		Mono<Link> aggregateLink = linkTo(controller.findAll()).withRel(IanaLinkRelations.ITEM) // <3>
+		Mono<Link> aggregateLink = linkTo(controller.findAll()) //
+				.withRel(IanaLinkRelations.ITEM) // <3>
 				.toMono();
 
 		return selfLink.zipWith(aggregateLink) // <4>
 				.map(links -> Links.of(links.getT1(), links.getT2())) // <5>
 				.flatMap(links -> this.repository.findById(id) // <6>
-						.map(item -> new EntityModel<>(item, links))); // <7>
+						.map(item -> EntityModel.of(item, links))); // <7>
 	}
 	// end::find-one[]
 
@@ -108,7 +117,8 @@ public class HypermediaItemController {
 	@GetMapping("/hypermedia/items/{id}/affordances")
 	// <1>
 	Mono<EntityModel<Item>> findOneWithAffordances(@PathVariable String id) {
-		HypermediaItemController controller = methodOn(HypermediaItemController.class);
+		HypermediaItemController controller = //
+				methodOn(HypermediaItemController.class);
 
 		Mono<Link> selfLink = linkTo(controller.findOne(id)).withSelfRel() //
 				.andAffordance(controller.updateItem(null, id)) // <2>
@@ -120,7 +130,7 @@ public class HypermediaItemController {
 		return selfLink.zipWith(aggregateLink) //
 				.map(links -> Links.of(links.getT1(), links.getT2())) //
 				.flatMap(links -> this.repository.findById(id) //
-						.map(item -> new EntityModel<>(item, links))); //
+						.map(item -> EntityModel.of(item, links))); //
 	}
 	// end::find-affordance[]
 
@@ -154,12 +164,14 @@ public class HypermediaItemController {
 	// end::update-item[]
 
 	// tag::profile[]
-	@GetMapping(value = "/hypermedia/items/profile", produces = MediaTypes.ALPS_JSON_VALUE)
+	@GetMapping(value = "/hypermedia/items/profile", //
+			produces = MediaTypes.ALPS_JSON_VALUE)
 	public Alps profile() {
 		return alps() //
 				.descriptor(Collections.singletonList(descriptor() //
-						.id(Item.class.getSimpleName() + "-representation") //
-						.descriptor(Arrays.stream(Item.class.getDeclaredFields()) //
+						.id(Item.class.getSimpleName() + "-repr") //
+						.descriptor(Arrays.stream( //
+								Item.class.getDeclaredFields()) //
 								.map(field -> descriptor() //
 										.name(field.getName()) //
 										.type(Type.SEMANTIC) //

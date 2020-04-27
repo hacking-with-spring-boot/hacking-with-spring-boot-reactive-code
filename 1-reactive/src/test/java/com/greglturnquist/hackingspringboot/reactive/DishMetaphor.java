@@ -29,9 +29,9 @@ public class DishMetaphor {
 		Flux<Dish> getDishes() {
 			// You could model a ChefService, but let's just
 			// hard code some tasty dishes.
-			return Flux.just( 
-					new Dish("Sesame chicken"), 
-					new Dish("Lo mein noodles, plain"), 
+			return Flux.just( //
+					new Dish("Sesame chicken"), //
+					new Dish("Lo mein noodles, plain"), //
 					new Dish("Sweet & sour beef"));
 		}
 	}
@@ -47,7 +47,7 @@ public class DishMetaphor {
 		}
 
 		Flux<Dish> doingMyJob() {
-			return this.kitchen.getDishes() 
+			return this.kitchen.getDishes() //
 					.map(dish -> this.deliver(dish));
 		}
 
@@ -69,11 +69,24 @@ public class DishMetaphor {
 		}
 
 		Flux<Dish> doingMyJob() {
-			return this.kitchen.getDishes() 
-					.doOnNext(dish -> System.out.println("Thank you for " + dish + "!")) 
-					.doOnError(error -> System.out.println("So sorry about " + error.getMessage())) 
-					.doOnComplete(() -> System.out.println("Thanks for all your hard work!")) 
+			return this.kitchen.getDishes() //
+					.doOnNext(dish -> thanks(dish)) //
+					.doOnError(error -> sorry(error)) //
+					.doOnComplete(() -> goodWork()) //
 					.map(this::deliver);
+		}
+
+		void thanks(Dish dish) {
+			System.out.println("Thank you for " + dish + "!");
+		}
+
+		void sorry(Throwable error) {
+			System.out.println("So sorry about " //
+					+ error.getMessage());
+		}
+
+		void goodWork() {
+			System.out.println("Thanks for all your hard work!");
 		}
 
 		Dish deliver(Dish dish) {
@@ -93,14 +106,26 @@ public class DishMetaphor {
 
 		Flux<Dish> doingMyJob() {
 			// tag::multiple-side-effects[]
-			return this.kitchen.getDishes() 
-					.doOnNext(dish -> { 
-						System.out.println("Thank you for " + dish + "!"); 
-						System.out.println("Marking the ticket as done."); 
-						System.out.println("Grabbing some silverware."); 
-					}) 
+			return this.kitchen.getDishes() //
+					.doOnNext(dish -> {
+						thanks(dish);
+						markAsDone();
+						grabSomeSilverware();
+					}) //
 					.map(this::deliver);
 			// end::multiple-side-effects[]
+		}
+
+		void thanks(Dish dish) {
+			System.out.println("Thank you for " + dish + "!");
+		}
+
+		void markAsDone() {
+			System.out.println("Marking the ticket as done.");
+		}
+
+		void grabSomeSilverware() {
+			System.out.println("Grabbing some silverware.");
 		}
 
 		Dish deliver(Dish dish) {
@@ -119,12 +144,24 @@ public class DishMetaphor {
 
 		Flux<Dish> doingMyJob() {
 			// tag::multiple-side-effects2[]
-			return this.kitchen.getDishes() 
-					.doOnNext(dish -> System.out.println("Thank you for " + dish + "!")) 
-					.doOnNext(dish -> System.out.println("Marking the ticket as done.")) 
-					.doOnNext(dish -> System.out.println("Grabbing some silverware.")) 
+			return this.kitchen.getDishes() //
+					.doOnNext(dish -> thanks(dish)) //
+					.doOnNext(dish -> markAsDone()) //
+					.doOnNext(dish -> grabSilverware()) //
 					.map(this::deliver);
 			// end::multiple-side-effects2[]
+		}
+
+		void thanks(Dish dish) {
+			System.out.println("Thank you for " + dish + "!");
+		}
+
+		void markAsDone() {
+			System.out.println("Marking the ticket as done.");
+		}
+
+		void grabSilverware() {
+			System.out.println("Grabbing some silverware.");
 		}
 
 		Dish deliver(Dish dish) {
@@ -153,10 +190,9 @@ public class DishMetaphor {
 
 		@Override
 		public String toString() {
-			return "Dish{" + 
-					"description='" + description + '\'' + 
-					", delivered=" + delivered + 
-					'}';
+			return "Dish{" + //
+					"description='" + description + '\'' + //
+					", delivered=" + delivered + '}';
 		}
 	}
 	// end::dish[]
@@ -166,12 +202,12 @@ public class DishMetaphor {
 	class PoliteRestaurant {
 
 		public static void main(String... args) {
-			PoliteServer server = new PoliteServer(new KitchenService());
+			PoliteServer server = //
+					new PoliteServer(new KitchenService());
 
-			server.doingMyJob() //
-					.subscribe( //
-							dish -> System.out.println("Consuming " + dish), 
-							throwable -> System.err.println(throwable));
+			server.doingMyJob().subscribe( //
+					dish -> System.out.println("Consuming " + dish), //
+					throwable -> System.err.println(throwable));
 		}
 	}
 	// end::example[]

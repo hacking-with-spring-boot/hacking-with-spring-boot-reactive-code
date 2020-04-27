@@ -32,76 +32,80 @@ import org.springframework.web.reactive.result.view.Rendering;
 @Controller // <1>
 public class HomeController {
 
-    private ItemRepository itemRepository;
-    private CartRepository cartRepository;
-    private InventoryService inventoryService;
+	private ItemRepository itemRepository;
+	private CartRepository cartRepository;
+	private InventoryService inventoryService;
 
-    public HomeController(ItemRepository itemRepository,
-                          CartRepository cartRepository,
-                          InventoryService inventoryService) {
-        this.itemRepository = itemRepository;
-        this.cartRepository = cartRepository;
-        this.inventoryService = inventoryService;
-    }
-    // end::1[]
+	public HomeController(ItemRepository itemRepository, CartRepository cartRepository,
+			InventoryService inventoryService) {
+		this.itemRepository = itemRepository;
+		this.cartRepository = cartRepository;
+		this.inventoryService = inventoryService;
+	}
+	// end::1[]
 
-    // tag::2[]
-    @GetMapping
-    Mono<Rendering> home() { // <1>
-        return Mono.just(Rendering.view("home.html") // <2>
-            .modelAttribute("items", this.itemRepository.findAll()) // <3>
-            .modelAttribute("cart", this.cartRepository.findById("My Cart") // <4>
-                .defaultIfEmpty(new Cart("My Cart")))
-            .build());
-    }
-    // end::2[]
+	// tag::2[]
+	@GetMapping
+	Mono<Rendering> home() { // <1>
+		return Mono.just(Rendering.view("home.html") // <2>
+				.modelAttribute("items", //
+						this.itemRepository.findAll()) // <3>
+				.modelAttribute("cart", //
+						this.cartRepository.findById("My Cart") // <4>
+								.defaultIfEmpty(new Cart("My Cart")))
+				.build());
+	}
+	// end::2[]
 
-    // tag::3[]
-    @GetMapping("/add/{id}")
-    // <1>
-    Mono<String> addToCart(@PathVariable String id) { // <2>
-        return this.cartRepository.findById("My Cart") // <3>
-            .defaultIfEmpty(new Cart("My Cart")) //
-            .flatMap(cart -> cart.getCartItems().stream() // <4>
-                .filter(cartItem -> cartItem.getItem().getId().equals(id)) //
-                .findAny() //
-                .map(cartItem -> {
-                    cartItem.increment();
-                    return Mono.just(cart);
-                }).orElseGet(() -> { // <5>
-                    return this.itemRepository.findById(id) //
-                        .map(item -> new CartItem(item)) //
-                        .map(cartItem -> {
-                            cart.getCartItems().add(cartItem);
-                            return cart;
-                        });
-                }))
-            .flatMap(cart -> this.cartRepository.save(cart)) // <6>
-            .then(Mono.just("redirect:/")); // <7>
-    }
-    // end::3[]
+	// tag::3[]
+	@GetMapping("/add/{id}")
+	// <1>
+	Mono<String> addToCart(@PathVariable String id) { // <2>
+		return this.cartRepository.findById("My Cart") // <3>
+				.defaultIfEmpty(new Cart("My Cart")) //
+				.flatMap(cart -> cart.getCartItems().stream() // <4>
+						.filter(cartItem -> cartItem.getItem() //
+								.getId().equals(id)) //
+						.findAny() //
+						.map(cartItem -> {
+							cartItem.increment();
+							return Mono.just(cart);
+						}).orElseGet(() -> { // <5>
+							return this.itemRepository.findById(id) //
+									.map(item -> new CartItem(item)) //
+									.map(cartItem -> {
+										cart.getCartItems().add(cartItem);
+										return cart;
+									});
+						}))
+				.flatMap(cart -> this.cartRepository.save(cart)) // <6>
+				.then(Mono.just("redirect:/")); // <7>
+	}
+	// end::3[]
 
-    @PostMapping
-    Mono<String> createItem(@ModelAttribute Item newItem) {
-        return this.itemRepository.save(newItem) //
-            .then(Mono.just("redirect:/"));
-    }
+	@PostMapping
+	Mono<String> createItem(@ModelAttribute Item newItem) {
+		return this.itemRepository.save(newItem) //
+				.then(Mono.just("redirect:/"));
+	}
 
-    @GetMapping("/delete/{id}")
-    Mono<String> deleteItem(@PathVariable String id) {
-        return this.itemRepository.deleteById(id) //
-            .then(Mono.just("redirect:/"));
-    }
+	@GetMapping("/delete/{id}")
+	Mono<String> deleteItem(@PathVariable String id) {
+		return this.itemRepository.deleteById(id) //
+				.then(Mono.just("redirect:/"));
+	}
 
-    // tag::search[]
-    @GetMapping("/search") // <1>
-    Mono<Rendering> search(@RequestParam(required = false) String name, // <2>
-                           @RequestParam(required = false) String description,
-                           @RequestParam boolean useAnd) {
-        return Mono.just(Rendering.view("home.html") // <3>
-            .modelAttribute("results",
-                inventoryService.searchByExample(name, description, useAnd)) // <4>
-            .build());
-    }
-    // end::search[]
+	// tag::search[]
+	@GetMapping("/search") // <1>
+	Mono<Rendering> search( //
+			@RequestParam(required = false) String name, // <2>
+			@RequestParam(required = false) String description, //
+			@RequestParam boolean useAnd) {
+		return Mono.just(Rendering.view("home.html") // <3>
+				.modelAttribute("results", //
+						inventoryService //
+								.searchByExample(name, description, useAnd)) // <4>
+				.build());
+	}
+	// end::search[]
 }

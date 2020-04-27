@@ -58,15 +58,19 @@ public class AffordancesItemController {
 	// tag::root[]
 	@GetMapping("/affordances")
 	Mono<RepresentationModel<?>> root() {
-		AffordancesItemController controller = methodOn(AffordancesItemController.class);
+		AffordancesItemController controller = //
+				methodOn(AffordancesItemController.class);
 
-		Mono<Link> selfLink = linkTo(controller.root()).withSelfRel() //
+		Mono<Link> selfLink = linkTo(controller.root()) //
+				.withSelfRel() //
 				.toMono();
 
-		Mono<Link> itemsAggregateLink = linkTo(controller.findAll()).withRel(IanaLinkRelations.ITEM) //
+		Mono<Link> itemsAggregateLink = linkTo(controller.findAll()) //
+				.withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
-		return selfLink.zipWith(itemsAggregateLink).map(links -> Links.of(links.getT1(), links.getT2()))
+		return selfLink.zipWith(itemsAggregateLink) //
+				.map(links -> Links.of(links.getT1(), links.getT2())) //
 				.map(links -> new RepresentationModel<>(links.toList()));
 	}
 	// end::root[]
@@ -74,56 +78,64 @@ public class AffordancesItemController {
 	// tag::find-all[]
 	@GetMapping("/affordances/items")
 	Mono<CollectionModel<EntityModel<Item>>> findAll() {
-		AffordancesItemController controller = methodOn(AffordancesItemController.class);
+		AffordancesItemController controller = //
+				methodOn(AffordancesItemController.class);
 
-		Mono<Link> aggregateRoot = linkTo(controller.findAll()).withSelfRel()
-				.andAffordance(linkTo(controller.addNewItem(null))) //
+		Mono<Link> aggregateRoot = linkTo(controller.findAll()) //
+				.withSelfRel() //
+				.andAffordance(controller.addNewItem(null)) // <1>
 				.toMono();
 
-		return this.repository.findAll() // <1>
-				.flatMap(item -> findOne(item.getId())) // <2>
-				.collectList() // <3>
+		return this.repository.findAll() // <2>
+				.flatMap(item -> findOne(item.getId())) // <3>
+				.collectList() // <4>
 				.flatMap(models -> aggregateRoot //
-						.map(selfLink -> new CollectionModel<>(models, selfLink))); // <4>
+						.map(selfLink -> CollectionModel.of( //
+								models, selfLink))); // <5>
 	}
 	// end::find-all[]
 
 	// tag::find-one[]
-	@GetMapping("/affordances/items/{id}")
+	@GetMapping("/affordances/items/{id}") // <1>
 	Mono<EntityModel<Item>> findOne(@PathVariable String id) {
-		AffordancesItemController controller = methodOn(AffordancesItemController.class); // <1>
+		AffordancesItemController controller = //
+				methodOn(AffordancesItemController.class); // <2>
 
-		Mono<Link> selfLink = linkTo(controller.findOne(id)).withSelfRel() //
-				.andAffordance(controller.updateItem(null, id)) // <2>
+		Mono<Link> selfLink = linkTo(controller.findOne(id)) //
+				.withSelfRel() //
+				.andAffordance(controller.updateItem(null, id)) // <3>
 				.toMono();
 
-		Mono<Link> aggregateLink = linkTo(controller.findAll()).withRel(IanaLinkRelations.ITEM) // <3>
+		Mono<Link> aggregateLink = linkTo(controller.findAll()) //
+				.withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
-		return selfLink.zipWith(aggregateLink) // <4>
-				.map(links -> Links.of(links.getT1(), links.getT2())) // <5>
-				.flatMap(links -> this.repository.findById(id) // <6>
-						.map(item -> new EntityModel<>(item, links))); // <7>
+		return selfLink.zipWith(aggregateLink) //
+				.map(lnks -> Links.of(lnks.getT1(), lnks.getT2())) //
+				.flatMap(links -> this.repository.findById(id) //
+						.map(item -> EntityModel.of(item, links)));
 	}
 	// end::find-one[]
 
 	// tag::add-new-item[]
-	@PostMapping("/affordances/items")
-	Mono<ResponseEntity<?>> addNewItem(@RequestBody Mono<EntityModel<Item>> item) {
+	@PostMapping("/affordances/items") // <1>
+	Mono<ResponseEntity<?>> addNewItem( //
+			@RequestBody Mono<EntityModel<Item>> item) { // <2>
 		return item //
-				.map(EntityModel::getContent) //
-				.flatMap(this.repository::save) //
-				.map(Item::getId) //
-				.flatMap(this::findOne) //
-				.map(newModel -> ResponseEntity.created(newModel //
+				.map(EntityModel::getContent) // <3>
+				.flatMap(this.repository::save) // <4>
+				.map(Item::getId) // <5>
+				.flatMap(this::findOne) // <6>
+				.map(newModel -> ResponseEntity.created(newModel // <7>
 						.getRequiredLink(IanaLinkRelations.SELF) //
-						.toUri()).build());
+						.toUri()).body(newModel.getContent()));
 	}
 	// end::add-new-item[]
 
 	// tag::update-item[]
 	@PutMapping("/affordances/items/{id}") // <1>
-	public Mono<ResponseEntity<?>> updateItem(@RequestBody Mono<EntityModel<Item>> item, // <2>
+	public Mono<ResponseEntity<?>> updateItem( //
+			@RequestBody Mono<EntityModel<Item>> item, // <2>
 			@PathVariable String id) {
 		return item //
 				.map(EntityModel::getContent) //
@@ -132,7 +144,10 @@ public class AffordancesItemController {
 				.flatMap(this.repository::save) // <4>
 				.then(findOne(id)) // <5>
 				.map(model -> ResponseEntity.noContent() // <6>
-						.location(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).build());
+						.location(model //
+								.getRequiredLink(IanaLinkRelations.SELF) //
+								.toUri())
+						.build());
 	}
 	// end::update-item[]
 
@@ -142,12 +157,13 @@ public class AffordancesItemController {
 		return alps() //
 				.descriptor(Collections.singletonList(descriptor() //
 						.id(Item.class.getSimpleName() + "-representation") //
-						.descriptor(Arrays.stream(Item.class.getDeclaredFields()) //
-								.map(field -> descriptor() //
-										.name(field.getName()) //
-										.type(Type.SEMANTIC) //
-										.build()) //
-								.collect(Collectors.toList())) //
+						.descriptor( //
+								Arrays.stream(Item.class.getDeclaredFields()) //
+										.map(field -> descriptor() //
+												.name(field.getName()) //
+												.type(Type.SEMANTIC) //
+												.build()) //
+										.collect(Collectors.toList())) //
 						.build())) //
 				.build();
 	}

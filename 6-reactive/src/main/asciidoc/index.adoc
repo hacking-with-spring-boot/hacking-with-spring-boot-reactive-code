@@ -4,7 +4,7 @@ When you stand up a web service, people will want to see how to use it. Thanks t
 
 By running the following request:
 
-\include::{snippets}/index/curl-request.adoc[]
+\include::{snippets}/findAll/curl-request.adoc[]
 
 ...the `ApiItemController` will yield the following response:
 

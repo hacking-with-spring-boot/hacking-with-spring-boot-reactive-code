@@ -12,7 +12,9 @@ public class HackingSpringBootApplicationPlainBlockHound {
 	public static void main(String[] args) {
 		BlockHound.install();
 
-		SpringApplication.run(HackingSpringBootApplicationPlainBlockHound.class, args);
+		SpringApplication.run( //
+				HackingSpringBootApplicationPlainBlockHound.class, //
+				args);
 	}
 	// end::blockhound[]
 }

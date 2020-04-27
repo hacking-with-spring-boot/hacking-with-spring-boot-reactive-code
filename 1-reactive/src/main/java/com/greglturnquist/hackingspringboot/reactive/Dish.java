@@ -16,6 +16,8 @@
 // tag::dish[]
 package com.greglturnquist.hackingspringboot.reactive;
 
+import java.util.Objects;
+
 class Dish {
 
 	private String description;
@@ -43,10 +45,10 @@ class Dish {
 
 	@Override
 	public String toString() {
-		return "Dish{" +
-			"description='" + description + '\'' +
-			", delivered=" + delivered +
-			'}';
+		return "Dish{" + //
+				"description='" + description + '\'' + //
+				", delivered=" + delivered + //
+				'}';
 	}
 }
 // end::dish[]

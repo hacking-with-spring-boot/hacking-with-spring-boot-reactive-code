@@ -46,9 +46,11 @@ public class HomeController {
 	@GetMapping
 	Mono<Rendering> home() { // <1>
 		return Mono.just(Rendering.view("home.html") // <2>
-				.modelAttribute("items", this.itemRepository.findAll()) // <3>
-				.modelAttribute("cart", this.cartRepository.findById("My Cart") // <4>
-						.defaultIfEmpty(new Cart("My Cart")))
+				.modelAttribute("items", //
+						this.itemRepository.findAll()) // <3>
+				.modelAttribute("cart", //
+						this.cartRepository.findById("My Cart") // <4>
+								.defaultIfEmpty(new Cart("My Cart")))
 				.build());
 	}
 	// end::2[]
@@ -56,10 +58,11 @@ public class HomeController {
 	// tag::3[]
 	@GetMapping("/add/{id}") // <1>
 	Mono<String> addToCart(@PathVariable String id) { // <2>
-		return this.cartRepository.findById("My Cart") // <3>
-				.defaultIfEmpty(new Cart("My Cart")) //
+		return this.cartRepository.findById("My Cart") //
+				.defaultIfEmpty(new Cart("My Cart")) // <3>
 				.flatMap(cart -> cart.getCartItems().stream() // <4>
-						.filter(cartItem -> cartItem.getItem().getId().equals(id)) //
+						.filter(cartItem -> cartItem.getItem() //
+								.getId().equals(id)) //
 						.findAny() //
 						.map(cartItem -> {
 							cartItem.increment();

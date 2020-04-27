@@ -31,9 +31,9 @@ public class KitchenService {
 	 * Generates continuous stream of dishes.
 	 */
 	Flux<Dish> getDishes() {
-		return Flux
-			.<Dish> generate(sink -> sink.next(randomDish()))
-			.delayElements(Duration.ofMillis(250));
+		return Flux //
+				.<Dish> generate(sink -> sink.next(randomDish())) //
+				.delayElements(Duration.ofMillis(250));
 	}
 
 	/**
@@ -43,10 +43,10 @@ public class KitchenService {
 		return menu.get(picker.nextInt(menu.size()));
 	}
 
-	private List<Dish> menu = Arrays.asList(
-		new Dish("Sesame chicken"),
-		new Dish("Lo mein noodles, plain"),
-		new Dish("Sweet & sour beef"));
+	private List<Dish> menu = Arrays.asList( //
+			new Dish("Sesame chicken"), //
+			new Dish("Lo mein noodles, plain"), //
+			new Dish("Sweet & sour beef"));
 
 	private Random picker = new Random();
 }
