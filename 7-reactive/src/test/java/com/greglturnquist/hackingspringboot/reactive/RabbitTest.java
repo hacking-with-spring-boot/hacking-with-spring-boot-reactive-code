@@ -16,22 +16,21 @@
 package com.greglturnquist.hackingspringboot.reactive;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.*;
+
+import reactor.test.StepVerifier;
 
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.RabbitMQContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import reactor.test.StepVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * @author Greg Turnquist
@@ -41,23 +40,24 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureWebTestClient // <2>
 @Testcontainers // <3>
 @ContextConfiguration(initializers = RabbitTest.RabbitMQInitializer.class) // <4>
-@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD) // <5>
 public class RabbitTest {
 
-	@Container static RabbitMQContainer container = new RabbitMQContainer(); // <6>
+	@Container static RabbitMQContainer container = new RabbitMQContainer(); // <5>
 
-	@Autowired WebTestClient webTestClient; // <7>
+	@Autowired WebTestClient webTestClient; // <6>
 
-	@Autowired ItemRepository repository; // <8>
+	@Autowired ItemRepository repository; // <7>
 
-	static class RabbitMQInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+	static class RabbitMQInitializer implements //
+			ApplicationContextInitializer<GenericApplicationContext> {
 
 		@Override
-		public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-			TestPropertyValues values = TestPropertyValues.of( //
-					"spring.rabbitmq.host=" + container.getContainerIpAddress(),
-					"spring.rabbitmq.port=" + container.getMappedPort(5672));
-			values.applyTo(configurableApplicationContext);
+		public void initialize(GenericApplicationContext ctx) {
+			TestPropertyValues //
+					.of( //
+							"spring.rabbitmq.host=" + container.getContainerIpAddress(), //
+							"spring.rabbitmq.port=" + container.getMappedPort(5672)) //
+					.applyTo(ctx);
 		}
 	}
 	// end::setup[]

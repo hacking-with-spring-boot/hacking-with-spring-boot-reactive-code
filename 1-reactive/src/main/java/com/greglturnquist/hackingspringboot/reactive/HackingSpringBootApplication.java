@@ -8,8 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HackingSpringBootApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run( //
-				HackingSpringBootApplication.class, args);
+		SpringApplication.run(HackingSpringBootApplication.class, args);
 	}
 }
 // end::code[]

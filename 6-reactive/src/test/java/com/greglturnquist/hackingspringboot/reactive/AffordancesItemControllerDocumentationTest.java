@@ -52,40 +52,33 @@ public class AffordancesItemControllerDocumentationTest {
 	// tag::affordances[]
 	@Test
 	void findSingleItemAffordances() {
-		when(repository.findById("item-1")) //
-				.thenReturn(Mono.just( //
-						new Item("item-1", "Alf alarm clock", //
-								"nothing I really need", 19.99)));
+		when(repository.findById("item-1")).thenReturn(Mono.just( //
+				new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/affordances/items/item-1") // <1>
 				.accept(MediaTypes.HAL_FORMS_JSON) // <2>
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectBody() //
-				.consumeWith(document("single-item-affordances", // <3>
-						preprocessResponse(prettyPrint())));
+				.consumeWith(document("single-item-affordances", //
+						preprocessResponse(prettyPrint()))); // <3>
 	}
 	// end::affordances[]
 
 	// tag::affordances2[]
 	@Test
 	void findAggregateRootItemAffordances() {
-		when(repository.findAll()) //
-				.thenReturn(Flux.just( //
-						new Item("Alf alarm clock", //
-								"nothing I really need", 19.99)));
-		when(repository.findById((String) null)) //
-				.thenReturn(Mono.just( //
-						new Item("item-1", "Alf alarm clock", //
-								"nothing I really need", 19.99)));
+		when(repository.findAll()).thenReturn(Flux.just( //
+				new Item("Alf alarm clock", "nothing I really need", 19.99)));
+		when(repository.findById((String) null)).thenReturn(Mono.just( //
+				new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/affordances/items") // <1>
 				.accept(MediaTypes.HAL_FORMS_JSON) // <2>
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectBody() //
-				.consumeWith(document("aggregate-root-affordances", // <3>
-						preprocessResponse(prettyPrint())));
+				.consumeWith(document("aggregate-root-affordances", preprocessResponse(prettyPrint()))); // <3>
 	}
 	// end::affordances2[]
 

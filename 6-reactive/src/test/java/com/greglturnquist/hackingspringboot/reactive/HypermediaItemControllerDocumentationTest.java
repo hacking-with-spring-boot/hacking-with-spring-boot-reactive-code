@@ -83,22 +83,17 @@ public class HypermediaItemControllerDocumentationTest {
 	// tag::test3[]
 	@Test
 	void findOneItem() {
-		when(repository.findById("item-1")) //
-				.thenReturn(Mono.just( //
-						new Item("item-1", "Alf alarm clock", //
-								"nothing I really need", 19.99)));
+		when(repository.findById("item-1")).thenReturn(Mono.just( //
+				new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/hypermedia/items/item-1") //
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectBody() //
-				.consumeWith(document("findOne-hypermedia", //
-						preprocessResponse(prettyPrint()), //
+				.consumeWith(document("findOne-hypermedia", preprocessResponse(prettyPrint()), //
 						links( // <1>
-								linkWithRel("self").description( // <2>
-										"Canonical link to this `Item`"), //
-								linkWithRel("item").description( // <3>
-										"Link back to the aggregate root"))));
+								linkWithRel("self").description("Canonical link to this `Item`"), // <2>
+								linkWithRel("item").description("Link back to the aggregate root")))); // <3>
 	}
 	// end::test3[]
 

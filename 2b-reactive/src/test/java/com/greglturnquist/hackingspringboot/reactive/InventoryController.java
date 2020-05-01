@@ -38,8 +38,8 @@ class InventoryController {
 
 	@GetMapping(value = "/items", produces = "application/stream+json")
 	Flux<Item> findInventoryData(@RequestParam("q") String q) {
-		return this.service.getItems()
-			.filter(item -> item.getName().contains(q));
+		return this.service.getItems() //
+				.filter(item -> item.getName().contains(q));
 	}
 }
 // end::code[]

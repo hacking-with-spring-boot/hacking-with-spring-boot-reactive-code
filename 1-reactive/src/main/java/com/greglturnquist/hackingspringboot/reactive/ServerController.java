@@ -30,16 +30,14 @@ public class ServerController {
 		this.kitchen = kitchen;
 	}
 
-	@GetMapping(value = "/server", //
-			produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value = "/server", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	Flux<Dish> serveDishes() {
 		return this.kitchen.getDishes();
 	}
 	// end::controller[]
 
 	// tag::deliver[]
-	@GetMapping(value = "/served-dishes", //
-			produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(value = "/served-dishes", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	Flux<Dish> deliverDishes() {
 		return this.kitchen.getDishes() //
 				.map(dish -> deliver(dish));

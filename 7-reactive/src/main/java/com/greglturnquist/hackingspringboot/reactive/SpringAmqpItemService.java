@@ -32,7 +32,8 @@ import org.springframework.stereotype.Service;
 @Service // <1>
 public class SpringAmqpItemService {
 
-	private static final Logger log = LoggerFactory.getLogger(SpringAmqpItemService.class);
+	private static final Logger log = //
+			LoggerFactory.getLogger(SpringAmqpItemService.class);
 
 	private final ItemRepository repository; // <2>
 

@@ -70,7 +70,8 @@ public class RSocketTest {
 
 	// tag::request-response[]
 	@Test
-	void verifyRemoteOperationsThroughRSocketRequestResponse() throws InterruptedException {
+	void verifyRemoteOperationsThroughRSocketRequestResponse() //
+			throws InterruptedException {
 
 		// Clean out the database
 		this.repository.deleteAll() // <1>

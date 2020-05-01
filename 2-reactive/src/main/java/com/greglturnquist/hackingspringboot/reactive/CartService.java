@@ -30,8 +30,7 @@ class CartService {
 	private final ItemRepository itemRepository;
 	private final CartRepository cartRepository;
 
-	CartService(ItemRepository itemRepository, // <2>
-			CartRepository cartRepository) {
+	CartService(ItemRepository itemRepository, CartRepository cartRepository) { // <2>
 		this.itemRepository = itemRepository;
 		this.cartRepository = cartRepository;
 	}

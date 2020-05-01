@@ -52,14 +52,16 @@ class InventoryService {
 	}
 
 	// tag::code-2[]
-	Flux<Item> search(String partialName, //
-			String partialDescription, boolean useAnd) {
+	Flux<Item> search(String partialName, String partialDescription, boolean useAnd) {
 		if (partialName != null) {
 			if (partialDescription != null) {
 				if (useAnd) {
-					return repository.findByNameContainingAndDescriptionContainingAllIgnoreCase(partialName, partialDescription);
+					return repository //
+							.findByNameContainingAndDescriptionContainingAllIgnoreCase( //
+									partialName, partialDescription);
 				} else {
-					return repository.findByNameContainingOrDescriptionContainingAllIgnoreCase(partialName, partialDescription);
+					return repository.findByNameContainingOrDescriptionContainingAllIgnoreCase( //
+							partialName, partialDescription);
 				}
 			} else {
 				return repository.findByNameContaining(partialName);
@@ -75,8 +77,7 @@ class InventoryService {
 	// end::code-2[]
 
 	// tag::code-3[]
-	Flux<Item> searchByExample(String name, //
-			String description, boolean useAnd) {
+	Flux<Item> searchByExample(String name, String description, boolean useAnd) {
 		Item item = new Item(name, description, 0.0); // <1>
 
 		ExampleMatcher matcher = (useAnd // <2>
@@ -93,19 +94,15 @@ class InventoryService {
 	// end::code-3[]
 
 	// tag::code-4[]
-	Flux<Item> searchByFluentExample(String name, //
-			String description) {
+	Flux<Item> searchByFluentExample(String name, String description) {
 		return fluentOperations.query(Item.class) //
-				.matching(query( //
-						where("TV tray").is(name) //
-								.and("Smurf").is(description))) //
+				.matching(query(where("TV tray").is(name).and("Smurf").is(description))) //
 				.all();
 	}
 	// end::code-4[]
 
 	// tag::code-5[]
-	Flux<Item> searchByFluentExample(String name, //
-			String description, boolean useAnd) {
+	Flux<Item> searchByFluentExample(String name, String description, boolean useAnd) {
 		Item item = new Item(name, description, 0.0);
 
 		ExampleMatcher matcher = (useAnd //
@@ -116,8 +113,7 @@ class InventoryService {
 						.withIgnorePaths("price");
 
 		return fluentOperations.query(Item.class) //
-				.matching(query( //
-						byExample(Example.of(item, matcher)))) //
+				.matching(query(byExample(Example.of(item, matcher)))) //
 				.all();
 	}
 	// end::code-5[]

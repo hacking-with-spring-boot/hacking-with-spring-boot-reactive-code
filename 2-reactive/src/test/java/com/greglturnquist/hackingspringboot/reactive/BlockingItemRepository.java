@@ -23,8 +23,7 @@ import com.greglturnquist.hackingspringboot.reactive.Item;
  * @author Greg Turnquist
  */
 // tag::code[]
-interface BlockingItemRepository extends //
-		CrudRepository<Item, String> {
+interface BlockingItemRepository extends CrudRepository<Item, String> {
 
 }
 // end::code[]

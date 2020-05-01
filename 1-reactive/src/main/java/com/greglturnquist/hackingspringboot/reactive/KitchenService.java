@@ -31,8 +31,7 @@ public class KitchenService {
 	 * Generates continuous stream of dishes.
 	 */
 	Flux<Dish> getDishes() {
-		return Flux //
-				.<Dish> generate(sink -> sink.next(randomDish())) //
+		return Flux.<Dish> generate(sink -> sink.next(randomDish())) //
 				.delayElements(Duration.ofMillis(250));
 	}
 

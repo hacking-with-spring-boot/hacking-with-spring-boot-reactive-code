@@ -58,8 +58,7 @@ public class AffordancesItemController {
 	// tag::root[]
 	@GetMapping("/affordances")
 	Mono<RepresentationModel<?>> root() {
-		AffordancesItemController controller = //
-				methodOn(AffordancesItemController.class);
+		AffordancesItemController controller = methodOn(AffordancesItemController.class);
 
 		Mono<Link> selfLink = linkTo(controller.root()) //
 				.withSelfRel() //
@@ -78,8 +77,7 @@ public class AffordancesItemController {
 	// tag::find-all[]
 	@GetMapping("/affordances/items")
 	Mono<CollectionModel<EntityModel<Item>>> findAll() {
-		AffordancesItemController controller = //
-				methodOn(AffordancesItemController.class);
+		AffordancesItemController controller = methodOn(AffordancesItemController.class);
 
 		Mono<Link> aggregateRoot = linkTo(controller.findAll()) //
 				.withSelfRel() //
@@ -98,8 +96,7 @@ public class AffordancesItemController {
 	// tag::find-one[]
 	@GetMapping("/affordances/items/{id}") // <1>
 	Mono<EntityModel<Item>> findOne(@PathVariable String id) {
-		AffordancesItemController controller = //
-				methodOn(AffordancesItemController.class); // <2>
+		AffordancesItemController controller = methodOn(AffordancesItemController.class); // <2>
 
 		Mono<Link> selfLink = linkTo(controller.findOne(id)) //
 				.withSelfRel() //
@@ -119,8 +116,7 @@ public class AffordancesItemController {
 
 	// tag::add-new-item[]
 	@PostMapping("/affordances/items") // <1>
-	Mono<ResponseEntity<?>> addNewItem( //
-			@RequestBody Mono<EntityModel<Item>> item) { // <2>
+	Mono<ResponseEntity<?>> addNewItem(@RequestBody Mono<EntityModel<Item>> item) { // <2>
 		return item //
 				.map(EntityModel::getContent) // <3>
 				.flatMap(this.repository::save) // <4>
@@ -134,8 +130,7 @@ public class AffordancesItemController {
 
 	// tag::update-item[]
 	@PutMapping("/affordances/items/{id}") // <1>
-	public Mono<ResponseEntity<?>> updateItem( //
-			@RequestBody Mono<EntityModel<Item>> item, // <2>
+	public Mono<ResponseEntity<?>> updateItem(@RequestBody Mono<EntityModel<Item>> item, // <2>
 			@PathVariable String id) {
 		return item //
 				.map(EntityModel::getContent) //
@@ -144,10 +139,7 @@ public class AffordancesItemController {
 				.flatMap(this.repository::save) // <4>
 				.then(findOne(id)) // <5>
 				.map(model -> ResponseEntity.noContent() // <6>
-						.location(model //
-								.getRequiredLink(IanaLinkRelations.SELF) //
-								.toUri())
-						.build());
+						.location(model.getRequiredLink(IanaLinkRelations.SELF).toUri()).build());
 	}
 	// end::update-item[]
 

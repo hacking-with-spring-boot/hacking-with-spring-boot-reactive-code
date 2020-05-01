@@ -38,8 +38,7 @@ public class DebuggingReactorFlows {
 	// tag::simple-example[]
 	static class SimpleExample {
 		public static void main(String[] args) {
-			ExecutorService executor = //
-					Executors.newSingleThreadScheduledExecutor();
+			ExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 			List<Integer> source;
 			if (new Random().nextBoolean()) {

@@ -58,24 +58,20 @@ public class BlockHoundIntegrationTest {
 	void setUp() {
 		// Define test data <1>
 
-		Item sampleItem = new Item( //
-				"item1", "TV tray", "Alf TV tray", 19.99);
+		Item sampleItem = new Item("item1", "TV tray", "Alf TV tray", 19.99);
 		CartItem sampleCartItem = new CartItem(sampleItem);
-		Cart sampleCart = new Cart("My Cart", //
-				Collections.singletonList(sampleCartItem));
+		Cart sampleCart = new Cart("My Cart", Collections.singletonList(sampleCartItem));
 
 		// Define mock interactions provided
 		// by your collaborators <2>
 
 		when(cartRepository.findById(anyString())) //
 				.thenReturn(Mono.<Cart> empty().hide()); // <3>
-		when(itemRepository.findById(anyString())) //
-				.thenReturn(Mono.just(sampleItem));
-		when(cartRepository.save(any(Cart.class))) //
-				.thenReturn(Mono.just(sampleCart));
 
-		inventoryService = new AltInventoryService( //
-				itemRepository, cartRepository);
+		when(itemRepository.findById(anyString())).thenReturn(Mono.just(sampleItem));
+		when(cartRepository.save(any(Cart.class))).thenReturn(Mono.just(sampleCart));
+
+		inventoryService = new AltInventoryService(itemRepository, cartRepository);
 	}
 	// end::2[]
 
@@ -83,8 +79,7 @@ public class BlockHoundIntegrationTest {
 	@Test
 	void blockHoundShouldTrapBlockingCall() { //
 		Mono.delay(Duration.ofSeconds(1)) // <1>
-				.flatMap(tick -> inventoryService //
-						.addItemToCart("My Cart", "item1")) // <2>
+				.flatMap(tick -> inventoryService.addItemToCart("My Cart", "item1")) // <2>
 				.as(StepVerifier::create) // <3>
 				.verifyErrorSatisfies(throwable -> { // <4>
 					assertThat(throwable).hasMessageContaining( //

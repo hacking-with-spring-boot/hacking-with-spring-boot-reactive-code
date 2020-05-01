@@ -58,8 +58,7 @@ public class ApiItemController {
 
 	// tag::new-item[]
 	@PostMapping("/api/items") // <1>
-	Mono<ResponseEntity<?>> addNewItem( //
-			@RequestBody Mono<Item> item) { // <2>
+	Mono<ResponseEntity<?>> addNewItem(@RequestBody Mono<Item> item) { // <2>
 
 		return item.flatMap(s -> this.repository.save(s)) // <3>
 				.map(savedItem -> ResponseEntity //
@@ -76,10 +75,8 @@ public class ApiItemController {
 			@PathVariable String id) { // <3>
 
 		return item //
-				.map(content -> new Item(id, // <4>
-						content.getName(), //
-						content.getDescription(), //
-						content.getPrice())) //
+				.map(content -> new Item(id, content.getName(), content.getDescription(), //
+						content.getPrice())) // <4>
 				.flatMap(this.repository::save) // <5>
 				.then(Mono.just(ResponseEntity.created( // <6>
 						URI.create("/api/items/" + id)).build()));

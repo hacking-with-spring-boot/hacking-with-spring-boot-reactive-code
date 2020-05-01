@@ -42,8 +42,7 @@ public class MongoDbSliceTest {
 				.expectNextMatches(item -> {
 					assertThat(item.getId()).isNotNull();
 					assertThat(item.getName()).isEqualTo("name");
-					assertThat(item.getDescription()) //
-							.isEqualTo("description");
+					assertThat(item.getDescription()).isEqualTo("description");
 					assertThat(item.getPrice()).isEqualTo(1.99);
 
 					return true;

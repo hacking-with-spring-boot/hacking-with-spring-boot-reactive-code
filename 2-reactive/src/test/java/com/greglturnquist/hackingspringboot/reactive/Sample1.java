@@ -47,8 +47,7 @@ public class Sample1 {
 
 		// tag::2[]
 		if (cart.getCartItems().stream() //
-				.anyMatch(cartItem -> cartItem.getItem() //
-						.getId().equals("5"))) {
+				.anyMatch(cartItem -> cartItem.getItem().getId().equals("5"))) {
 			// increment
 		} else {
 			// add new CartItem

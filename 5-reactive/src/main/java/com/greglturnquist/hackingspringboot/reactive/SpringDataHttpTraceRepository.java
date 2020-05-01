@@ -26,13 +26,11 @@ import java.util.stream.Collectors;
  * @author Greg Turnquist
  */
 // tag::code[]
-public class SpringDataHttpTraceRepository //
-		implements HttpTraceRepository {
+public class SpringDataHttpTraceRepository implements HttpTraceRepository {
 
 	private final HttpTraceWrapperRepository repository;
 
-	public SpringDataHttpTraceRepository( //
-			HttpTraceWrapperRepository repository) {
+	public SpringDataHttpTraceRepository(HttpTraceWrapperRepository repository) {
 		this.repository = repository; // <1>
 	}
 

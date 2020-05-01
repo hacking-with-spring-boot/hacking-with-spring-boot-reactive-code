@@ -70,23 +70,11 @@ public class DishMetaphor {
 
 		Flux<Dish> doingMyJob() {
 			return this.kitchen.getDishes() //
-					.doOnNext(dish -> thanks(dish)) //
-					.doOnError(error -> sorry(error)) //
-					.doOnComplete(() -> goodWork()) //
+					.doOnNext(dish -> System.out.println("Thank you for " + dish + "!")) //
+					.doOnError(error -> System.out.println("So sorry about " //
+							+ error.getMessage())) //
+					.doOnComplete(() -> System.out.println("Thanks for all your hard work!")) //
 					.map(this::deliver);
-		}
-
-		void thanks(Dish dish) {
-			System.out.println("Thank you for " + dish + "!");
-		}
-
-		void sorry(Throwable error) {
-			System.out.println("So sorry about " //
-					+ error.getMessage());
-		}
-
-		void goodWork() {
-			System.out.println("Thanks for all your hard work!");
 		}
 
 		Dish deliver(Dish dish) {
@@ -108,24 +96,12 @@ public class DishMetaphor {
 			// tag::multiple-side-effects[]
 			return this.kitchen.getDishes() //
 					.doOnNext(dish -> {
-						thanks(dish);
-						markAsDone();
-						grabSomeSilverware();
+						System.out.println("Thank you for " + dish + "!");
+						System.out.println("Marking the ticket as done.");
+						System.out.println("Grabbing some silverware.");
 					}) //
 					.map(this::deliver);
 			// end::multiple-side-effects[]
-		}
-
-		void thanks(Dish dish) {
-			System.out.println("Thank you for " + dish + "!");
-		}
-
-		void markAsDone() {
-			System.out.println("Marking the ticket as done.");
-		}
-
-		void grabSomeSilverware() {
-			System.out.println("Grabbing some silverware.");
 		}
 
 		Dish deliver(Dish dish) {
@@ -145,23 +121,13 @@ public class DishMetaphor {
 		Flux<Dish> doingMyJob() {
 			// tag::multiple-side-effects2[]
 			return this.kitchen.getDishes() //
-					.doOnNext(dish -> thanks(dish)) //
-					.doOnNext(dish -> markAsDone()) //
-					.doOnNext(dish -> grabSilverware()) //
+					.doOnNext( //
+							dish -> System.out.println("Thank you for " + dish + "!")) //
+					.doOnNext( //
+							dish -> System.out.println("Marking the ticket as done.")) //
+					.doOnNext(dish -> System.out.println("Grabbing some silverware.")) //
 					.map(this::deliver);
 			// end::multiple-side-effects2[]
-		}
-
-		void thanks(Dish dish) {
-			System.out.println("Thank you for " + dish + "!");
-		}
-
-		void markAsDone() {
-			System.out.println("Marking the ticket as done.");
-		}
-
-		void grabSilverware() {
-			System.out.println("Grabbing some silverware.");
 		}
 
 		Dish deliver(Dish dish) {

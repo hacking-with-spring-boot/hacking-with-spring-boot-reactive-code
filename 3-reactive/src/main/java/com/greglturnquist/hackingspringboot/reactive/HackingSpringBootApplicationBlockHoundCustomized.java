@@ -15,13 +15,10 @@ public class HackingSpringBootApplicationBlockHoundCustomized {
 	public static void main(String[] args) {
 		BlockHound.builder() // <1>
 				.allowBlockingCallsInside( //
-						JdkIdGenerator.class.getCanonicalName(), //
-						"generateId") // <2>
+						JdkIdGenerator.class.getCanonicalName(), "generateId") // <2>
 				.install(); // <3>
 
-		SpringApplication.run( //
-				HackingSpringBootApplicationBlockHoundCustomized.class, //
-				args);
+		SpringApplication.run(HackingSpringBootApplicationBlockHoundCustomized.class, args);
 	}
 	// end::blockhound[]
 

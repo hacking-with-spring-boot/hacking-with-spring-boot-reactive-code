@@ -103,8 +103,7 @@ public class HomeController {
 			@RequestParam boolean useAnd) {
 		return Mono.just(Rendering.view("home.html") // <3>
 				.modelAttribute("results", //
-						inventoryService //
-								.searchByExample(name, description, useAnd)) // <4>
+						inventoryService.searchByExample(name, description, useAnd)) // <4>
 				.build());
 	}
 	// end::search[]

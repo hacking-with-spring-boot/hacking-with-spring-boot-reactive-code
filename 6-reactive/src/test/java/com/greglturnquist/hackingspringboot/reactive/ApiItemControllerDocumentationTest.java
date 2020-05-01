@@ -46,53 +46,44 @@ public class ApiItemControllerDocumentationTest {
 	// tag::test1[]
 	@Test
 	void findingAllItems() {
-		when(repository.findAll()) // <1>
-				.thenReturn(Flux.just( //
-						new Item("item-1", "Alf alarm clock", //
-								"nothing I really need", 19.99)));
+		when(repository.findAll()).thenReturn( // <1>
+				Flux.just(new Item("item-1", "Alf alarm clock", //
+						"nothing I really need", 19.99)));
 
 		this.webTestClient.get().uri("/api/items") //
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectBody() //
-				.consumeWith(document("findAll", //
-						preprocessResponse(prettyPrint()))); // <2>
+				.consumeWith(document("findAll", preprocessResponse(prettyPrint()))); // <2>
 	}
 	// end::test1[]
 
 	// tag::test2[]
 	@Test
 	void postNewItem() {
-		when(repository.save(any())) //
-				.thenReturn( //
-						Mono.just(new Item("1", "Alf alarm clock", //
-								"nothing important", 19.99)));
+		when(repository.save(any())).thenReturn( //
+				Mono.just(new Item("1", "Alf alarm clock", "nothing important", 19.99)));
 
 		this.webTestClient.post().uri("/api/items") // <1>
-				.bodyValue(new Item("Alf alarm clock", //
-						"nothing important", 19.99)) // <2>
+				.bodyValue(new Item("Alf alarm clock", "nothing important", 19.99)) // <2>
 				.exchange() //
 				.expectStatus().isCreated() // <3>
 				.expectBody() //
-				.consumeWith(document("post-new-item", // <4>
-						preprocessResponse(prettyPrint()))); //
+				.consumeWith(document("post-new-item", preprocessResponse(prettyPrint()))); // <4>
 	}
 	// end::test2[]
 
 	// tag::test3[]
 	@Test
 	void findOneItem() {
-		when(repository.findById("item-1")) // <1>
-				.thenReturn( //
-						Mono.just(new Item("item-1", "Alf alarm clock", //
-								"nothing I really need", 19.99)));
+		when(repository.findById("item-1")).thenReturn( //
+				Mono.just(new Item("item-1", "Alf alarm clock", "nothing I really need", 19.99))); // <1>
 
 		this.webTestClient.get().uri("/api/items/item-1") //
 				.exchange() //
 				.expectStatus().isOk() //
 				.expectBody() //
-				.consumeWith(document("findOne", //
-						preprocessResponse(prettyPrint()))); // <2>
+				.consumeWith(document("findOne", preprocessResponse(prettyPrint()))); // <2>
 	}
 	// end::test3[]
 

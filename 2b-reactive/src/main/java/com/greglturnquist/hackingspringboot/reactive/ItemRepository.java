@@ -21,8 +21,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
 // tag::code[]
-public interface ItemRepository extends //
-		ReactiveCrudRepository<Item, String> {
+public interface ItemRepository extends ReactiveCrudRepository<Item, String> {
 
 	Flux<Item> findByNameContaining(String partialName);
 	// end::code[]

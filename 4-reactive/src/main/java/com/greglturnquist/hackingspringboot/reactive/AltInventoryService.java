@@ -61,20 +61,18 @@ class AltInventoryService {
 				.block();
 
 		return myCart.getCartItems().stream() //
-				.filter(cartItem -> cartItem.getItem() //
-						.getId().equals(itemId)) //
+				.filter(cartItem -> cartItem.getItem().getId().equals(itemId)) //
 				.findAny() //
 				.map(cartItem -> {
 					cartItem.increment();
 					return Mono.just(myCart);
 				}) //
-				.orElseGet( //
-						() -> this.itemRepository.findById(itemId) //
-								.map(item -> new CartItem(item)) //
-								.map(cartItem -> {
-									myCart.getCartItems().add(cartItem);
-									return myCart;
-								})) //
+				.orElseGet(() -> this.itemRepository.findById(itemId) //
+						.map(item -> new CartItem(item)) //
+						.map(cartItem -> {
+							myCart.getCartItems().add(cartItem);
+							return myCart;
+						})) //
 				.flatMap(cart -> this.cartRepository.save(cart));
 	}
 	// end::blocking[]

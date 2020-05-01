@@ -50,8 +50,7 @@ public class HypermediaItemController {
 
 	private final ItemRepository repository;
 
-	public HypermediaItemController( //
-			ItemRepository repository) {
+	public HypermediaItemController(ItemRepository repository) {
 		this.repository = repository;
 	}
 	// end::intro[]
@@ -62,10 +61,7 @@ public class HypermediaItemController {
 		HypermediaItemController controller = //
 				methodOn(HypermediaItemController.class);
 
-		Mono<Link> selfLink = //
-				linkTo(controller.root()) //
-						.withSelfRel() //
-						.toMono();
+		Mono<Link> selfLink = linkTo(controller.root()).withSelfRel().toMono();
 
 		Mono<Link> itemsAggregateLink = //
 				linkTo(controller.findAll()) //
@@ -95,16 +91,12 @@ public class HypermediaItemController {
 	// tag::find-one[]
 	@GetMapping("/hypermedia/items/{id}")
 	Mono<EntityModel<Item>> findOne(@PathVariable String id) {
-		HypermediaItemController controller = //
-				methodOn(HypermediaItemController.class); // <1>
+		HypermediaItemController controller = methodOn(HypermediaItemController.class); // <1>
 
-		Mono<Link> selfLink = linkTo(controller.findOne(id)) //
-				.withSelfRel() // <2>
-				.toMono();
+		Mono<Link> selfLink = linkTo(controller.findOne(id)).withSelfRel().toMono(); // <2>
 
 		Mono<Link> aggregateLink = linkTo(controller.findAll()) //
-				.withRel(IanaLinkRelations.ITEM) // <3>
-				.toMono();
+				.withRel(IanaLinkRelations.ITEM).toMono(); // <3>
 
 		return selfLink.zipWith(aggregateLink) // <4>
 				.map(links -> Links.of(links.getT1(), links.getT2())) // <5>
@@ -164,8 +156,7 @@ public class HypermediaItemController {
 	// end::update-item[]
 
 	// tag::profile[]
-	@GetMapping(value = "/hypermedia/items/profile", //
-			produces = MediaTypes.ALPS_JSON_VALUE)
+	@GetMapping(value = "/hypermedia/items/profile", produces = MediaTypes.ALPS_JSON_VALUE)
 	public Alps profile() {
 		return alps() //
 				.descriptor(Collections.singletonList(descriptor() //

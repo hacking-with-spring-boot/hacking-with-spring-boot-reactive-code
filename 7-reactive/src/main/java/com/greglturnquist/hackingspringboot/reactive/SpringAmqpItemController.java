@@ -35,7 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController // <1>
 public class SpringAmqpItemController {
 
-	private static final Logger log = LoggerFactory.getLogger(SpringAmqpItemController.class);
+	private static final Logger log = //
+			LoggerFactory.getLogger(SpringAmqpItemController.class);
 
 	private final AmqpTemplate template; // <2>
 
@@ -49,11 +50,13 @@ public class SpringAmqpItemController {
 	Mono<ResponseEntity<?>> addNewItemUsingSpringAmqp(@RequestBody Mono<Item> item) { // <2>
 		return item //
 				.flatMap(content -> { //
-					return Mono.fromCallable(() -> { // <3>
-						this.template.convertAndSend( // <4>
-								"hacking-spring-boot", "new-items-spring-amqp", content);
-						return ResponseEntity.created(URI.create("/items")).build(); // <5>
-					}).subscribeOn(Schedulers.elastic()); // <6>
+					return Mono //
+							.fromCallable(() -> { // <3>
+								this.template.convertAndSend( // <4>
+										"hacking-spring-boot", "new-items-spring-amqp", content);
+								return ResponseEntity.created(URI.create("/items")).build(); // <5>
+							}) //
+							.subscribeOn(Schedulers.elastic()); // <6>
 				});
 	}
 	// end::post[]

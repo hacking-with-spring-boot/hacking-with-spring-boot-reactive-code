@@ -31,17 +31,15 @@ import com.greglturnquist.hackingspringboot.reactive.Item;
 @Service
 public class FluentService {
 
-    private final ReactiveFluentMongoOperations fluentMongoOperations;
+	private final ReactiveFluentMongoOperations fluentMongoOperations;
 
-    public FluentService(ReactiveFluentMongoOperations fluentMongoOperations) {
-        this.fluentMongoOperations = fluentMongoOperations;
-    }
+	public FluentService(ReactiveFluentMongoOperations fluentMongoOperations) {
+		this.fluentMongoOperations = fluentMongoOperations;
+	}
 
-    Flux<Item> searchFluently(String name, String description) {
-        return fluentMongoOperations.query(Item.class)
-            .matching(query(
-                where("name").is(name)
-                    .and("description").is(description)))
-            .all();
-    }
+	Flux<Item> searchFluently(String name, String description) {
+		return fluentMongoOperations.query(Item.class) //
+				.matching(query(where("name").is(name).and("description").is(description))) //
+				.all();
+	}
 }

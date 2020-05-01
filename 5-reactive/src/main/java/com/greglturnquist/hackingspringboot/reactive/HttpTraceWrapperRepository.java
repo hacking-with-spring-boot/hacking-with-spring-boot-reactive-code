@@ -24,8 +24,8 @@ import java.util.stream.Stream;
  * @author Greg Turnquist
  */
 // tag::code[]
-public interface HttpTraceWrapperRepository //
-		extends Repository<HttpTraceWrapper, String> {
+public interface HttpTraceWrapperRepository extends //
+		Repository<HttpTraceWrapper, String> {
 
 	Stream<HttpTraceWrapper> findAll(); // <1>
 
