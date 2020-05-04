@@ -26,21 +26,21 @@ import org.springframework.data.annotation.Id;
 // tag::code[]
 public class User {
 
-	private @Id String id;
+	private @Id String id; // <1>
 	private String name;
 	private String password;
 	private List<String> roles;
 
-	private User() {} // <1>
+	private User() {} // <2>
 
-	public User(String id, String name, String password, List<String> roles) { // <2>
+	public User(String id, String name, String password, List<String> roles) { // <3>
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.roles = roles;
 	}
 
-	public User(String name, String password, List<String> roles) { // <3>
+	public User(String name, String password, List<String> roles) { // <4>
 		this.name = name;
 		this.password = password;
 		this.roles = roles;

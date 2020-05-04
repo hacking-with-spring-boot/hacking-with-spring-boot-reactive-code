@@ -105,7 +105,7 @@ public class ApiItemController {
 				.flatMap(links -> this.repository.findAll() //
 						.flatMap(item -> findOne(item.getId(), auth)) //
 						.collectList() //
-						.map(entityModels -> new CollectionModel<>(entityModels, links)));
+						.map(entityModels -> CollectionModel.of(entityModels, links)));
 	}
 	// end::find-all[]
 
@@ -117,14 +117,15 @@ public class ApiItemController {
 		Mono<Link> selfLink = linkTo(controller.findOne(id, auth)).withSelfRel() //
 				.toMono();
 
-		Mono<Link> aggregateLink = linkTo(controller.findAll(auth)).withRel(IanaLinkRelations.ITEM) //
-				.toMono();
+		Mono<Link> aggregateLink = linkTo(controller.findAll(auth)) //
+				.withRel(IanaLinkRelations.ITEM).toMono();
 
 		Mono<Links> allLinks; // <1>
 
 		if (auth.getAuthorities().contains(ROLE_INVENTORY)) { // <2>
-			allLinks = Mono.zip(selfLink, aggregateLink, //
-					linkTo(controller.deleteItem(id)).withRel("delete").toMono()) //
+			Mono<Link> deleteLink = linkTo(controller.deleteItem(id)).withRel("delete") //
+					.toMono();
+			allLinks = Mono.zip(selfLink, aggregateLink, deleteLink) //
 					.map(links -> Links.of(links.getT1(), links.getT2(), links.getT3()));
 		} else { // <3>
 			allLinks = Mono.zip(selfLink, aggregateLink) //
@@ -133,7 +134,7 @@ public class ApiItemController {
 
 		return allLinks // <4>
 				.flatMap(links -> this.repository.findById(id) //
-						.map(item -> new EntityModel<>(item, links)));
+						.map(item -> EntityModel.of(item, links)));
 	}
 
 	// end::find-one[]

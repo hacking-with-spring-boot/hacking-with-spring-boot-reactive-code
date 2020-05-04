@@ -16,7 +16,11 @@
 package com.greglturnquist.hackingspringboot.reactive;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType.*;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.hateoas.config.EnableHypermediaSupport;
+import org.springframework.hateoas.config.HypermediaWebTestClientConfigurer;
 import reactor.test.StepVerifier;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -38,23 +42,21 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 /**
  * @author Greg Turnquist
  */
-@SpringBootTest
+// tag::register[]
+@SpringBootTest()
+@EnableHypermediaSupport(type = HAL) // <1>
 @AutoConfigureWebTestClient
 public class ApiItemControllerTest {
 
-	@Autowired WebTestClient webTestClient;
+	@Autowired WebTestClient webTestClient; // <2>
 
 	@Autowired ItemRepository repository;
 
-	@Autowired WebClientConfigurer webClientConfigurer;
+	@Autowired HypermediaWebTestClientConfigurer webClientConfigurer; // <3>
 
-	// tag::register[]
-	@BeforeEach // <1>
+	@BeforeEach
 	void setUp() {
-		this.webTestClient = this.webTestClient //
-				.mutate() //
-				.exchangeStrategies(this.webClientConfigurer.hypermediaExchangeStrategies()) // <2>
-				.build();
+		this.webTestClient = this.webTestClient.mutateWith(webClientConfigurer); // <4>
 	}
 	// end::register[]
 
@@ -178,7 +180,7 @@ public class ApiItemControllerTest {
 	@Test
 	@WithMockUser(username = "alice", roles = { "INVENTORY" })
 	void navigateToItemWithInventoryAuthority() {
-		
+
 		// Navigate to the root URI of the API.
 		RepresentationModel<?> root = this.webTestClient.get().uri("/api") //
 				.exchange() //

@@ -44,8 +44,8 @@ public class HomeController {
 		return Mono.just(Rendering.view("home.html") //
 				.modelAttribute("items", this.inventoryService.getInventory()) //
 				.modelAttribute("cart", this.inventoryService.getCart(cartName(auth)) // <2>
-						.defaultIfEmpty(new Cart(cartName(auth)))) // <3>
-				.modelAttribute("auth", auth) // <4>
+						.defaultIfEmpty(new Cart(cartName(auth)))) //
+				.modelAttribute("auth", auth) // <3>
 				.build());
 	}
 	// end::user-cart[]
