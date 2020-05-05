@@ -15,6 +15,7 @@
  */
 package com.greglturnquist.hackingspringboot.reactive;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import reactor.core.publisher.Mono;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,13 +45,13 @@ public class HomeController {
 			.build());
 	}
 
-	@GetMapping("/add/{id}")
+	@PostMapping("/add/{id}")
 	Mono<String> addToCart(@PathVariable String id) {
 		return this.inventoryService.addItemToCart("My Cart", id)
 			.then(Mono.just("redirect:/"));
 	}
 
-	@GetMapping("/remove/{id}")
+	@DeleteMapping("/remove/{id}")
 	Mono<String> removeFromCart(@PathVariable String id) {
 		return this.inventoryService.removeOneFromCart("My Cart", id)
 			.then(Mono.just("redirect:/"));
@@ -62,7 +63,7 @@ public class HomeController {
 			.then(Mono.just("redirect:/"));
 	}
 
-	@GetMapping("/delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	Mono<String> deleteItem(@PathVariable String id) {
 		return this.inventoryService.deleteItem(id) //
 			.then(Mono.just("redirect:/"));

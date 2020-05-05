@@ -11,9 +11,4 @@ public class HackingSpringBootApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HackingSpringBootApplication.class, args);
 	}
-
-	@Bean
-	HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-		return new HiddenHttpMethodFilter();
-	}
 }

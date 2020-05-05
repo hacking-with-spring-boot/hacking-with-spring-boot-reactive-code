@@ -63,13 +63,13 @@ public class HomeController {
 	// end::user-cart[]
 
 	// tag::adjust-cart[]
-	@GetMapping("/add/{id}")
+	@PostMapping("/add/{id}")
 	Mono<String> addToCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
 		return this.inventoryService.addItemToCart(cartName(oauth2User), id) //
 				.then(Mono.just("redirect:/"));
 	}
 
-	@GetMapping("/remove/{id}")
+	@DeleteMapping("/remove/{id}")
 	Mono<String> removeFromCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
 		return this.inventoryService.removeOneFromCart(cartName(oauth2User), id) //
 				.then(Mono.just("redirect:/"));

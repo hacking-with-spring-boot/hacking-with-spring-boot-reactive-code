@@ -21,9 +21,4 @@ public class HackingSpringBootApplicationBlockHoundCustomized {
 		SpringApplication.run(HackingSpringBootApplicationBlockHoundCustomized.class, args);
 	}
 	// end::blockhound[]
-
-	@Bean
-	HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-		return new HiddenHttpMethodFilter();
-	}
 }

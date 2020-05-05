@@ -55,9 +55,9 @@ public class HomeControllerSliceTest {
 				.expectBody(String.class) //
 				.consumeWith(exchangeResult -> {
 					assertThat( //
-							exchangeResult.getResponseBody()).contains("<a href=\"/add/id1\">");
+							exchangeResult.getResponseBody()).contains("action=\"/add/id1\"");
 					assertThat( //
-							exchangeResult.getResponseBody()).contains("<a href=\"/add/id2\">");
+							exchangeResult.getResponseBody()).contains("action=\"/add/id2\"");
 				});
 	}
 }

@@ -1,3 +1,4 @@
+# tag::oauth[]
 spring:
   security:
     oauth2:
@@ -6,3 +7,8 @@ spring:
           google:
             client-id: 1234redacted5678opeh.apps.googleusercontent.com
             client-secret: ovj6b_va5fEB-EWEcE3FGOK6
+# end::oauth[]
+  webflux:
+    hiddenmethod:
+      filter:
+        enabled: true

@@ -16,6 +16,7 @@
 
 package com.greglturnquist.hackingspringboot.reactive;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import reactor.core.publisher.Mono;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class HomeController2 {
     }
 
     // tag::4[]
-    @GetMapping("/add/{id}")
+    @PostMapping("/add/{id}")
     Mono<String> addToCart(@PathVariable String id) {
         return this.cartService.addToCart("My Cart", id) //
             .then(Mono.just("redirect:/"));

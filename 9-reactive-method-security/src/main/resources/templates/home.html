@@ -36,7 +36,11 @@
         <td th:text="${item.id}"></td>
         <td th:text="${item.name}"></td>
         <td th:text="${item.price}"></td>
-        <td><a th:href="@{'/add/' + ${item.id}}">Add to Cart</a></td>
+        <td>
+            <form method="post" th:action="@{'/add/' + ${item.id}}">
+                <input type="submit" value="Add to Cart" />
+            </form>
+        </td>
     </tr>
 </table>
 <!-- end::1[] -->
@@ -51,7 +55,11 @@
         <td th:text="${cartItem.item.id}"></td>
         <td th:text="${cartItem.item.name}"></td>
         <td th:text="${cartItem.quantity}"></td>
-        <td><a th:href="@{'/remove/' + ${cartItem.item.id}}">-1</a></td>
+        <td>
+            <form th:method="delete" th:action="@{'/remove/' + ${cartItem.item.id}}">
+                <input type="submit" value="-1"/>
+            </form>
+        </td>
     </tr>
 </table>
 <!-- end::2[] -->
