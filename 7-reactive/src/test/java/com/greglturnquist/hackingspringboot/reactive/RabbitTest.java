@@ -23,10 +23,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -39,7 +38,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest // <1>
 @AutoConfigureWebTestClient // <2>
 @Testcontainers // <3>
-@ContextConfiguration(initializers = RabbitTest.RabbitMQInitializer.class) // <4>
+@ContextConfiguration // <4>
 public class RabbitTest {
 
 	@Container static RabbitMQContainer container = new RabbitMQContainer(); // <5>
@@ -48,17 +47,10 @@ public class RabbitTest {
 
 	@Autowired ItemRepository repository; // <7>
 
-	static class RabbitMQInitializer implements //
-			ApplicationContextInitializer<GenericApplicationContext> {
-
-		@Override
-		public void initialize(GenericApplicationContext ctx) {
-			TestPropertyValues //
-					.of( //
-							"spring.rabbitmq.host=" + container.getContainerIpAddress(), //
-							"spring.rabbitmq.port=" + container.getMappedPort(5672)) //
-					.applyTo(ctx);
-		}
+	@DynamicPropertySource // <8>
+	static void configure(DynamicPropertyRegistry registry) {
+		registry.add("spring.rabbitmq.host", container::getContainerIpAddress);
+		registry.add("spring.rabbitmq.port", container::getAmqpPort);
 	}
 	// end::setup[]
 

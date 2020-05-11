@@ -67,12 +67,6 @@
 		<!-- end::restdocs[] -->
 
 		<dependency>
-			<groupId>io.projectreactor.tools</groupId>
-			<artifactId>blockhound-junit-platform</artifactId>
-			<version>1.0.3.RELEASE</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>

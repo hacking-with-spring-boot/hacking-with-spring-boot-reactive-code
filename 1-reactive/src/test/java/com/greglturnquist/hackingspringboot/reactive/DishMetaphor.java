@@ -48,13 +48,9 @@ public class DishMetaphor {
 
 		Flux<Dish> doingMyJob() {
 			return this.kitchen.getDishes() //
-					.map(dish -> this.deliver(dish));
+					.map(dish -> Dish.deliver(dish));
 		}
 
-		Dish deliver(Dish dish) {
-			dish.setDelivered(true);
-			return dish;
-		}
 	}
 	// end::simple-server[]
 
@@ -74,13 +70,9 @@ public class DishMetaphor {
 					.doOnError(error -> System.out.println("So sorry about " //
 							+ error.getMessage())) //
 					.doOnComplete(() -> System.out.println("Thanks for all your hard work!")) //
-					.map(this::deliver);
+					.map(Dish::deliver);
 		}
 
-		Dish deliver(Dish dish) {
-			dish.setDelivered(true);
-			return dish;
-		}
 	}
 	// end::polite-server[]
 
@@ -105,8 +97,7 @@ public class DishMetaphor {
 		}
 
 		Dish deliver(Dish dish) {
-			dish.setDelivered(true);
-			return dish;
+			return Dish.deliver(dish);
 		}
 	}
 
@@ -131,8 +122,7 @@ public class DishMetaphor {
 		}
 
 		Dish deliver(Dish dish) {
-			dish.setDelivered(true);
-			return dish;
+			return Dish.deliver(dish);
 		}
 	}
 
@@ -142,16 +132,18 @@ public class DishMetaphor {
 		private String description;
 		private boolean delivered = false;
 
+		public static Dish deliver(Dish dish) {
+			Dish deliveredDish = new Dish(dish.description);
+			deliveredDish.delivered = true;
+			return deliveredDish;
+		}
+
 		Dish(String description) {
 			this.description = description;
 		}
 
 		public boolean isDelivered() {
 			return delivered;
-		}
-
-		public void setDelivered(boolean delivered) {
-			this.delivered = delivered;
 		}
 
 		@Override

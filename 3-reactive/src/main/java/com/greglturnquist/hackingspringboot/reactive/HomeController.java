@@ -53,24 +53,24 @@ public class HomeController {
 	@PostMapping("/add/{id}")
 	Mono<String> addToCart(@PathVariable String id) {
 		return this.inventoryService.addItemToCart("My Cart", id)
-			.then(Mono.just("redirect:/"));
+			.thenReturn("redirect:/");
 	}
 
 	@DeleteMapping("/remove/{id}")
 	Mono<String> removeFromCart(@PathVariable String id) {
 		return this.inventoryService.removeOneFromCart("My Cart", id)
-			.then(Mono.just("redirect:/"));
+			.thenReturn("redirect:/");
 	}
 
 	@PostMapping
 	Mono<String> createItem(@ModelAttribute Item newItem) {
 		return this.inventoryService.saveItem(newItem) //
-			.then(Mono.just("redirect:/"));
+			.thenReturn("redirect:/");
 	}
 
 	@DeleteMapping("/delete/{id}")
 	Mono<String> deleteItem(@PathVariable String id) {
 		return this.inventoryService.deleteItem(id) //
-			.then(Mono.just("redirect:/"));
+			.thenReturn("redirect:/");
 	}
 }

@@ -66,13 +66,13 @@ public class HomeController {
 	@PostMapping("/add/{id}")
 	Mono<String> addToCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
 		return this.inventoryService.addItemToCart(cartName(oauth2User), id) //
-				.then(Mono.just("redirect:/"));
+				.thenReturn("redirect:/");
 	}
 
 	@DeleteMapping("/remove/{id}")
 	Mono<String> removeFromCart(@AuthenticationPrincipal OAuth2User oauth2User, @PathVariable String id) {
 		return this.inventoryService.removeOneFromCart(cartName(oauth2User), id) //
-				.then(Mono.just("redirect:/"));
+				.thenReturn("redirect:/");
 	}
 	// end::adjust-cart[]
 

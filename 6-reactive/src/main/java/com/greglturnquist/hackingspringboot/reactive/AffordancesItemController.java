@@ -107,10 +107,8 @@ public class AffordancesItemController {
 				.withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
-		return selfLink.zipWith(aggregateLink) //
-				.map(lnks -> Links.of(lnks.getT1(), lnks.getT2())) //
-				.flatMap(links -> this.repository.findById(id) //
-						.map(item -> EntityModel.of(item, links)));
+		return Mono.zip(repository.findById(id), selfLink, aggregateLink) //
+				.map(o -> EntityModel.of(o.getT1(), Links.of(o.getT2(), o.getT3())));
 	}
 	// end::find-one[]
 

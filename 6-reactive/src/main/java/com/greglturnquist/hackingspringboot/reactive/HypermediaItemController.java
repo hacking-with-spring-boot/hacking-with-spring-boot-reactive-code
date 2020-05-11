@@ -98,10 +98,8 @@ public class HypermediaItemController {
 		Mono<Link> aggregateLink = linkTo(controller.findAll()) //
 				.withRel(IanaLinkRelations.ITEM).toMono(); // <3>
 
-		return selfLink.zipWith(aggregateLink) // <4>
-				.map(links -> Links.of(links.getT1(), links.getT2())) // <5>
-				.flatMap(links -> this.repository.findById(id) // <6>
-						.map(item -> EntityModel.of(item, links))); // <7>
+		return Mono.zip(repository.findById(id), selfLink, aggregateLink) // <4>
+				.map(o -> EntityModel.of(o.getT1(), Links.of(o.getT2(), o.getT3()))); // <5>
 	}
 	// end::find-one[]
 
@@ -119,10 +117,8 @@ public class HypermediaItemController {
 		Mono<Link> aggregateLink = linkTo(controller.findAll()).withRel(IanaLinkRelations.ITEM) //
 				.toMono();
 
-		return selfLink.zipWith(aggregateLink) //
-				.map(links -> Links.of(links.getT1(), links.getT2())) //
-				.flatMap(links -> this.repository.findById(id) //
-						.map(item -> EntityModel.of(item, links))); //
+		return Mono.zip(repository.findById(id), selfLink, aggregateLink) //
+				.map(o -> EntityModel.of(o.getT1(), Links.of(o.getT2(), o.getT3())));
 	}
 	// end::find-affordance[]
 

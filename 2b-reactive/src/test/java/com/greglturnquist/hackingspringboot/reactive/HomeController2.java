@@ -40,7 +40,7 @@ public class HomeController2 {
     @PostMapping("/add/{id}")
     Mono<String> addToCart(@PathVariable String id) {
         return this.cartService.addToCart("My Cart", id) //
-            .then(Mono.just("redirect:/"));
+            .thenReturn("redirect:/");
     }
     // end::4[]
 

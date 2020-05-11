@@ -49,7 +49,7 @@ public class DebuggingReactorFlows {
 			}
 
 			try {
-				executor.submit(() -> source.get(5)).get(); // line 46
+				executor.submit(() -> source.get(5)).get(); // line 52
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			} finally {
@@ -71,7 +71,7 @@ public class DebuggingReactorFlows {
 
 			source //
 					.subscribeOn(Schedulers.parallel()) //
-					.block(); // line 73
+					.block(); // line 74
 		}
 	}
 	// end::reactor-example[]
@@ -86,11 +86,11 @@ public class DebuggingReactorFlows {
 			if (new Random().nextBoolean()) {
 				source = Flux.range(1, 10).elementAt(5);
 			} else {
-				source = Flux.just(1, 2, 3, 4).elementAt(5); // line 86
+				source = Flux.just(1, 2, 3, 4).elementAt(5); // line 89
 			}
 			source //
 					.subscribeOn(Schedulers.parallel()) //
-					.block(); // line 88
+					.block(); // line 93
 		}
 	}
 	// end::reactor-example2[]

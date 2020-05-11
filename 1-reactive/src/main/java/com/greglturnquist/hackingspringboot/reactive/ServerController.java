@@ -40,12 +40,7 @@ public class ServerController {
 	@GetMapping(value = "/served-dishes", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	Flux<Dish> deliverDishes() {
 		return this.kitchen.getDishes() //
-				.map(dish -> deliver(dish));
-	}
-
-	private Dish deliver(Dish dish) {
-		dish.setDelivered(true);
-		return dish;
+				.map(dish -> Dish.deliver(dish));
 	}
 	// end::deliver[]
 }

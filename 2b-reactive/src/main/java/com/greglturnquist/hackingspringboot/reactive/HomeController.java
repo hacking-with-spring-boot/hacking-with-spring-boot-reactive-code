@@ -80,20 +80,20 @@ public class HomeController {
 									});
 						}))
 				.flatMap(cart -> this.cartRepository.save(cart)) // <6>
-				.then(Mono.just("redirect:/")); // <7>
+				.thenReturn("redirect:/"); // <7>
 	}
 	// end::3[]
 
 	@PostMapping
 	Mono<String> createItem(@ModelAttribute Item newItem) {
 		return this.itemRepository.save(newItem) //
-				.then(Mono.just("redirect:/"));
+				.thenReturn("redirect:/");
 	}
 
 	@DeleteMapping("/delete/{id}")
 	Mono<String> deleteItem(@PathVariable String id) {
 		return this.itemRepository.deleteById(id) //
-				.then(Mono.just("redirect:/"));
+				.thenReturn("redirect:/");
 	}
 
 	// tag::search[]

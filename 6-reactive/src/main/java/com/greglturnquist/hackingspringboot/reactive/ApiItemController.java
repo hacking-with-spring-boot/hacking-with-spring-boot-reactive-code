@@ -78,8 +78,8 @@ public class ApiItemController {
 				.map(content -> new Item(id, content.getName(), content.getDescription(), //
 						content.getPrice())) // <4>
 				.flatMap(this.repository::save) // <5>
-				.then(Mono.just(ResponseEntity.created( // <6>
-						URI.create("/api/items/" + id)).build()));
+				.thenReturn(ResponseEntity.created( // <6>
+						URI.create("/api/items/" + id)).build());
 	}
 	// end::replace-item[]
 }

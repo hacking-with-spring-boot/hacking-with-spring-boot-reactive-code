@@ -49,14 +49,14 @@ public class SpringAmqpItemController {
 	@PostMapping("/items") // <1>
 	Mono<ResponseEntity<?>> addNewItemUsingSpringAmqp(@RequestBody Mono<Item> item) { // <2>
 		return item //
+				.publishOn(Schedulers.boundedElastic())// <3>
 				.flatMap(content -> { //
 					return Mono //
-							.fromCallable(() -> { // <3>
-								this.template.convertAndSend( // <4>
+							.fromCallable(() -> { // <4>
+								this.template.convertAndSend( // <5>
 										"hacking-spring-boot", "new-items-spring-amqp", content);
-								return ResponseEntity.created(URI.create("/items")).build(); // <5>
-							}) //
-							.subscribeOn(Schedulers.elastic()); // <6>
+								return ResponseEntity.created(URI.create("/items")).build(); // <6>
+							});
 				});
 	}
 	// end::post[]

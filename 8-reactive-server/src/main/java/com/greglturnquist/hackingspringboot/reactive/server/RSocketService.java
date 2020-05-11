@@ -16,7 +16,9 @@
 
 package com.greglturnquist.hackingspringboot.reactive.server;
 
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
@@ -32,18 +34,16 @@ public class RSocketService {
 
 	private final ItemRepository repository;
 	// end::code[]
-	private final Flux<Item> itemFlux;
-	private FluxSink<Item> itemSink;
+	private final EmitterProcessor<Item> itemProcessor;
+	private final FluxSink<Item> itemSink;
 
 	// tag::code2[]
 	public RSocketService(ItemRepository repository) {
 		this.repository = repository; // <2>
 		// end::code2[]
 		// tag::code3[]
-		this.itemFlux = Flux.<Item> create(fluxSink -> this.itemSink = fluxSink, // <1>
-				FluxSink.OverflowStrategy.LATEST) // <2>
-				.publish() // <3>
-				.autoConnect(); // <4>
+		this.itemProcessor = EmitterProcessor.create(); // <1>
+		this.itemSink = this.itemProcessor.sink(); // <2>
 	}
 	// end::code3[]
 
@@ -51,12 +51,7 @@ public class RSocketService {
 	@MessageMapping("newItems.request-response") // <1>
 	public Mono<Item> processNewItemsViaRSocketRequestResponse(Item item) { // <2>
 		return this.repository.save(item) // <3>
-				.map(savedItem -> {
-					if (this.itemSink != null) { // <4>
-						this.itemSink.next(savedItem); // <5>
-					}
-					return savedItem; // <6>
-				});
+				.doOnNext(savedItem -> this.itemSink.next(savedItem)); // <4>
 	}
 	// end::request-response[]
 
@@ -64,12 +59,7 @@ public class RSocketService {
 	@MessageMapping("newItems.fire-and-forget")
 	public Mono<Void> processNewItemsViaRSocketFireAndForget(Item item) {
 		return this.repository.save(item) //
-				.map(savedItem -> {
-					if (this.itemSink != null) {
-						this.itemSink.next(savedItem);
-					}
-					return savedItem;
-				}) //
+				.doOnNext(savedItem -> this.itemSink.next(savedItem)) //
 				.then();
 	}
 	// end::fire-and-forget[]
@@ -77,7 +67,7 @@ public class RSocketService {
 	// tag::monitor[]
 	@MessageMapping("newItems.monitor") // <1>
 	public Flux<Item> monitorNewItems() { // <2>
-		return itemFlux; // <3>
+		return this.itemProcessor; // <3>
 	}
 	// end::monitor[]
 }

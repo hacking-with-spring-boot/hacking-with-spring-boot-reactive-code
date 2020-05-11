@@ -132,9 +132,9 @@ public class ApiItemController {
 					.map(links -> Links.of(links.getT1(), links.getT2()));
 		}
 
-		return allLinks // <4>
-				.flatMap(links -> this.repository.findById(id) //
-						.map(item -> EntityModel.of(item, links)));
+		return this.repository.findById(id) //
+				.zipWith(allLinks) // <4>
+				.map(o -> EntityModel.of(o.getT1(), o.getT2()));
 	}
 
 	// end::find-one[]
@@ -157,7 +157,7 @@ public class ApiItemController {
 	@DeleteMapping("/api/items/delete/{id}")
 	Mono<ResponseEntity<?>> deleteItem(@PathVariable String id) {
 		return this.repository.deleteById(id) //
-				.then(Mono.just(ResponseEntity.noContent().build()));
+				.thenReturn(ResponseEntity.noContent().build());
 	}
 	// end::delete-item[]
 
