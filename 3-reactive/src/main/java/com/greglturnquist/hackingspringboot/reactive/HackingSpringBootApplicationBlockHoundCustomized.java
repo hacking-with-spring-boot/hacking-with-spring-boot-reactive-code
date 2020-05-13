@@ -1,5 +1,6 @@
 package com.greglturnquist.hackingspringboot.reactive;
 
+import org.thymeleaf.TemplateEngine;
 import reactor.blockhound.BlockHound;
 
 import org.springframework.boot.SpringApplication;
@@ -15,7 +16,7 @@ public class HackingSpringBootApplicationBlockHoundCustomized {
 	public static void main(String[] args) {
 		BlockHound.builder() // <1>
 				.allowBlockingCallsInside( //
-						JdkIdGenerator.class.getCanonicalName(), "generateId") // <2>
+						TemplateEngine.class.getCanonicalName(), "process") // <2>
 				.install(); // <3>
 
 		SpringApplication.run(HackingSpringBootApplicationBlockHoundCustomized.class, args);
